@@ -1,12 +1,15 @@
-```css
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap');
+
+/* ગુજરાતી ફોન્ટ */
 @font-face {
-  font-family: 'GujaratiFont';
-  src: url('/fonts/gujarati.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Bhakti';
+  src: url('./fonts/Bhakti.otf') format('opentype');
+  font-weight: 400 800;
   font-style: normal;
   font-display: swap;
 }
+
 :root {
   --maroon: #741827;
   --deep-maroon: #410c19;
@@ -15,13 +18,18 @@
   --text: #38251e;
   --white: #ffffff;
 }
+
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'GujaratiFont', sans-serif;
+  margin: 0;
+  font-family: 'Noto Serif Gujarati', serif;
+  color: var(--text);
+  line-height: 1.8;
+  background: var(--cream);
 }
 
 a {
@@ -29,6 +37,13 @@ a {
   text-decoration: none;
 }
 
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+/* હેડર */
 .site-header {
   position: sticky;
   top: 0;
@@ -38,7 +53,7 @@ a {
   justify-content: space-between;
   gap: 20px;
   padding: 14px 6%;
-  background: rgba(65, 12, 25, 0.97);
+  background: rgba(65, 12, 25, 0.98);
   border-bottom: 2px solid var(--gold);
   box-shadow: 0 5px 22px rgba(0, 0, 0, 0.16);
 }
@@ -85,14 +100,13 @@ a {
   padding: 9px 14px;
   border-radius: 24px;
   color: var(--white);
-  transition: background 0.25s, color 0.25s, transform 0.25s;
+  transition: background 0.25s, color 0.25s;
 }
 
 .main-nav a:hover,
 .main-nav a:focus-visible {
   color: var(--deep-maroon);
   background: var(--gold);
-  transform: translateY(-2px);
 }
 
 .menu-toggle {
@@ -163,15 +177,15 @@ a {
   background: rgba(255, 255, 255, 0.06);
 }
 
+/* મુખ્ય શીર્ષક */
 .hero h1 {
   margin: 22px 0 14px;
   color: #ffe5a0;
-  font-family: 'Bhakti', serif;
+  font-family: 'Bhakti', 'Noto Serif Gujarati', serif;
   font-size: clamp(34px, 5vw, 58px);
-  font-weight: 800;
+  font-weight: 400;
   line-height: 1.6;
-  letter-spacing: 0.2px;
-  -webkit-text-stroke: 0.35px #d9ad55;
+  letter-spacing: 0;
   text-shadow:
     1px 2px 0 #8b5b16,
     0 0 12px rgba(255, 215, 120, 0.35);
@@ -191,7 +205,7 @@ a {
   border-radius: 30px;
   color: var(--deep-maroon);
   background: linear-gradient(135deg, #f9df9a, var(--gold));
-  font-weight: 800;
+  font-weight: 700;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.25s, box-shadow 0.25s;
 }
@@ -217,6 +231,7 @@ a {
   font-size: 125px;
 }
 
+/* સામાન્ય વિભાગો */
 .section {
   padding: 75px 8%;
   text-align: center;
@@ -243,8 +258,9 @@ a {
   color: #987020;
 }
 
+/* સુવિધાઓના કાર્ડ */
 .features {
-  background: #fff8e9;
+  background: var(--cream);
 }
 
 .feature-grid {
@@ -290,6 +306,7 @@ a {
   color: #69564d;
 }
 
+/* સંપર્ક વિભાગ */
 .contact {
   color: var(--white);
   background: linear-gradient(120deg, var(--deep-maroon), var(--maroon));
@@ -299,6 +316,7 @@ a {
   color: #ffe2a0;
 }
 
+/* ફૂટર */
 .site-footer {
   padding: 25px 15px;
   text-align: center;
@@ -315,12 +333,14 @@ a {
   color: #e3c9a4;
 }
 
+/* કીબોર્ડથી ઉપયોગ */
 button:focus-visible,
 a:focus-visible {
   outline: 3px solid #f1c76c;
   outline-offset: 4px;
 }
 
+/* મોબાઇલ ડિઝાઇન */
 @media (max-width: 760px) {
   .site-header {
     padding: 12px 5%;
@@ -393,6 +413,7 @@ a:focus-visible {
   }
 }
 
+/* ઓછું એનિમેશન પસંદ કરનાર માટે */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -401,4 +422,3 @@ a:focus-visible {
     transition: none !important;
   }
 }
-```
