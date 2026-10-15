@@ -1,12 +1,10 @@
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap');
-
 @font-face {
-  font-family: 'KAPGujarati';
-  src: url('./fonts/KAP026.TTF') format('truetype');
+  font-family: 'Bhakti';
+  src: url('./fonts/Bhakti.otf') format('opentype');
   font-display: swap;
 }
-
 :root {
   --maroon: #741827;
   --deep-maroon: #410c19;
@@ -15,7 +13,6 @@
   --text: #38251e;
   --white: #ffffff;
 }
-
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
