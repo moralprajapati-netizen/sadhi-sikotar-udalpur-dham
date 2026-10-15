@@ -22,10 +22,7 @@
 }
 
 body {
-  font-family: 'KAPGujarati';
-  color: var(--text);
-  background: var(--cream);
-  line-height: 1.8;
+  font-family: 'Noto Serif Gujarati', serif;
 }
 
 a {
