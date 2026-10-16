@@ -4,15 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#7b1725">
+  <meta name="theme-color" content="#741827">
   <meta name="description" content="સધી સિકોતર માતાજી ઉદલપુરધામ - માતાજીનાં દર્શન, ભજન અને મંદિરની માહિતી.">
-
   <title>સધી સિકોતર માતાજી ઉદલપુરધામ</title>
-
   <link rel="stylesheet" href="./styles.css">
-  <script type="module" src="./script.js"></script>
+  <script src="./script.js" defer></script>
 </head>
-
 <body>
   <header class="site-header">
     <a class="brand" href="./" aria-label="મુખ્ય પૃષ્ઠ">
@@ -24,14 +21,13 @@
     </a>
 
     <button class="menu-toggle" id="menuToggle"
-      aria-label="મેનૂ ખોલો" aria-expanded="false">
-      ☰
-    </button>
+      type="button" aria-label="મેનૂ ખોલો"
+      aria-expanded="false" aria-controls="mainNav">☰</button>
 
     <nav class="main-nav" id="mainNav">
       <a href="#home">હોમ</a>
       <a href="#about">મંદિર વિશે</a>
-      <a href="#bhajan">ભજન</a>
+      <a href="#bhajan">ભક્તિ</a>
       <a href="#gallery">ફોટો ગેલેરી</a>
       <a href="#contact">સંપર્ક</a>
     </nav>
@@ -60,20 +56,17 @@
     <section class="features section" id="bhajan">
       <span class="section-label">ભક્તિનો અનુભવ</span>
       <h2>ભક્તિ અને દર્શન</h2>
-
       <div class="feature-grid">
         <article class="feature-card">
           <span class="feature-icon">🛕</span>
           <h3>માતાજીનાં દર્શન</h3>
           <p>માતાજીના ફોટા અને ધામની માહિતી.</p>
         </article>
-
         <article class="feature-card">
           <span class="feature-icon">🎵</span>
           <h3>ભજન અને આરતી</h3>
           <p>માતાજીનાં ભજન અને આરતી માટેનો વિભાગ.</p>
         </article>
-
         <article class="feature-card">
           <span class="feature-icon">📍</span>
           <h3>ધામની માહિતી</h3>
@@ -82,31 +75,58 @@
       </div>
     </section>
 
-    <!-- માતાજીની ફોટો ગેલેરી -->
-    <section class="section gallery" id="gallery">
-      <span class="section-label">જય શ્રી સધીસિકોતર માતા</span>
-      <h2>📸 માતાજીનાં દિવ્ય દર્શન</h2>
-      <p>સધી સિકોતર માતાજી ઉદલપુરધામનાં પવિત્ર દર્શન</p>
+    <section class="gallery-section" id="gallery">
+      <div class="gallery-heading">
+        <span class="gallery-eyebrow">ૐ જય શ્રી સધી સિકોતર માતા ૐ</span>
+        <h2>માતાજીનાં દિવ્ય દર્શન</h2>
+        <span class="gold-divider" aria-hidden="true">✦ ❖ ✦</span>
+        <p>સધી સિકોતર માતાજી ઉદલપુરધામની પવિત્ર ઝાંખી</p>
+      </div>
 
       <div class="gallery-grid">
-        <figure class="gallery-item">
-          <img src="./1.png"
-            alt="સધી સિકોતર માતાજીનો ફોટો" loading="lazy">
-          <figcaption>જય શ્રી સધી સિકોતર માતા</figcaption>
-        </figure>
+        <button class="gallery-card" type="button"
+          data-photo="./1.png"
+          data-caption="જય શ્રી સધી સિકોતર માતા"
+          aria-label="માતાજીનો ફોટો મોટો જુઓ">
+          <img src="./1.png" alt="સધી સિકોતર માતાજી"
+            loading="lazy">
+          <span class="photo-overlay">
+            <span class="zoom-icon" aria-hidden="true">⌕</span>
+            <span class="photo-caption">જય શ્રી સધી સિકોતર માતા</span>
+            <span class="view-label">દિવ્ય દર્શન જુઓ ↗</span>
+          </span>
+        </button>
 
-        <figure class="gallery-item">
-          <img src="./2.png"
-            alt="ઉદલપુરધામનો ફોટો" loading="lazy">
-          <figcaption>ઉદલપુરધામ</figcaption>
-        </figure>
+        <button class="gallery-card" type="button"
+          data-photo="./2.png"
+          data-caption="ઉદલપુરધામ"
+          aria-label="ઉદલપુરધામનો ફોટો મોટો જુઓ">
+          <img src="./2.png" alt="ઉદલપુરધામ"
+            loading="lazy">
+          <span class="photo-overlay">
+            <span class="zoom-icon" aria-hidden="true">⌕</span>
+            <span class="photo-caption">ઉદલપુરધામ</span>
+            <span class="view-label">દિવ્ય દર્શન જુઓ ↗</span>
+          </span>
+        </button>
 
-        <figure class="gallery-item">
+        <button class="gallery-card" type="button"
+          data-photo="./copilot_20250729_095554.png"
+          data-caption="માતાજીનાં પાવન દર્શન"
+          aria-label="માતાજીનાં દર્શનનો ફોટો મોટો જુઓ">
           <img src="./copilot_20250729_095554.png"
-            alt="માતાજીનાં દિવ્ય દર્શન" loading="lazy">
-          <figcaption>માતાજીનાં પાવન દર્શન</figcaption>
-        </figure>
+            alt="માતાજીનાં પાવન દર્શન" loading="lazy">
+          <span class="photo-overlay">
+            <span class="zoom-icon" aria-hidden="true">⌕</span>
+            <span class="photo-caption">માતાજીનાં પાવન દર્શન</span>
+            <span class="view-label">દિવ્ય દર્શન જુઓ ↗</span>
+          </span>
+        </button>
       </div>
+
+      <p class="gallery-footer">
+        🙏 માતાજી સૌના જીવનમાં સુખ, શાંતિ અને સમૃદ્ધિ આપે 🙏
+      </p>
     </section>
 
     <section class="contact section" id="contact">
@@ -120,6 +140,14 @@
     <p>🙏 જય શ્રી સધી સિકોતર માતા 🙏</p>
     <small>© <span id="year"></span> સધી સિકોતર માતાજી ઉદલપુરધામ</small>
   </footer>
+
+  <dialog class="photo-lightbox" id="photoLightbox"
+    aria-label="માતાજીનાં ફોટાનાં મોટાં દર્શન">
+    <button class="lightbox-close" id="closeLightbox"
+      type="button" aria-label="બંધ કરો">×</button>
+    <img id="lightboxImage" alt="માતાજીનાં મોટાં દર્શન">
+    <p id="lightboxCaption"></p>
+  </dialog>
 </body>
 </html>
 ```
