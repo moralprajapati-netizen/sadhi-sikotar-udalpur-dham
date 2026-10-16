@@ -422,3 +422,37 @@ a:focus-visible {
     transition: none !important;
   }
 }
+
+/* ફોટો ગેલેરી */
+.gallery {
+  text-align: center;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.gallery-item {
+  margin: 0;
+  background: #fff8e7;
+  border: 2px solid #d4af37;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-item figcaption {
+  padding: 12px;
+  color: #8b1a1a;
+  font-weight: bold;
+}
