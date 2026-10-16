@@ -1,52 +1,50 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Footer માં વર્તમાન વર્ષ
+document.addEventListener("DOMContentLoaded", () => {
+  // Footer year
   const year = document.getElementById("year");
-  if (year) {
-    year.textContent = new Date().getFullYear();
-  }
+  if (year) year.textContent = new Date().getFullYear();
 
   // Mobile menu
   const menuToggle = document.getElementById("menuToggle");
   const mainNav = document.getElementById("mainNav");
 
   if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", function () {
-      const isOpen = mainNav.classList.toggle("active");
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
+    menuToggle.addEventListener("click", () => {
+      const open = mainNav.classList.toggle("active");
+      menuToggle.setAttribute("aria-expanded", String(open));
     });
 
-    mainNav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
+    mainNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
         mainNav.classList.remove("active");
         menuToggle.setAttribute("aria-expanded", "false");
       });
     });
   }
 
-  // ફોટો મોટો બતાવવા માટે Lightbox
-  const galleryImages = document.querySelectorAll(".gallery-item img");
-  if (!galleryImages.length) return;
+  // Photo lightbox
+  const photos = document.querySelectorAll("#gallery .gallery-item img");
+  if (!photos.length) return;
 
-  const lightbox = document.createElement("div");
-  lightbox.id = "photoLightbox";
+  const overlay = document.createElement("div");
+  overlay.id = "photoLightbox";
 
-  Object.assign(lightbox.style, {
+  Object.assign(overlay.style, {
     position: "fixed",
     inset: "0",
-    zIndex: "99999",
-    background: "rgba(0, 0, 0, 0.92)",
+    zIndex: "999999",
+    background: "rgba(0,0,0,0.94)",
     display: "none",
     alignItems: "center",
     justifyContent: "center",
-    padding: "55px 15px 20px",
+    padding: "60px 15px 20px",
     boxSizing: "border-box",
     cursor: "zoom-out"
   });
 
-  const enlargedImage = document.createElement("img");
-  enlargedImage.alt = "માતાજીનાં મોટાં દર્શન";
+  const bigPhoto = document.createElement("img");
+  bigPhoto.alt = "માતાજીનાં દિવ્ય દર્શન";
 
-  Object.assign(enlargedImage.style, {
+  Object.assign(bigPhoto.style, {
     display: "block",
     maxWidth: "95vw",
     maxHeight: "85vh",
@@ -54,21 +52,21 @@ document.addEventListener("DOMContentLoaded", function () {
     height: "auto",
     objectFit: "contain",
     borderRadius: "10px",
-    boxShadow: "0 0 30px rgba(255, 215, 0, 0.25)",
+    boxShadow: "0 0 25px rgba(255,215,0,0.35)",
     cursor: "default"
   });
 
-  const closeButton = document.createElement("button");
-  closeButton.type = "button";
-  closeButton.textContent = "✕";
-  closeButton.setAttribute("aria-label", "ફોટો બંધ કરો");
+  const close = document.createElement("button");
+  close.type = "button";
+  close.textContent = "✕";
+  close.setAttribute("aria-label", "ફોટો બંધ કરો");
 
-  Object.assign(closeButton.style, {
+  Object.assign(close.style, {
     position: "absolute",
     top: "12px",
-    right: "18px",
-    width: "44px",
-    height: "44px",
+    right: "16px",
+    width: "46px",
+    height: "46px",
     border: "1px solid #d4af37",
     borderRadius: "50%",
     background: "#7b1725",
@@ -77,43 +75,41 @@ document.addEventListener("DOMContentLoaded", function () {
     cursor: "pointer"
   });
 
-  lightbox.appendChild(enlargedImage);
-  lightbox.appendChild(closeButton);
-  document.body.appendChild(lightbox);
+  overlay.appendChild(bigPhoto);
+  overlay.appendChild(close);
+  document.body.appendChild(overlay);
 
-  function openLightbox(image) {
-    enlargedImage.src = image.currentSrc || image.src;
-    enlargedImage.alt = image.alt || "માતાજીનાં દર્શન";
-    lightbox.style.display = "flex";
+  function showPhoto(photo) {
+    bigPhoto.src = photo.currentSrc || photo.src;
+    bigPhoto.alt = photo.alt || "માતાજીનાં દર્શન";
+    overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
   }
 
-  function closeLightbox() {
-    lightbox.style.display = "none";
-    enlargedImage.removeAttribute("src");
+  function hidePhoto() {
+    overlay.style.display = "none";
+    bigPhoto.removeAttribute("src");
     document.body.style.overflow = "";
   }
 
-  galleryImages.forEach(function (image) {
-    image.style.cursor = "zoom-in";
-    image.setAttribute("title", "મોટો ફોટો જોવા ક્લિક કરો");
+  photos.forEach(photo => {
+    photo.style.cursor = "zoom-in";
+    photo.title = "મોટો ફોટો જોવા ક્લિક કરો";
 
-    image.addEventListener("click", function () {
-      openLightbox(image);
-    });
+    photo.addEventListener("click", () => showPhoto(photo));
   });
 
-  closeButton.addEventListener("click", closeLightbox);
+  close.addEventListener("click", hidePhoto);
 
-  lightbox.addEventListener("click", function (event) {
-    if (event.target === lightbox) {
-      closeLightbox();
-    }
+  overlay.addEventListener("click", event => {
+    if (event.target === overlay) hidePhoto();
   });
 
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && lightbox.style.display === "flex") {
-      closeLightbox();
-    }
+  bigPhoto.addEventListener("click", event => {
+    event.stopPropagation();
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") hidePhoto();
   });
 });
