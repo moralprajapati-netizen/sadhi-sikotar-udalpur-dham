@@ -1,69 +1,151 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Footer year
-  const year = document.getElementById("year");
-  if (year) year.textContent = new Date().getFullYear();
 
-  // Mobile menu
-  const menuToggle = document.getElementById("menuToggle");
-  const mainNav = document.getElementById("mainNav");
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#410c19">
+  <meta name="description" content="સધી સિકોતર માતાજી ઉદલપુરધામ - માતાજીનાં પાવન દર્શન અને ભક્તિ.">
+  <title>સધી સિકોતર માતાજી ઉદલપુરધામ</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
 
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", function () {
-      const isOpen = mainNav.classList.toggle("open");
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-    });
+<header class="site-header">
+  <a class="brand" href="#home">
+    <span class="brand-icon">ૐ</span>
+    <span>
+      <strong>સધી સિકોતર માતાજી</strong>
+      <small>ઉદલપુરધામ</small>
+    </span>
+  </a>
 
-    mainNav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        mainNav.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
+  <button class="menu-toggle" id="menuToggle"
+    type="button" aria-label="મેનુ ખોલો" aria-expanded="false">
+    ☰
+  </button>
 
-  // Gallery lightbox
-  const galleryCards = document.querySelectorAll(".gallery-card");
-  const lightbox = document.getElementById("photoLightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const lightboxCaption = document.getElementById("lightboxCaption");
-  const closeButton = document.getElementById("closeLightbox");
+  <nav class="main-nav" id="mainNav">
+    <a href="#home">હોમ</a>
+    <a href="#about">ધામ વિશે</a>
+    <a href="#bhakti">ભક્તિ</a>
+    <a href="#gallery">ફોટો ગેલેરી</a>
+  </nav>
+</header>
 
-  if (!lightbox || !lightboxImage || !closeButton) {
-    console.error("Gallery lightbox elements are missing.");
-    return;
-  }
+<main>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="eyebrow">જય શ્રી સધી સિકોતર માતા</span>
+      <h1>સધી સિકોતર માતાજી ઉદલપુરધામ</h1>
+      <p>
+        માતાજીનાં ચરણોમાં શ્રદ્ધા, ભક્તિ અને વિશ્વાસ.
+        માતાજીનાં પાવન દર્શન કરીને ધન્ય બનો.
+      </p>
+      <a class="primary-button" href="#gallery">
+        માતાજીનાં દર્શન કરો
+      </a>
+    </div>
+    <div class="hero-decoration" aria-hidden="true">ૐ</div>
+  </section>
 
-  galleryCards.forEach(function (card) {
-    card.addEventListener("click", function () {
-      const photo = card.getAttribute("data-photo");
-      const caption = card.getAttribute("data-caption") || "";
+  <section class="section welcome" id="about">
+    <span class="section-label">જય માતાજી</span>
+    <h2>ઉદલપુરધામમાં આપનું સ્વાગત છે</h2>
+    <p>
+      શ્રી સધી સિકોતર માતાજીની કૃપા સૌ ભક્તો પર સદાય બની રહે.
+      શ્રદ્ધા અને ભક્તિથી માતાજીનું સ્મરણ કરીએ.
+    </p>
+  </section>
 
-      if (!photo) return;
+  <section class="section features" id="bhakti">
+    <span class="section-label">ભક્તિ અને શ્રદ્ધા</span>
+    <h2>માતાજીની મહિમા</h2>
 
-      lightboxImage.src = photo;
-      lightboxImage.alt = caption || "માતાજીનાં દિવ્ય દર્શન";
+    <div class="feature-grid">
+      <article class="feature-card">
+        <div class="feature-icon">🙏</div>
+        <h3>માતાજીનાં દર્શન</h3>
+        <p>માતાજીનાં પાવન દર્શન કરીને આશીર્વાદ મેળવો.</p>
+      </article>
 
-      if (lightboxCaption) {
-        lightboxCaption.textContent = caption;
-      }
+      <article class="feature-card">
+        <div class="feature-icon">🪔</div>
+        <h3>પૂજા અને આરતી</h3>
+        <p>ભક્તિભાવથી માતાજીની આરાધના કરીએ.</p>
+      </article>
 
-      if (!lightbox.open) {
-        lightbox.showModal();
-      }
-    });
-  });
+      <article class="feature-card">
+        <div class="feature-icon">🌺</div>
+        <h3>શ્રદ્ધા અને વિશ્વાસ</h3>
+        <p>માતાજીની ભક્તિથી મનમાં શાંતિ અને હિંમત મેળવો.</p>
+      </article>
+    </div>
+  </section>
 
-  closeButton.addEventListener("click", function () {
-    lightbox.close();
-  });
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-heading">
+      <span class="gallery-eyebrow">॥ જય શ્રી સધી સિકોતર માતા ॥</span>
+      <h2>માતાજીનાં દિવ્ય દર્શન</h2>
+      <span class="gold-divider">✦ ❖ ✦</span>
+      <p>ફોટા પર ક્લિક કરીને મોટાં દર્શન કરો.</p>
+    </div>
 
-  lightbox.addEventListener("click", function (event) {
-    if (event.target === lightbox) {
-      lightbox.close();
-    }
-  });
+    <div class="gallery-grid">
+      <button class="gallery-card" type="button"
+        data-photo="./1.png"
+        data-caption="જય શ્રી સધી સિકોતર માતા">
+        <img src="./1.png" alt="સધી સિકોતર માતાજી" loading="lazy">
+        <span class="photo-overlay">
+          <span class="zoom-icon">+</span>
+          <span class="photo-caption">જય શ્રી સધી સિકોતર માતા</span>
+          <span class="view-label">મોટાં દર્શન માટે ક્લિક કરો</span>
+        </span>
+      </button>
 
-  lightbox.addEventListener("close", function () {
-    lightboxImage.removeAttribute("src");
-  });
-});
+      <button class="gallery-card" type="button"
+        data-photo="./2.png"
+        data-caption="ઉદલપુરધામ">
+        <img src="./2.png" alt="ઉદલપુરધામ" loading="lazy">
+        <span class="photo-overlay">
+          <span class="zoom-icon">+</span>
+          <span class="photo-caption">ઉદલપુરધામ</span>
+          <span class="view-label">મોટાં દર્શન માટે ક્લિક કરો</span>
+        </span>
+      </button>
+
+      <button class="gallery-card" type="button"
+        data-photo="./copilot_20250729_095554.png"
+        data-caption="માતાજીનાં પાવન દર્શન">
+        <img src="./copilot_20250729_095554.png"
+          alt="માતાજીનાં પાવન દર્શન" loading="lazy">
+        <span class="photo-overlay">
+          <span class="zoom-icon">+</span>
+          <span class="photo-caption">માતાજીનાં પાવન દર્શન</span>
+          <span class="view-label">મોટાં દર્શન માટે ક્લિક કરો</span>
+        </span>
+      </button>
+    </div>
+
+    <p class="gallery-footer">
+      🌺 જય માતાજી • જય સધી સિકોતર માતા 🌺
+    </p>
+  </section>
+
+  <dialog class="photo-lightbox" id="photoLightbox"
+    aria-label="માતાજીનાં ફોટાનાં મોટાં દર્શન">
+    <button class="lightbox-close" id="closeLightbox"
+      type="button" aria-label="બંધ કરો">×</button>
+    <img id="lightboxImage" alt="માતાજીનાં મોટાં દર્શન">
+    <p id="lightboxCaption"></p>
+  </dialog>
+</main>
+
+<footer class="site-footer">
+  <p>🙏 જય શ્રી સધી સિકોતર માતા 🙏</p>
+  <p>© <span id="year"></span> સધી સિકોતર માતાજી ઉદલપુરધામ</p>
+</footer>
+
+</body>
+</html>
