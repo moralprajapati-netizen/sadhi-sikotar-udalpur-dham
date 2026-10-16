@@ -1,79 +1,119 @@
-```javascript
 document.addEventListener("DOMContentLoaded", function () {
-  // ફૂટરમાં ચાલુ વર્ષ
-  const yearElement = document.getElementById("year");
-
-  if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
+  // Footer માં વર્તમાન વર્ષ
+  const year = document.getElementById("year");
+  if (year) {
+    year.textContent = new Date().getFullYear();
   }
 
-  // મોબાઇલ મેનૂ
+  // Mobile menu
   const menuToggle = document.getElementById("menuToggle");
   const mainNav = document.getElementById("mainNav");
 
   if (menuToggle && mainNav) {
     menuToggle.addEventListener("click", function () {
-      const isOpen = mainNav.classList.toggle("open");
-
+      const isOpen = mainNav.classList.toggle("active");
       menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.setAttribute(
-        "aria-label",
-        isOpen ? "મેનૂ બંધ કરો" : "મેનૂ ખોલો"
-      );
-
-      menuToggle.textContent = isOpen ? "×" : "☰";
     });
 
     mainNav.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        mainNav.classList.remove("open");
+        mainNav.classList.remove("active");
         menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.setAttribute("aria-label", "મેનૂ ખોલો");
-        menuToggle.textContent = "☰";
       });
     });
   }
 
-  // ફોટો ગેલેરીનું મોટું વિન્ડો
-  const photoLightbox = document.getElementById("photoLightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const lightboxCaption = document.getElementById("lightboxCaption");
-  const closeLightbox = document.getElementById("closeLightbox");
-  const galleryCards = document.querySelectorAll(".gallery-card");
+  // ફોટો મોટો બતાવવા માટે Lightbox
+  const galleryImages = document.querySelectorAll(".gallery-item img");
+  if (!galleryImages.length) return;
 
-  if (photoLightbox && lightboxImage && lightboxCaption) {
-    galleryCards.forEach(function (card) {
-      card.addEventListener("click", function () {
-        const photo = card.dataset.photo;
-        const caption = card.dataset.caption;
-        const thumbnail = card.querySelector("img");
+  const lightbox = document.createElement("div");
+  lightbox.id = "photoLightbox";
 
-        if (!photo) return;
+  Object.assign(lightbox.style, {
+    position: "fixed",
+    inset: "0",
+    zIndex: "99999",
+    background: "rgba(0, 0, 0, 0.92)",
+    display: "none",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "55px 15px 20px",
+    boxSizing: "border-box",
+    cursor: "zoom-out"
+  });
 
-        lightboxImage.src = photo;
-        lightboxImage.alt = thumbnail ? thumbnail.alt : caption;
-        lightboxCaption.textContent = caption || "";
+  const enlargedImage = document.createElement("img");
+  enlargedImage.alt = "માતાજીનાં મોટાં દર્શન";
 
-        if (!photoLightbox.open) {
-          photoLightbox.showModal();
-        }
-      });
+  Object.assign(enlargedImage.style, {
+    display: "block",
+    maxWidth: "95vw",
+    maxHeight: "85vh",
+    width: "auto",
+    height: "auto",
+    objectFit: "contain",
+    borderRadius: "10px",
+    boxShadow: "0 0 30px rgba(255, 215, 0, 0.25)",
+    cursor: "default"
+  });
+
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.textContent = "✕";
+  closeButton.setAttribute("aria-label", "ફોટો બંધ કરો");
+
+  Object.assign(closeButton.style, {
+    position: "absolute",
+    top: "12px",
+    right: "18px",
+    width: "44px",
+    height: "44px",
+    border: "1px solid #d4af37",
+    borderRadius: "50%",
+    background: "#7b1725",
+    color: "#fff",
+    fontSize: "25px",
+    cursor: "pointer"
+  });
+
+  lightbox.appendChild(enlargedImage);
+  lightbox.appendChild(closeButton);
+  document.body.appendChild(lightbox);
+
+  function openLightbox(image) {
+    enlargedImage.src = image.currentSrc || image.src;
+    enlargedImage.alt = image.alt || "માતાજીનાં દર્શન";
+    lightbox.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.style.display = "none";
+    enlargedImage.removeAttribute("src");
+    document.body.style.overflow = "";
+  }
+
+  galleryImages.forEach(function (image) {
+    image.style.cursor = "zoom-in";
+    image.setAttribute("title", "મોટો ફોટો જોવા ક્લિક કરો");
+
+    image.addEventListener("click", function () {
+      openLightbox(image);
     });
+  });
 
-    if (closeLightbox) {
-      closeLightbox.addEventListener("click", function () {
-        photoLightbox.close();
-      });
+  closeButton.addEventListener("click", closeLightbox);
+
+  lightbox.addEventListener("click", function (event) {
+    if (event.target === lightbox) {
+      closeLightbox();
     }
+  });
 
-    // ફોટાની બહાર ક્લિક કરતાં વિન્ડો બંધ થાય
-    photoLightbox.addEventListener("click", function (event) {
-      if (event.target === photoLightbox) {
-        photoLightbox.close();
-      }
-    });
-
-    // Esc દબાવવાથી dialog આપમેળે બંધ થાય છે
-  }
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && lightbox.style.display === "flex") {
+      closeLightbox();
+    }
+  });
 });
-```
