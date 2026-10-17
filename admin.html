@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | સધી સિકોતર ઉદલપુરધામ</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    :root {
+      --maroon: #741827;
+      --deep-maroon: #410c19;
+      --gold: #d9ad55;
+      --cream: #fff8e9;
+      --text: #38251e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--deep-maroon), var(--maroon));
+      color: var(--text);
+    }
+
+    .panel {
+      width: 100%;
+      max-width: 460px;
+      padding: 32px 24px;
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      background: var(--cream);
+      text-align: center;
+      box-shadow: 0 18px 50px #0004;
+    }
+
+    .symbol {
+      font-size: 44px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: var(--maroon);
+      font-size: 27px;
+    }
+
+    p {
+      line-height: 1.7;
+    }
+
+    button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--maroon);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .secondary {
+      background: #5d5149;
+    }
+
+    #status {
+      margin-top: 18px;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    #dashboard {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--gold);
+    }
+
+    .hidden { display: none; }
+
+    .notice {
+      font-size: 13px;
+      color: #66564c;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="panel">
+    <div class="symbol">🛕</div>
+
+    <h1>સધી સિકોતર માતાજી</h1>
+    <p>ઉદલપુરધામ — એડમિન પેનલ</p>
+
+    <button id="loginBtn" type="button">
+      Google એકાઉન્ટથી સાઇન ઇન કરો
+    </button>
+
+    <div id="status" role="status" aria-live="polite">
+      એડમિન પ્રવેશ માટે Google Sign-In કરો.
+    </div>
+
+    <section id="dashboard" class="hidden">
+      <h2>એડમિન પેનલ</h2>
+      <p id="welcome"></p>
+      <p>આગળ અહીં ફોટા, ભજન અને ઉત્સવો ઉમેરવાની સુવિધા બનાવવામાં આવશે.</p>
+      <button id="logoutBtn" class="secondary" type="button">
+        સાઇન આઉટ
+      </button>
+    </section>
+
+    <p class="notice">
+      ફક્ત અધિકૃત એડમિન માટે.
+    </p>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Firebase Console માંથી મળેલું Web App Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAdo3BhBLiBtLp_by35Z_w00lNcALxk72k",
+      authDomain: "sadhi-sikotar-udalpur-dham.firebaseapp.com",
+      projectId: "sadhi-sikotar-udalpur-dham",
+      storageBucket: "sadhi-sikotar-udalpur-dham.firebasestorage.app",
+      messagingSenderId: "579984682526",
+      appId: "1:579984682526:web:6348d8e57d3381e557080f",
+      measurementId: "G-775X1KW7VX"
+    };
+
+    // અહીં પોતાના અધિકૃત Google એકાઉન્ટનું ઈમેઇલ લખવું.
+    // ઈમેઇલ અહીં ચેટમાં મોકલવાનું નથી.
+    const ADMIN_EMAIL = "YOUR_GOOGLE_EMAIL_HERE";
+
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const statusBox = document.getElementById("status");
+    const dashboard = document.getElementById("dashboard");
+    const welcome = document.getElementById("welcome");
+
+    loginBtn.addEventListener("click", async () => {
+      if (ADMIN_EMAIL === "YOUR_GOOGLE_EMAIL_HERE") {
+        statusBox.textContent =
+          "પહેલાં કોડમાં ADMIN_EMAIL ની જગ્યાએ પોતાનું Google ઈમેઇલ લખો.";
+        return;
+      }
+
+      loginBtn.disabled = true;
+      statusBox.textContent = "Google Sign-In ખૂલી રહ્યું છે...";
+
+      try {
+        await auth.signInWithPopup(provider);
+      } catch (error) {
+        console.error(error);
+        statusBox.textContent =
+          "સાઇન ઇન થયું નથી. ફરી પ્રયાસ કરો. Error: " + error.code;
+      } finally {
+        loginBtn.disabled = false;
+      }
+    });
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        dashboard.classList.add("hidden");
+        loginBtn.classList.remove("hidden");
+        statusBox.textContent = "એડમિન પ્રવેશ માટે Google Sign-In કરો.";
+        return;
+      }
+
+      if (
+        ADMIN_EMAIL === "moral.prem24@gmail.com" ||
+        (user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()
+      ) {
+        statusBox.textContent =
+          "આ Google એકાઉન્ટને એડમિનની પરવાનગી નથી.";
+
+        try {
+          await auth.signOut();
+        } catch (error) {
+          console.error(error);
+        }
+        return;
+      }
+
+      loginBtn.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+      statusBox.textContent = "સાઇન ઇન સફળ થયું.";
+      welcome.textContent = "સ્વાગત, " + (user.displayName || "એડમિન");
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+      } catch (error) {
+        statusBox.textContent = "સાઇન આઉટ કરવામાં સમસ્યા આવી.";
+      }
+    });
+  </script>
+</body>
+</html>
