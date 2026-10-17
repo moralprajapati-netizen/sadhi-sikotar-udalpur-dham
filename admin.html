@@ -16,7 +16,9 @@
       --text: #38251e;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -26,6 +28,7 @@
       padding: 20px;
       background: linear-gradient(135deg, var(--deep-maroon), var(--maroon));
       color: var(--text);
+      font-family: sans-serif;
     }
 
     .panel {
@@ -89,7 +92,9 @@
       border-top: 1px solid var(--gold);
     }
 
-    .hidden { display: none; }
+    .hidden {
+      display: none !important;
+    }
 
     .notice {
       font-size: 13px;
@@ -116,22 +121,23 @@
     <section id="dashboard" class="hidden">
       <h2>એડમિન પેનલ</h2>
       <p id="welcome"></p>
-      <p>આગળ અહીં ફોટા, ભજન અને ઉત્સવો ઉમેરવાની સુવિધા બનાવવામાં આવશે.</p>
+      <p>
+        લૉગિન સફળ થયું છે. અહીં આગળ ફોટા, ભજન,
+        વાર્તાઓ અને ઉત્સવો ઉમેરવાની સુવિધા બનાવવામાં આવશે.
+      </p>
+
       <button id="logoutBtn" class="secondary" type="button">
         સાઇન આઉટ
       </button>
     </section>
 
-    <p class="notice">
-      ફક્ત અધિકૃત એડમિન માટે.
-    </p>
+    <p class="notice">ફક્ત અધિકૃત એડમિન માટે.</p>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
   <script>
-    // Firebase Console માંથી મળેલું Web App Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyAdo3BhBLiBtLp_by35Z_w00lNcALxk72k",
       authDomain: "sadhi-sikotar-udalpur-dham.firebaseapp.com",
@@ -142,8 +148,7 @@
       measurementId: "G-775X1KW7VX"
     };
 
-    // અહીં પોતાના અધિકૃત Google એકાઉન્ટનું ઈમેઇલ લખવું.
-    // ઈમેઇલ અહીં ચેટમાં મોકલવાનું નથી.
+    // અધિકૃત એડમિનનું ઈમેઇલ
     const ADMIN_EMAIL = "moral.prem24@gmail.com";
 
     firebase.initializeApp(firebaseConfig);
@@ -151,16 +156,22 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
+    provider.setCustomParameters({
+      prompt: "select_account"
+    });
+
     const loginBtn = document.getElementById("loginBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const statusBox = document.getElementById("status");
     const dashboard = document.getElementById("dashboard");
     const welcome = document.getElementById("welcome");
 
+    let checkingUser = false;
+
     loginBtn.addEventListener("click", async () => {
       if (ADMIN_EMAIL === "YOUR_GOOGLE_EMAIL_HERE") {
         statusBox.textContent =
-          "પહેલાં કોડમાં ADMIN_EMAIL ની જગ્યાએ પોતાનું Google ઈમેઇલ લખો.";
+          "કોડમાં અધિકૃત એડમિનનું ઈમેઇલ લખવું જરૂરી છે.";
         return;
       }
 
@@ -170,48 +181,89 @@
       try {
         await auth.signInWithPopup(provider);
       } catch (error) {
-        console.error(error);
+        console.error("Google Sign-In Error:", error);
+
+        const messages = {
+          "auth/popup-blocked":
+            "બ્રાઉઝરે પોપ-અપ અટકાવ્યું છે. પોપ-અપની પરવાનગી આપીને ફરી પ્રયાસ કરો.",
+          "auth/popup-closed-by-user":
+            "સાઇન-ઇન વિન્ડો બંધ થઈ ગઈ. ફરી પ્રયાસ કરો.",
+          "auth/unauthorized-domain":
+            "આ વેબસાઇટનું ડોમેન Firebaseમાં મંજૂર નથી.",
+          "auth/network-request-failed":
+            "ઇન્ટરનેટ કનેક્શન તપાસીને ફરી પ્રયાસ કરો.",
+          "auth/operation-not-allowed":
+            "Firebaseમાં Google Sign-In સક્ષમ છે કે નહીં તે તપાસો."
+        };
+
         statusBox.textContent =
-          "સાઇન ઇન થયું નથી. ફરી પ્રયાસ કરો. Error: " + error.code;
+          messages[error.code] ||
+          "સાઇન-ઇન થયું નથી. Error: " +
+          (error.code || "unknown-error");
       } finally {
         loginBtn.disabled = false;
       }
     });
 
     auth.onAuthStateChanged(async (user) => {
+      if (checkingUser) return;
+
       if (!user) {
         dashboard.classList.add("hidden");
         loginBtn.classList.remove("hidden");
-        statusBox.textContent = "એડમિન પ્રવેશ માટે Google Sign-In કરો.";
+        logoutBtn.disabled = false;
+        welcome.textContent = "";
+        statusBox.textContent =
+          "એડમિન પ્રવેશ માટે Google Sign-In કરો.";
         return;
       }
 
+      const signedInEmail = (user.email || "").toLowerCase();
+      const allowedEmail = ADMIN_EMAIL.toLowerCase();
+
+      // મહત્વપૂર્ણ: અહીં placeholder જ ચેક કરવો.
+      // સાચા ADMIN_EMAIL સાથે સરખામણી કરવી નહીં.
       if (
-        ADMIN_EMAIL === "moral.prem24@gmail.com" ||
-        (user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()
+        ADMIN_EMAIL === "YOUR_GOOGLE_EMAIL_HERE" ||
+        signedInEmail !== allowedEmail
       ) {
+        checkingUser = true;
         statusBox.textContent =
           "આ Google એકાઉન્ટને એડમિનની પરવાનગી નથી.";
 
         try {
           await auth.signOut();
         } catch (error) {
-          console.error(error);
+          console.error("Sign-out Error:", error);
+        } finally {
+          checkingUser = false;
+          dashboard.classList.add("hidden");
+          loginBtn.classList.remove("hidden");
         }
+
         return;
       }
 
       loginBtn.classList.add("hidden");
       dashboard.classList.remove("hidden");
       statusBox.textContent = "સાઇન ઇન સફળ થયું.";
-      welcome.textContent = "સ્વાગત, " + (user.displayName || "એડમિન");
+      welcome.textContent =
+        "સ્વાગત, " + (user.displayName || "એડમિન");
     });
 
     logoutBtn.addEventListener("click", async () => {
+      logoutBtn.disabled = true;
+      statusBox.textContent = "સાઇન આઉટ થઈ રહ્યું છે...";
+
       try {
         await auth.signOut();
+        statusBox.textContent = "સાઇન આઉટ સફળ થયું.";
       } catch (error) {
-        statusBox.textContent = "સાઇન આઉટ કરવામાં સમસ્યા આવી.";
+        console.error("Sign-out Error:", error);
+        statusBox.textContent =
+          "સાઇન આઉટ કરવામાં સમસ્યા આવી.";
+      } finally {
+        logoutBtn.disabled = false;
       }
     });
   </script>
