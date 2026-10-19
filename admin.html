@@ -246,8 +246,10 @@
     }
 
     function resetForm() {
+      const selectedCollection = $("collection").value;
       editingId = null;
       $("contentForm").reset();
+      $("collection").value = selectedCollection;
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
       $("saveBtn").textContent = "સામગ્રી સાચવો";
       $("cancelEditBtn").classList.add("hidden");
