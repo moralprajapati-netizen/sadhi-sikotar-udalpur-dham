@@ -8,7 +8,44 @@
   <meta name="description" content="સધી સિકોતર માતાજી ઉદલપુરધામ - માતાજીનાં પાવન દર્શન અને ભક્તિ.">
   <title>સધી સિકોતર માતાજી ઉદલપુરધામ</title>
   <link rel="stylesheet" href="./styles.css">
-  <script src="./script.js" defer></script>
+
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script defer src="./script.js"></script>
+
+  <style>
+    .live-bhajan-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .live-bhajan-card {
+      padding: 20px;
+      border: 1px solid #d9ad55;
+      border-radius: 14px;
+      background: #fff8e9;
+      overflow-wrap: anywhere;
+    }
+    .live-bhajan-card h3 {
+      margin-top: 0;
+      color: #741827;
+    }
+    .live-bhajan-card p {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .live-bhajan-card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #741827;
+      font-weight: bold;
+    }
+    .live-bhajan-status {
+      margin-top: 18px;
+      line-height: 1.7;
+    }
+  </style>
 </head>
 <body>
 
@@ -163,9 +200,15 @@
     <span class="section-label">ભક્તિ સંગીત</span>
     <h2>ભજન અને આરતી</h2>
     <p>
-      માતાજીનાં ભજન અને આરતીની વિગતો તથા સાંભળવાની
-      લિંક્સ અહીં પછીથી ઉમેરી શકાશે.
+      માતાજીનાં ભજન અને આરતી — એડમિન પેનલમાંથી
+      પ્રકાશિત કરેલાં ભજનો અહીં દેખાશે.
     </p>
+
+    <p id="bhajanStatus" class="live-bhajan-status"
+      role="status" aria-live="polite">
+      ભજન લોડ થઈ રહ્યાં છે...
+    </p>
+    <div id="bhajanList" class="live-bhajan-list"></div>
   </section>
 
   <section class="section" id="video">
