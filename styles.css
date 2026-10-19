@@ -1183,3 +1183,99 @@ button:focus-visible,
     transform: none;
   }
 }
+
+/* 3D Royal Gold Buttons */
+.btn,
+button,
+.gallery-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.btn,
+.hero-actions .btn,
+button.btn {
+  position: relative;
+  transform: translateY(0);
+  border: 1px solid #f4dfab;
+  border-radius: 14px;
+  box-shadow:
+    0 5px 0 #4a101b,
+    0 9px 18px rgba(53, 8, 19, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    filter 180ms ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    #ffe9a8 0%,
+    #d9ad55 45%,
+    #b77a24 100%
+  );
+  color: #410c19;
+  font-weight: 800;
+}
+
+.btn-secondary {
+  background: linear-gradient(
+    135deg,
+    #8f2438,
+    #5a1021
+  );
+  color: #fff8e9;
+  font-weight: 700;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover,
+  button:hover,
+  .gallery-card:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.06);
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    box-shadow:
+      0 9px 0 #4a101b,
+      0 15px 25px rgba(53, 8, 19, 0.3),
+      0 0 16px rgba(217, 173, 85, 0.35);
+  }
+}
+
+.btn:active,
+button:active,
+.gallery-card:active {
+  transform: translateY(3px) scale(0.98);
+  box-shadow:
+    0 2px 0 #4a101b,
+    0 4px 9px rgba(53, 8, 19, 0.2);
+}
+
+.btn:focus-visible,
+button:focus-visible,
+.gallery-card:focus-visible {
+  outline: 3px solid #d9ad55;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  button,
+  .gallery-card {
+    transition: none !important;
+  }
+
+  .btn:hover,
+  button:hover,
+  .gallery-card:hover {
+    transform: none;
+  }
+}
