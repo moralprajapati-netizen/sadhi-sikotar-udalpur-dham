@@ -217,7 +217,8 @@ const PUBLIC_COLLECTIONS = [
   "gallery",
   "festivals",
   "videos",
-  "history"
+  "history",
+  "contact"
 ];
 
 /* --------------------------------------------------
@@ -247,6 +248,7 @@ function initializeFirebaseContent() {
     loadFestivals(database);
     loadVideos(database);
     loadHistory(database);
+    loadContact(database);
   } catch (error) {
     console.error("Firebase initialization error:", error);
     showFirebaseUnavailable();
@@ -734,5 +736,61 @@ function loadHistory(database) {
     .catch((error) => {
       // The existing static text remains available.
       console.error("Could not load history:", error);
+    });
+}
+
+
+/* --------------------------------------------------
+   15. Temple contact and map
+   Contact documents: title=phone, content=address, linkUrl=Google Maps URL
+-------------------------------------------------- */
+function loadContact(database) {
+  const container = document.getElementById("contactContent");
+  if (!container) return;
+
+  getPublishedDocuments(database, "contact")
+    .then((documents) => {
+      container.replaceChildren();
+
+      if (!documents.length) {
+        container.appendChild(createMessage("સંપર્કની માહિતી ટૂંક સમયમાં અહીં ઉમેરવામાં આવશે."));
+        return;
+      }
+
+      documents.forEach(({ data }) => {
+        const card = createElement("article", "dynamic-content-card contact-info-card");
+        card.appendChild(createElement("h3", "", "મંદિરનો સંપર્ક"));
+
+        const phone = typeof data.title === "string" ? data.title.trim() : "";
+        const address = typeof data.content === "string" ? data.content.trim() : "";
+        const mapUrl = typeof data.linkUrl === "string" ? data.linkUrl.trim() : "";
+
+        if (phone) {
+          const p = createElement("p", "", "ફોન નંબર: ");
+          const link = document.createElement("a");
+          link.href = "tel:" + phone.replace(/[^+0-9]/g, "");
+          link.textContent = phone;
+          p.appendChild(link);
+          card.appendChild(p);
+        }
+
+        if (address) {
+          card.appendChild(createElement("p", "", "સરનામું: " + address));
+        }
+
+        if (mapUrl && isSafeWebUrl(mapUrl)) {
+          const mapLink = createSafeLink(mapUrl, "Google Mapsમાં રસ્તો જુઓ");
+          if (mapLink) {
+            mapLink.className = "button-link";
+            card.appendChild(mapLink);
+          }
+        }
+
+        container.appendChild(card);
+      });
+    })
+    .catch((error) => {
+      console.error("Could not load contact information:", error);
+      container.replaceChildren(createMessage("સંપર્કની માહિતી લોડ થઈ શકી નથી. પછી ફરી પ્રયાસ કરો."));
     });
 }
