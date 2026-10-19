@@ -9,6 +9,7 @@ function initializeWebsite() {
   updateFooterYear();
   initializeMobileMenu();
   initializePhotoLightbox();
+  initializeGallerySlider();
   initializeFirebaseContent();
 }
 
@@ -151,6 +152,49 @@ function initializePhotoLightbox() {
       lightboxCaption.textContent = "";
     }
   });
+}
+
+
+/* Accessible photo slider: buttons, keyboard arrows and touch swipe */
+function initializeGallerySlider() {
+  const gallery = document.querySelector(".gallery-grid");
+  const previous = document.getElementById("galleryPrev");
+  const next = document.getElementById("galleryNext");
+  const status = document.getElementById("gallerySlideStatus");
+  if (!gallery || !previous || !next) return;
+
+  const slides = Array.from(gallery.querySelectorAll(".gallery-card"));
+  if (!slides.length) return;
+  let activeIndex = 0;
+  let touchStartX = null;
+
+  function showSlide(index) {
+    activeIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => {
+      const active = i === activeIndex;
+      slide.classList.toggle("is-active", active);
+      slide.setAttribute("aria-hidden", String(!active));
+      slide.tabIndex = active ? 0 : -1;
+    });
+    if (status) status.textContent = `ફોટો ${activeIndex + 1} / ${slides.length} — ${slides[activeIndex].dataset.caption || ""}`;
+  }
+
+  previous.addEventListener("click", () => showSlide(activeIndex - 1));
+  next.addEventListener("click", () => showSlide(activeIndex + 1));
+  gallery.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") { event.preventDefault(); showSlide(activeIndex - 1); }
+    if (event.key === "ArrowRight") { event.preventDefault(); showSlide(activeIndex + 1); }
+  });
+  gallery.addEventListener("touchstart", (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+  gallery.addEventListener("touchend", (event) => {
+    if (touchStartX === null) return;
+    const distance = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(distance) > 45) showSlide(activeIndex + (distance < 0 ? 1 : -1));
+    touchStartX = null;
+  }, { passive: true });
+  showSlide(0);
 }
 
 /* --------------------------------------------------
