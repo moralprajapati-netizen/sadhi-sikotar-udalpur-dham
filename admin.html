@@ -134,6 +134,8 @@
                 <option value="festivals">પર્વ અને ઉત્સવ</option>
                 <option value="videos">લાઇવ દર્શન અને વિડિયો</option>
                 <option value="history">ધામનો પરિચય</option>
+          <option value="contact">સંપર્ક અને નકશો</option>
+                <option value="contact">સંપર્ક અને નકશો</option>
               </select>
             </div>
 
@@ -296,10 +298,28 @@
       $("loginPanel").classList.add("hidden");
       $("dashboard").classList.remove("hidden");
       $("welcome").textContent = "સ્વાગત, " + (user.displayName || "એડમિન");
+      updateCollectionLabels();
       await loadItems();
     });
 
-    $("collection").addEventListener("change", resetForm);
+    function updateCollectionLabels() {
+      const isContact = $("collection").value === "contact";
+      $("formHeading").textContent = isContact ? "સંપર્ક અને નકશાની માહિતી" : (editingId ? "સામગ્રીમાં ફેરફાર કરો" : "નવી સામગ્રી ઉમેરો");
+      document.querySelector('label[for="title"]').textContent = isContact ? "ફોન નંબર *" : "શીર્ષક *";
+      $("title").placeholder = isContact ? "મંદિરનો સંપર્ક નંબર લખો" : "સામગ્રીનું શીર્ષક લખો";
+      document.querySelector('label[for="content"]').textContent = isContact ? "મંદિરનું સરનામું" : "વિગતો / લખાણ";
+      $("content").placeholder = isContact ? "મંદિરનું પૂરું સરનામું લખો" : "સામગ્રીની વિગતો લખો";
+      document.querySelector('label[for="linkUrl"]').textContent = isContact ? "Google Maps લિંક" : "ભજન / વિડિયો / લાઇવ લિંક";
+      $("linkUrl").placeholder = isContact ? "મંદિરની Google Maps લિંક" : "YouTube અથવા અન્ય લિંક";
+      $("imageUrl").closest(".wide").classList.toggle("hidden", isContact);
+      $("date").closest("div").classList.toggle("hidden", isContact);
+      $("location").closest("div").classList.toggle("hidden", isContact);
+    }
+
+    $("collection").addEventListener("change", () => {
+      resetForm();
+      updateCollectionLabels();
+    });
     $("listCollection").addEventListener("change", loadItems);
     $("cancelEditBtn").addEventListener("click", resetForm);
 
@@ -434,7 +454,8 @@
             $("date").value = item.date || "";
             $("location").value = item.location || "";
             $("published").checked = item.published === true;
-            $("formHeading").textContent = "સામગ્રીમાં ફેરફાર કરો";
+            updateCollectionLabels();
+            $("formHeading").textContent = collectionName === "contact" ? "સંપર્ક અને નકશામાં ફેરફાર કરો" : "સામગ્રીમાં ફેરફાર કરો";
             $("saveBtn").textContent = "ફેરફાર સાચવો";
             $("cancelEditBtn").classList.remove("hidden");
             window.scrollTo({ top: 0, behavior: "smooth" });
