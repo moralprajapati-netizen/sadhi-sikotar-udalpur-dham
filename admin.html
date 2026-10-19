@@ -4,138 +4,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login | સધી સિકોતર ઉદલપુરધામ</title>
+  <title>એડમિન પેનલ | સધી સિકોતર માતાજી ઉદલપુરધામ</title>
   <meta name="robots" content="noindex, nofollow">
-
   <style>
     :root {
       --maroon: #741827;
-      --deep-maroon: #410c19;
+      --deep: #410c19;
       --gold: #d9ad55;
       --cream: #fff8e9;
       --text: #38251e;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--deep-maroon), var(--maroon));
+      padding: 18px;
+      background: #f7f0e5;
       color: var(--text);
       font-family: sans-serif;
     }
-
-    .panel {
-      width: 100%;
-      max-width: 460px;
-      padding: 32px 24px;
+    header {
+      max-width: 1000px;
+      margin: 0 auto 18px;
+      padding: 22px;
+      background: linear-gradient(135deg, var(--deep), var(--maroon));
+      color: white;
       border: 2px solid var(--gold);
-      border-radius: 20px;
-      background: var(--cream);
-      text-align: center;
-      box-shadow: 0 18px 50px #0004;
+      border-radius: 16px;
     }
-
-    .symbol {
-      font-size: 44px;
-      margin-bottom: 8px;
+    header h1 { margin: 0 0 8px; font-size: 25px; }
+    main { max-width: 1000px; margin: auto; }
+    .panel {
+      padding: 20px;
+      margin-bottom: 18px;
+      background: white;
+      border: 1px solid #e5d5b5;
+      border-radius: 14px;
+      box-shadow: 0 5px 18px #00000008;
     }
-
-    h1 {
-      margin: 0 0 10px;
-      color: var(--maroon);
-      font-size: 27px;
+    h2 { margin-top: 0; color: var(--maroon); }
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: bold;
     }
-
-    p {
-      line-height: 1.7;
-    }
-
-    button {
+    input, textarea, select {
+      display: block;
       width: 100%;
-      min-height: 48px;
-      margin-top: 12px;
-      padding: 12px 16px;
+      padding: 12px;
+      border: 1px solid #cbbda8;
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    button {
+      padding: 11px 16px;
+      margin: 8px 6px 0 0;
       border: 0;
-      border-radius: 10px;
+      border-radius: 8px;
       background: var(--maroon);
       color: white;
-      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
-
-    .secondary {
-      background: #5d5149;
-    }
-
-    #status {
-      margin-top: 18px;
+    button:disabled { opacity: .6; cursor: wait; }
+    .secondary { background: #66564c; }
+    .danger { background: #a32222; }
+    .item {
+      padding: 14px 0;
+      border-bottom: 1px solid #eadfcd;
       overflow-wrap: anywhere;
-      font-size: 14px;
     }
-
-    #dashboard {
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px solid var(--gold);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .notice {
-      font-size: 13px;
-      color: #66564c;
+    .item:last-child { border-bottom: 0; }
+    .item h3 { margin: 0 0 6px; }
+    .muted { color: #66564c; font-size: 14px; }
+    .status { overflow-wrap: anywhere; line-height: 1.6; }
+    .hidden { display: none !important; }
+    .checkrow { display: flex; align-items: center; gap: 10px; }
+    .checkrow input { width: auto; }
+    .checkrow label { margin: 14px 0; }
+    @media (min-width: 700px) {
+      .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 18px;
+      }
+      .wide { grid-column: 1 / -1; }
     }
   </style>
 </head>
-
 <body>
-  <main class="panel">
-    <div class="symbol">🛕</div>
+  <header>
+    <h1>🛕 સધી સિકોતર માતાજી ઉદલપુરધામ</h1>
+    <div>વેબસાઇટ મેનેજમેન્ટ પેનલ</div>
+  </header>
 
-    <h1>સધી સિકોતર માતાજી</h1>
-    <p>ઉદલપુરધામ — એડમિન પેનલ</p>
-
-    <button id="loginBtn" type="button">
-      Google એકાઉન્ટથી સાઇન ઇન કરો
-    </button>
-
-    <div id="status" role="status" aria-live="polite">
-      એડમિન પ્રવેશ માટે Google Sign-In કરો.
-    </div>
-
-    <section id="dashboard" class="hidden">
-      <h2>એડમિન પેનલ</h2>
-      <p id="welcome"></p>
-      <p>
-        લૉગિન સફળ થયું છે. અહીં આગળ ફોટા, ભજન,
-        વાર્તાઓ અને ઉત્સવો ઉમેરવાની સુવિધા બનાવવામાં આવશે.
+  <main>
+    <section class="panel" id="loginPanel">
+      <h2>એડમિન સાઇન ઇન</h2>
+      <p>અધિકૃત Google એકાઉન્ટથી સાઇન ઇન કરો.</p>
+      <button id="loginBtn" type="button">Googleથી સાઇન ઇન કરો</button>
+      <p id="loginStatus" class="status" role="status" aria-live="polite">
+        સાઇન ઇન માટે તૈયાર.
       </p>
-
-      <button id="logoutBtn" class="secondary" type="button">
-        સાઇન આઉટ
-      </button>
     </section>
 
-    <p class="notice">ફક્ત અધિકૃત એડમિન માટે.</p>
+    <div id="dashboard" class="hidden">
+      <section class="panel">
+        <h2>એડમિન ડેશબોર્ડ</h2>
+        <p id="welcome"></p>
+        <p class="muted">
+          પ્રકાશિત કરેલી સામગ્રી જ જાહેર વેબસાઇટ પર વાંચી શકાય તે રીતે સાચવાશે.
+        </p>
+        <button id="logoutBtn" class="secondary" type="button">સાઇન આઉટ</button>
+      </section>
+
+      <section class="panel">
+        <h2 id="formHeading">નવી સામગ્રી ઉમેરો</h2>
+
+        <form id="contentForm">
+          <div class="fields">
+            <div class="wide">
+              <label for="collection">વિભાગ પસંદ કરો</label>
+              <select id="collection" required>
+                <option value="bhajans">ભજન</option>
+                <option value="stories">વાર્તાઓ અને ચમત્કારો</option>
+                <option value="gallery">ગેલેરીના ફોટા</option>
+                <option value="festivals">ઉત્સવો</option>
+                <option value="videos">વિડિયો અને લાઇવ દર્શન</option>
+                <option value="history">મંદિરનો ઇતિહાસ</option>
+              </select>
+            </div>
+
+            <div class="wide">
+              <label for="title">શીર્ષક *</label>
+              <input id="title" maxlength="200" required
+                placeholder="સામગ્રીનું શીર્ષક લખો">
+            </div>
+
+            <div class="wide">
+              <label for="content">વિગતો / લખાણ</label>
+              <textarea id="content" maxlength="20000"
+                placeholder="સામગ્રીની વિગતો લખો"></textarea>
+            </div>
+
+            <div class="wide">
+              <label for="imageUrl">ફોટાની લિંક</label>
+              <input id="imageUrl" type="url" maxlength="2000"
+                placeholder="https://...">
+            </div>
+
+            <div class="wide">
+              <label for="linkUrl">ભજન / વિડિયો / લાઇવ લિંક</label>
+              <input id="linkUrl" type="url" maxlength="2000"
+                placeholder="YouTube અથવા અન્ય લિંક">
+            </div>
+
+            <div>
+              <label for="date">તારીખ</label>
+              <input id="date" type="date">
+            </div>
+
+            <div>
+              <label for="location">સ્થળ</label>
+              <input id="location" maxlength="300"
+                placeholder="મંદિર અથવા કાર્યક્રમનું સ્થળ">
+            </div>
+          </div>
+
+          <div class="checkrow">
+            <input id="published" type="checkbox">
+            <label for="published">વેબસાઇટ પર પ્રકાશિત કરો</label>
+          </div>
+
+          <button id="saveBtn" type="submit">સામગ્રી સાચવો</button>
+          <button id="cancelEditBtn" class="secondary hidden" type="button">
+            ફેરફાર રદ કરો
+          </button>
+          <p id="formStatus" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>સાચવેલી સામગ્રી</h2>
+        <label for="listCollection">કયો વિભાગ જોવો છે?</label>
+        <select id="listCollection">
+          <option value="bhajans">ભજન</option>
+          <option value="stories">વાર્તાઓ અને ચમત્કારો</option>
+          <option value="gallery">ગેલેરીના ફોટા</option>
+          <option value="festivals">ઉત્સવો</option>
+          <option value="videos">વિડિયો અને લાઇવ દર્શન</option>
+          <option value="history">મંદિરનો ઇતિહાસ</option>
+        </select>
+        <p id="listStatus" class="status" role="status" aria-live="polite"></p>
+        <div id="contentList"></div>
+      </section>
+    </div>
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -148,124 +218,253 @@
       measurementId: "G-775X1KW7VX"
     };
 
-    // અધિકૃત એડમિનનું ઈમેઇલ
     const ADMIN_EMAIL = "moral.prem24@gmail.com";
-
     firebase.initializeApp(firebaseConfig);
 
     const auth = firebase.auth();
+    const db = firebase.firestore();
     const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
 
-    provider.setCustomParameters({
-      prompt: "select_account"
-    });
+    const $ = id => document.getElementById(id);
+    let editingId = null;
+    let busy = false;
 
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const statusBox = document.getElementById("status");
-    const dashboard = document.getElementById("dashboard");
-    const welcome = document.getElementById("welcome");
+    function setStatus(id, message) {
+      $(id).textContent = message;
+    }
 
-    let checkingUser = false;
-
-    loginBtn.addEventListener("click", async () => {
-      if (ADMIN_EMAIL === "YOUR_GOOGLE_EMAIL_HERE") {
-        statusBox.textContent =
-          "કોડમાં અધિકૃત એડમિનનું ઈમેઇલ લખવું જરૂરી છે.";
-        return;
-      }
-
-      loginBtn.disabled = true;
-      statusBox.textContent = "Google Sign-In ખૂલી રહ્યું છે...";
-
+    function safeUrl(value) {
+      const trimmed = (value || "").trim();
+      if (!trimmed) return "";
       try {
+        const url = new URL(trimmed);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function resetForm() {
+      editingId = null;
+      $("contentForm").reset();
+      $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
+      $("saveBtn").textContent = "સામગ્રી સાચવો";
+      $("cancelEditBtn").classList.add("hidden");
+      setStatus("formStatus", "");
+    }
+
+    function setBusy(value) {
+      busy = value;
+      $("saveBtn").disabled = value;
+      $("loginBtn").disabled = value;
+      $("logoutBtn").disabled = value;
+    }
+
+    $("loginBtn").addEventListener("click", async () => {
+      try {
+        setStatus("loginStatus", "Google Sign-In ખૂલી રહ્યું છે...");
         await auth.signInWithPopup(provider);
       } catch (error) {
-        console.error("Google Sign-In Error:", error);
-
-        const messages = {
-          "auth/popup-blocked":
-            "બ્રાઉઝરે પોપ-અપ અટકાવ્યું છે. પોપ-અપની પરવાનગી આપીને ફરી પ્રયાસ કરો.",
-          "auth/popup-closed-by-user":
-            "સાઇન-ઇન વિન્ડો બંધ થઈ ગઈ. ફરી પ્રયાસ કરો.",
-          "auth/unauthorized-domain":
-            "આ વેબસાઇટનું ડોમેન Firebaseમાં મંજૂર નથી.",
-          "auth/network-request-failed":
-            "ઇન્ટરનેટ કનેક્શન તપાસીને ફરી પ્રયાસ કરો.",
-          "auth/operation-not-allowed":
-            "Firebaseમાં Google Sign-In સક્ષમ છે કે નહીં તે તપાસો."
-        };
-
-        statusBox.textContent =
-          messages[error.code] ||
-          "સાઇન-ઇન થયું નથી. Error: " +
-          (error.code || "unknown-error");
-      } finally {
-        loginBtn.disabled = false;
+        console.error(error);
+        setStatus("loginStatus", "સાઇન-ઇન નિષ્ફળ: " + error.code);
       }
     });
 
-    auth.onAuthStateChanged(async (user) => {
-      if (checkingUser) return;
-
-      if (!user) {
-        dashboard.classList.add("hidden");
-        loginBtn.classList.remove("hidden");
-        logoutBtn.disabled = false;
-        welcome.textContent = "";
-        statusBox.textContent =
-          "એડમિન પ્રવેશ માટે Google Sign-In કરો.";
-        return;
-      }
-
-      const signedInEmail = (user.email || "").toLowerCase();
-      const allowedEmail = ADMIN_EMAIL.toLowerCase();
-
-      // મહત્વપૂર્ણ: અહીં placeholder જ ચેક કરવો.
-      // સાચા ADMIN_EMAIL સાથે સરખામણી કરવી નહીં.
-      if (
-        ADMIN_EMAIL === "YOUR_GOOGLE_EMAIL_HERE" ||
-        signedInEmail !== allowedEmail
-      ) {
-        checkingUser = true;
-        statusBox.textContent =
-          "આ Google એકાઉન્ટને એડમિનની પરવાનગી નથી.";
-
-        try {
-          await auth.signOut();
-        } catch (error) {
-          console.error("Sign-out Error:", error);
-        } finally {
-          checkingUser = false;
-          dashboard.classList.add("hidden");
-          loginBtn.classList.remove("hidden");
-        }
-
-        return;
-      }
-
-      loginBtn.classList.add("hidden");
-      dashboard.classList.remove("hidden");
-      statusBox.textContent = "સાઇન ઇન સફળ થયું.";
-      welcome.textContent =
-        "સ્વાગત, " + (user.displayName || "એડમિન");
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      logoutBtn.disabled = true;
-      statusBox.textContent = "સાઇન આઉટ થઈ રહ્યું છે...";
-
+    $("logoutBtn").addEventListener("click", async () => {
       try {
         await auth.signOut();
-        statusBox.textContent = "સાઇન આઉટ સફળ થયું.";
       } catch (error) {
-        console.error("Sign-out Error:", error);
-        statusBox.textContent =
-          "સાઇન આઉટ કરવામાં સમસ્યા આવી.";
-      } finally {
-        logoutBtn.disabled = false;
+        console.error(error);
+        setStatus("loginStatus", "સાઇન-આઉટ નિષ્ફળ: " + error.code);
       }
     });
+
+    auth.onAuthStateChanged(async user => {
+      if (!user || (user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        $("dashboard").classList.add("hidden");
+        $("loginPanel").classList.remove("hidden");
+        if (user) {
+          setStatus("loginStatus", "આ એકાઉન્ટને એડમિન પરવાનગી નથી.");
+          try { await auth.signOut(); } catch (error) { console.error(error); }
+        }
+        return;
+      }
+
+      $("loginPanel").classList.add("hidden");
+      $("dashboard").classList.remove("hidden");
+      $("welcome").textContent = "સ્વાગત, " + (user.displayName || "એડમિન");
+      await loadItems();
+    });
+
+    $("collection").addEventListener("change", resetForm);
+    $("listCollection").addEventListener("change", loadItems);
+    $("cancelEditBtn").addEventListener("click", resetForm);
+
+    $("contentForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (busy || !auth.currentUser ||
+          (auth.currentUser.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        setStatus("formStatus", "પહેલાં અધિકૃત એડમિન તરીકે સાઇન ઇન કરો.");
+        return;
+      }
+
+      const imageUrl = safeUrl($("imageUrl").value);
+      const linkUrl = safeUrl($("linkUrl").value);
+      if (imageUrl === null || linkUrl === null) {
+        setStatus("formStatus", "લિંકમાં ફક્ત માન્ય http અથવા https URL વાપરો.");
+        return;
+      }
+
+      const data = {
+        title: $("title").value.trim(),
+        content: $("content").value.trim(),
+        imageUrl,
+        linkUrl,
+        date: $("date").value,
+        location: $("location").value.trim(),
+        published: $("published").checked,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      if (!data.title) {
+        setStatus("formStatus", "શીર્ષક લખવું જરૂરી છે.");
+        return;
+      }
+
+      setBusy(true);
+      setStatus("formStatus", "સામગ્રી સાચવાઈ રહી છે...");
+
+      try {
+        const collectionName = $("collection").value;
+        if (editingId) {
+          await db.collection(collectionName).doc(editingId).update(data);
+          setStatus("formStatus", "સામગ્રીમાં ફેરફાર સાચવાયો.");
+        } else {
+          data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection(collectionName).add(data);
+          setStatus("formStatus", "નવી સામગ્રી સફળતાપૂર્વક સાચવાઈ.");
+        }
+
+        $("listCollection").value = collectionName;
+        resetForm();
+        await loadItems();
+      } catch (error) {
+        console.error(error);
+        setStatus("formStatus", "સાચવી શક્યા નહીં: " + error.code +
+          ". Firestore Rules અને ઇન્ટરનેટ તપાસો.");
+      } finally {
+        setBusy(false);
+      }
+    });
+
+    async function loadItems() {
+      const collectionName = $("listCollection").value;
+      $("contentList").replaceChildren();
+      setStatus("listStatus", "સામગ્રી લોડ થઈ રહી છે...");
+
+      try {
+        const snapshot = await db.collection(collectionName)
+          .orderBy("createdAt", "desc")
+          .limit(100)
+          .get();
+
+        if (snapshot.empty) {
+          setStatus("listStatus", "આ વિભાગમાં હજી કોઈ સામગ્રી નથી.");
+          return;
+        }
+
+        setStatus("listStatus", snapshot.size + " સામગ્રી બતાવવામાં આવે છે.");
+
+        snapshot.forEach(doc => {
+          const item = doc.data();
+          const article = document.createElement("article");
+          article.className = "item";
+
+          const heading = document.createElement("h3");
+          heading.textContent = item.title || "શીર્ષક વગરની સામગ્રી";
+          article.appendChild(heading);
+
+          const details = document.createElement("p");
+          details.className = "muted";
+          details.textContent =
+            (item.published ? "પ્રકાશિત" : "પ્રકાશિત નથી") +
+            (item.date ? " • તારીખ: " + item.date : "") +
+            (item.location ? " • સ્થળ: " + item.location : "");
+          article.appendChild(details);
+
+          if (item.content) {
+            const body = document.createElement("p");
+            body.textContent = item.content.length > 300
+              ? item.content.slice(0, 300) + "…" : item.content;
+            article.appendChild(body);
+          }
+
+          if (item.imageUrl) {
+            const imageLink = document.createElement("a");
+            imageLink.href = item.imageUrl;
+            imageLink.target = "_blank";
+            imageLink.rel = "noopener noreferrer";
+            imageLink.textContent = "ફોટાની લિંક ખોલો";
+            article.appendChild(imageLink);
+          }
+
+          if (item.linkUrl) {
+            const link = document.createElement("a");
+            link.href = item.linkUrl;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "મીડિયા લિંક ખોલો";
+            link.style.display = "block";
+            article.appendChild(link);
+          }
+
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.textContent = "ફેરફાર કરો";
+          editBtn.addEventListener("click", () => {
+            $("collection").value = collectionName;
+            editingId = doc.id;
+            $("title").value = item.title || "";
+            $("content").value = item.content || "";
+            $("imageUrl").value = item.imageUrl || "";
+            $("linkUrl").value = item.linkUrl || "";
+            $("date").value = item.date || "";
+            $("location").value = item.location || "";
+            $("published").checked = item.published === true;
+            $("formHeading").textContent = "સામગ્રીમાં ફેરફાર કરો";
+            $("saveBtn").textContent = "ફેરફાર સાચવો";
+            $("cancelEditBtn").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+          article.appendChild(editBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.type = "button";
+          deleteBtn.className = "danger";
+          deleteBtn.textContent = "કાઢી નાખો";
+          deleteBtn.addEventListener("click", async () => {
+            if (!confirm("આ સામગ્રી કાયમ માટે કાઢી નાખવી છે?")) return;
+            try {
+              await db.collection(collectionName).doc(doc.id).delete();
+              setStatus("listStatus", "સામગ્રી કાઢી નાખી.");
+              if (editingId === doc.id) resetForm();
+              await loadItems();
+            } catch (error) {
+              console.error(error);
+              setStatus("listStatus", "કાઢી શક્યા નહીં: " + error.code);
+            }
+          });
+          article.appendChild(deleteBtn);
+
+          $("contentList").appendChild(article);
+        });
+      } catch (error) {
+        console.error(error);
+        setStatus("listStatus", "સામગ્રી લોડ થઈ નહીં: " + error.code +
+          ". Firestore Rules તપાસો.");
+      }
+    }
   </script>
 </body>
 </html>
