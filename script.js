@@ -758,8 +758,8 @@ function loadContact(database) {
       }
 
       documents.forEach(({ data }) => {
-        const card = createElement("article", "dynamic-content-card contact-info-card");
-        card.appendChild(createElement("h3", "", "મંદિરનો સંપર્ક"));
+        const contactCard = createElement("article", "dynamic-content-card contact-info-card");
+        contactCard.appendChild(createElement("h3", "contact-card-title", "મંદિરનો સંપર્ક"));
 
         const phone = typeof data.title === "string" ? data.title.trim() : "";
         const address = [
@@ -771,22 +771,26 @@ function loadContact(database) {
         const mapUrl = typeof data.linkUrl === "string" ? data.linkUrl.trim() : "";
 
         if (phone) {
-          const p = createElement("p", "", "ફોન નંબર: ");
+          const p = createElement("p", "contact-detail", "ફોન નંબર: ");
           const link = document.createElement("a");
           link.href = "tel:" + phone.replace(/[^+0-9]/g, "");
           link.textContent = phone;
           p.appendChild(link);
-          card.appendChild(p);
+          contactCard.appendChild(p);
         }
 
         if (address) {
-          card.appendChild(createElement("p", "", "સરનામું: " + address));
+          contactCard.appendChild(createElement("p", "contact-detail", "સરનામું: " + address));
+        }
+
+        if (contactCard.children.length > 1) {
+          container.appendChild(contactCard);
         }
 
         if (address) {
-          const mapHeading = createElement("h3", "", "મંદિરનો નકશો");
-          mapHeading.className = "contact-map-heading";
-          card.appendChild(mapHeading);
+          const mapCard = createElement("article", "dynamic-content-card contact-map-card");
+          const mapHeading = createElement("h3", "contact-map-heading", "મંદિરનો નકશો");
+          mapCard.appendChild(mapHeading);
 
           const mapFrame = document.createElement("iframe");
           mapFrame.className = "contact-map-frame";
@@ -798,18 +802,18 @@ function loadContact(database) {
           mapFrame.referrerPolicy = "strict-origin-when-cross-origin";
           mapFrame.allowFullscreen = true;
           mapFrame.setAttribute("aria-label", "મંદિરનું Google Maps સ્થાન");
-          card.appendChild(mapFrame);
-        }
+          mapCard.appendChild(mapFrame);
 
-        if (mapUrl && isSafeWebUrl(mapUrl)) {
-          const mapLink = createSafeLink(mapUrl, "Google Mapsમાં રસ્તો જુઓ");
-          if (mapLink) {
-            mapLink.className = "button-link";
-            card.appendChild(mapLink);
+          if (mapUrl && isSafeWebUrl(mapUrl)) {
+            const mapLink = createSafeLink(mapUrl, "Google Mapsમાં રસ્તો જુઓ");
+            if (mapLink) {
+              mapLink.className = "button-link contact-map-link";
+              mapCard.appendChild(mapLink);
+            }
           }
-        }
 
-        container.appendChild(card);
+          container.appendChild(mapCard);
+        }
       });
     })
     .catch((error) => {
