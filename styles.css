@@ -1554,3 +1554,17 @@ button:focus-visible,
   }
 }
 
+\n
+/* Expandable content folders: one folder per Admin Panel subfolder. */
+.content-folder { grid-column:1/-1; min-width:0; margin:0 0 16px; overflow:hidden; border:1px solid rgba(217,173,85,.78); border-radius:16px; background:linear-gradient(145deg,#fffdf8,#fff5dd); box-shadow:0 8px 22px rgba(65,12,25,.08); }
+.content-folder-toggle { display:flex; width:100%; min-height:68px; align-items:center; justify-content:space-between; gap:16px; padding:14px 18px; border:0; border-radius:0; background:linear-gradient(100deg,rgba(116,24,39,.07),rgba(217,173,85,.13)); color:var(--deep-maroon); text-align:left; cursor:pointer; }
+.content-folder-title-wrap { display:flex; min-width:0; align-items:center; gap:12px; }
+.content-folder-icon { display:grid; flex:0 0 40px; width:40px; height:40px; place-items:center; border:1px solid rgba(217,173,85,.85); border-radius:12px; background:#fff8e9; color:var(--maroon); font-size:1.35rem; }
+.content-folder-title { font-weight:800; overflow-wrap:anywhere; }
+.content-folder-count { display:inline-grid; min-width:28px; height:28px; place-items:center; padding:0 7px; border-radius:999px; background:var(--deep-maroon); color:var(--gold-light); font-size:.82rem; font-weight:800; }
+.content-folder-chevron { flex:0 0 auto; color:var(--maroon); font-size:1.6rem; font-weight:700; }
+.content-folder.is-open > .content-folder-toggle { border-bottom:1px solid rgba(217,173,85,.55); }
+.content-folder-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding:18px; }
+.content-folder-panel[hidden] { display:none !important; }
+.content-folder-panel > * { min-width:0; }
+@media (max-width:560px) { .content-folder-toggle { min-height:62px; padding:12px; } .content-folder-title-wrap { gap:8px; } .content-folder-icon { flex-basis:34px; width:34px; height:34px; } .content-folder-panel { grid-template-columns:1fr; gap:14px; padding:12px; } }
