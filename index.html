@@ -46,32 +46,67 @@
     }
     .section-folder-cover {
       position: relative;
-      height: 150px;
+      height: 158px;
       overflow: hidden;
+      isolation: isolate;
       background: linear-gradient(135deg, #410c19, #741827 55%, #d9ad55);
     }
     .section-folder-cover img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
-      transition: transform .3s ease;
+      opacity: .62;
+      transition: transform .3s ease, opacity .3s ease;
+      z-index: -2;
     }
-    .section-folder-card:hover .section-folder-cover img { transform: scale(1.05); }
+    .section-folder-card:hover .section-folder-cover img { transform: scale(1.07); opacity: .78; }
+    .section-folder-cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(135deg, var(--folder-tint, rgba(65,12,25,.85)), rgba(30,5,12,.22));
+    }
     .section-folder-cover::after {
       content: "";
       position: absolute;
-      inset: 45% 0 0;
-      background: linear-gradient(transparent, rgba(30, 5, 12, .68));
+      inset: 0;
+      background: linear-gradient(0deg, rgba(30,5,12,.48), transparent 75%);
+      pointer-events: none;
     }
+    .folder-bhajan { --folder-tint: rgba(116,24,39,.88); }
+    .folder-stories { --folder-tint: rgba(83,49,119,.82); }
+    .folder-gallery { --folder-tint: rgba(13,91,80,.78); }
+    .folder-festivals { --folder-tint: rgba(169,83,13,.82); }
+    .folder-video { --folder-tint: rgba(21,67,119,.84); }
+    .folder-history { --folder-tint: rgba(112,73,16,.84); }
+    .folder-contact { --folder-tint: rgba(25,94,107,.82); }
     .section-folder-icon {
       position: absolute;
-      z-index: 1;
-      right: 12px;
-      bottom: 10px;
+      z-index: 2;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      width: 68px;
+      height: 68px;
+      border: 2px solid rgba(255,248,233,.92);
+      border-radius: 22px;
       color: #fff8e9;
-      font-size: 1.8rem;
-      filter: drop-shadow(0 2px 4px #410c19);
+      background: rgba(65,12,25,.48);
+      box-shadow: 0 5px 18px rgba(20,5,8,.28), inset 0 0 0 1px rgba(217,173,85,.55);
+      font-size: 2.15rem;
+      line-height: 1;
+      backdrop-filter: blur(3px);
+      transition: transform .2s ease, background .2s ease;
+    }
+    .section-folder-card:hover .section-folder-icon {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: rgba(65,12,25,.72);
     }
     .section-folder-info { padding: 15px 16px 17px; }
     .section-folder-info h3 { margin: 0 0 6px; color: var(--maroon, #741827); }
@@ -271,31 +306,31 @@
           <p>દરેક વિભાગ તેના કવર ફોટા સાથે — ખોલવા માટે કાર્ડ પર ક્લિક કરો.</p>
         </div>
         <div class="section-folder-grid">
-          <a class="section-folder-card" href="#bhajan">
+          <a class="section-folder-card folder-bhajan" href="#bhajan">
             <div class="section-folder-cover"><img src="./1.png" alt="ભજન અને આરતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🎵</span></div>
             <div class="section-folder-info"><h3>ભજન અને આરતી</h3><p>ભજન, આરતી, મંત્ર અને જાપ</p></div>
           </a>
-          <a class="section-folder-card" href="#stories">
+          <a class="section-folder-card folder-stories" href="#stories">
             <div class="section-folder-cover"><img src="./2.png" alt="ધાર્મિક કથાઓનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">📖</span></div>
             <div class="section-folder-info"><h3>ધાર્મિક કથાઓ</h3><p>માતાજીના પ્રસંગો અને કથાઓ</p></div>
           </a>
-          <a class="section-folder-card" href="#gallery">
+          <a class="section-folder-card folder-gallery" href="#gallery">
             <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🙏</span></div>
             <div class="section-folder-info"><h3>દર્શન ગેલેરી</h3><p>માતાજીનાં ફોટા અને પાવન દર્શન</p></div>
           </a>
-          <a class="section-folder-card" href="#festivals">
+          <a class="section-folder-card folder-festivals" href="#festivals">
             <div class="section-folder-cover"><img src="./2.png" alt="પર્વ અને ઉત્સવનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🪔</span></div>
             <div class="section-folder-info"><h3>પર્વ અને ઉત્સવ</h3><p>ધાર્મિક કાર્યક્રમો અને ઉત્સવો</p></div>
           </a>
-          <a class="section-folder-card" href="#video">
+          <a class="section-folder-card folder-video" href="#video">
             <div class="section-folder-cover"><img src="./1.png" alt="લાઇવ દર્શન અને વિડિયોનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">▶</span></div>
             <div class="section-folder-info"><h3>લાઇવ દર્શન અને વિડિયો</h3><p>લાઇવ, આરતી અને કાર્યક્રમોના વિડિયો</p></div>
           </a>
-          <a class="section-folder-card" href="#history">
+          <a class="section-folder-card folder-history" href="#history">
             <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="ધામના પરિચયનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🛕</span></div>
             <div class="section-folder-info"><h3>ધામનો પરિચય</h3><p>મંદિર, પરંપરા અને ઇતિહાસ</p></div>
           </a>
-          <a class="section-folder-card" href="#contact">
+          <a class="section-folder-card folder-contact" href="#contact">
             <div class="section-folder-cover"><img src="./2.png" alt="સંપર્ક અને માહિતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">📍</span></div>
             <div class="section-folder-info"><h3>સંપર્ક અને માહિતી</h3><p>સરનામું, ફોન અને નકશો</p></div>
           </a>
