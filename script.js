@@ -104,8 +104,8 @@ function initializeSectionCards() {
     if (!target) return false;
 
     if (activeSectionId === id) {
-      target.hidden = true;
-      activeSectionId = "";
+      // Keep the chosen folder open when tapped again; avoid a confusing blank state.
+      target.hidden = false;
       return true;
     }
 
@@ -113,6 +113,7 @@ function initializeSectionCards() {
       section.hidden = section !== target;
     });
     activeSectionId = id;
+    document.body.classList.add("section-view-active");
 
     if (shouldScroll) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -123,6 +124,15 @@ function initializeSectionCards() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener("click", (event) => {
       const id = link.getAttribute("href").slice(1);
+      if (id === "home") {
+        event.preventDefault();
+        contentSections.forEach((section) => { section.hidden = true; });
+        activeSectionId = "";
+        document.body.classList.remove("section-view-active");
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
       if (!contentSections.some((section) => section.id === id)) return;
 
       event.preventDefault();
