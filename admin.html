@@ -163,6 +163,13 @@
             </div>
 
             <div class="wide">
+              <label for="subfolder">ફોલ્ડર / ઉપવિભાગ પસંદ કરો</label>
+              <select id="subfolder">
+                <option value="general">સામાન્ય</option>
+              </select>
+            </div>
+
+            <div class="wide">
               <label for="title">શીર્ષક *</label>
               <input id="title" maxlength="200" required
                 placeholder="સામગ્રીનું શીર્ષક લખો">
@@ -480,6 +487,7 @@
       editingId = null;
       $("contentForm").reset();
       $("collection").value = selectedCollection;
+      updateSubfolderOptions();
       renderMediaPreview($("imagePreview"), "", "image");
       renderMediaPreview($("linkPreview"), "", "link");
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
@@ -532,8 +540,33 @@
       await loadItems();
     });
 
+    const SUBFOLDER_OPTIONS = {
+      bhajans: [["bhajan", "ભજનો"], ["aarti", "આરતી"], ["mantra", "મંત્ર અને જાપ"], ["utsav", "ઉત્સવના ગીતો"]],
+      stories: [["katha", "ધાર્મિક કથાઓ"], ["prasang", "માતાજીના પ્રસંગો"], ["history", "ઇતિહાસ"]],
+      gallery: [["mandir", "મંદિરના ફોટા"], ["darshan", "માતાજીનાં દર્શન"], ["events", "કાર્યક્રમો"], ["utsav", "પર્વ અને ઉત્સવ"]],
+      festivals: [["navratri", "નવરાત્રિ"], ["utsav", "ઉત્સવો"], ["jayanti", "જયંતિ અને વિશેષ દિવસો"]],
+      videos: [["live", "લાઇવ દર્શન"], ["aarti", "આરતી વિડિયો"], ["events", "કાર્યક્રમોના વિડિયો"], ["old", "જૂના વિડિયો"]],
+      history: [["mandir", "મંદિરનો પરિચય"], ["itihas", "ધામનો ઇતિહાસ"], ["suvidha", "મંદિરની સુવિધાઓ"]],
+      contact: [["phone", "સંપર્ક"], ["address", "સરનામું"], ["map", "નકશો"]]
+    };
+
+    function updateSubfolderOptions() {
+      const select = $("subfolder");
+      const current = select.value;
+      const options = SUBFOLDER_OPTIONS[$("collection").value] || [["general", "સામાન્ય"]];
+      select.replaceChildren();
+      options.forEach(([value, label]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        select.appendChild(option);
+      });
+      if (options.some(([value]) => value === current)) select.value = current;
+    }
+
     function updateCollectionLabels() {
       const isContact = $("collection").value === "contact";
+      updateSubfolderOptions();
       $("formHeading").textContent = isContact ? "સંપર્ક અને નકશાની માહિતી" : (editingId ? "સામગ્રીમાં ફેરફાર કરો" : "નવી સામગ્રી ઉમેરો");
       document.querySelector('label[for="title"]').textContent = isContact ? "ફોન નંબર *" : "શીર્ષક *";
       $("title").placeholder = isContact ? "મંદિરનો સંપર્ક નંબર લખો" : "સામગ્રીનું શીર્ષક લખો";
@@ -573,6 +606,7 @@
         content: $("content").value.trim(),
         imageUrl,
         linkUrl,
+        subfolder: $("subfolder").value,
         date: $("date").value,
         location: $("location").value.trim(),
         published: $("published").checked,
@@ -648,6 +682,14 @@
             (item.location ? " • સ્થળ: " + item.location : "");
           article.appendChild(details);
 
+          if (item.subfolder) {
+            const folderLabel = document.createElement("p");
+            folderLabel.className = "muted";
+            const folderOption = (SUBFOLDER_OPTIONS[collectionName] || []).find(([value]) => value === item.subfolder);
+            folderLabel.textContent = "ફોલ્ડર: " + (folderOption ? folderOption[1] : item.subfolder);
+            article.appendChild(folderLabel);
+          }
+
           if (item.content) {
             const body = document.createElement("p");
             body.textContent = item.content.length > 300
@@ -692,6 +734,8 @@
             editingId = doc.id;
             $("title").value = item.title || "";
             $("content").value = item.content || "";
+            updateSubfolderOptions();
+            $("subfolder").value = item.subfolder || ($("subfolder").options[0] ? $("subfolder").options[0].value : "general");
             $("imageUrl").value = item.imageUrl || "";
             $("linkUrl").value = item.linkUrl || "";
             renderMediaPreview($("imagePreview"), $("imageUrl").value, "image");
