@@ -178,6 +178,13 @@
               <label for="imageUrl">ફોટાની લિંક</label>
               <input id="imageUrl" type="url" maxlength="2000"
                 placeholder="https://...">
+              <label for="photoFolder">ફોટો કયા ફોલ્ડરમાં રાખવો?</label>
+              <select id="photoFolder">
+                <option value="photos/mandir">મંદિરના ફોટા</option>
+                <option value="photos/darshan">દર્શન ગેલેરી</option>
+                <option value="photos/festivals">પર્વ અને ઉત્સવ</option>
+                <option value="photos/events">કાર્યક્રમો</option>
+              </select>
               <label for="photoFile">અહીંથી ફોટો અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
               <button id="uploadPhotoBtn" type="button" class="secondary">ફોટો GitHub માં અપલોડ કરો</button>
@@ -189,6 +196,13 @@
               <label for="linkUrl">ભજન / વિડિયો / લાઇવ લિંક</label>
               <input id="linkUrl" type="url" maxlength="2000"
                 placeholder="YouTube અથવા અન્ય લિંક">
+              <label for="audioFolder">ઓડિયો કયા ફોલ્ડરમાં રાખવો?</label>
+              <select id="audioFolder">
+                <option value="bhajans/bhajan">ભજનો</option>
+                <option value="bhajans/aarti">આરતી</option>
+                <option value="bhajans/mantra">મંત્ર અને જાપ</option>
+                <option value="bhajans/utsav">ઉત્સવના ગીતો</option>
+              </select>
               <label for="audioFile">અહીંથી ભજન / આરતીની ઓડિયો ફાઇલ અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,audio/aac,audio/ogg,audio/wav,audio/x-wav,audio/webm">
               <button id="uploadAudioBtn" type="button" class="secondary">ભજન GitHub માં અપલોડ કરો</button>
@@ -408,7 +422,8 @@
         .replace(/^[.-]+|[.-]+$/g, "")
         .slice(-100);
       const fileName = Date.now() + "-" + (safeName || ("media." + extFromName));
-      const targetPath = folder + "/" + fileName;
+      const selectedFolder = folder === "photos" ? $("photoFolder").value : $("audioFolder").value;
+      const targetPath = selectedFolder + "/" + fileName;
       const button = $(buttonId);
       button.disabled = true;
       setStatus(statusId, "ફાઇલ અપલોડ થઈ રહી છે... કૃપા કરીને રાહ જુઓ.");
