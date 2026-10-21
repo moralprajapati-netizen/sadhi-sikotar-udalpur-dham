@@ -217,7 +217,11 @@
                 <option value="bhajans/aarti">આરતી</option>
                 <option value="bhajans/mantra">મંત્ર અને જાપ</option>
                 <option value="bhajans/utsav">ઉત્સવના ગીતો</option>
+                <option value="custom">પોતાનું ફોલ્ડર નામ લખવું</option>
               </select>
+              <label for="customAudioFolder">ઓડિયો માટે પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
+              <input id="customAudioFolder" maxlength="100"
+                placeholder="ઉદાહરણ: Ramen 15/10/2026">
               <label for="audioFile">અહીંથી ભજન / આરતીની ઓડિયો ફાઇલ અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,audio/aac,audio/ogg,audio/wav,audio/x-wav,audio/webm">
               <button id="uploadAudioBtn" type="button" class="secondary">ભજન GitHub માં અપલોડ કરો</button>
@@ -440,7 +444,7 @@
       const selectedFolder = folder === "photos" ? $("photoFolder").value : $("audioFolder").value;
       const customFolderName = folder === "photos"
         ? ($("customPhotoFolder").value.trim() || $("customFolder").value.trim())
-        : $("customFolder").value.trim();
+        : ($("customAudioFolder").value.trim() || $("customFolder").value.trim());
       const customFolderSlug = customFolderName
         ? customFolderName.normalize("NFKD")
             .replace(/[^A-Za-z0-9]+/g, "-")
@@ -512,6 +516,7 @@
       updateSubfolderOptions();
       $("customFolder").value = "";
       $("customPhotoFolder").value = "";
+      $("customAudioFolder").value = "";
       renderMediaPreview($("imagePreview"), "", "image");
       renderMediaPreview($("linkPreview"), "", "link");
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
