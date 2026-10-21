@@ -1572,16 +1572,7 @@ button:focus-visible,
 .content-folder-panel > * { min-width:0; }
 @media (max-width:560px) { .content-folder-toggle { min-height:62px; padding:12px; } .content-folder-title-wrap { gap:8px; } .content-folder-icon { flex-basis:34px; width:34px; height:34px; } .content-folder-panel { grid-template-columns:1fr; gap:14px; padding:12px; } }
 
-/* Correct folder navigation: show the hero on the home view, and focus on the selected section after a folder is opened. */
-body:has(main > section.section:target:not(#sections)) main > .hero {
-  display: none !important;
-}
-main > section.section#sections {
-  display: block !important;
-}
-main > section.section:not(#sections):not(:target) {
-  display: none !important;
-}
-main > section.section:target {
-  display: block !important;
-}
+
+/* Section visibility is controlled by script.js; do not let :target override hidden sections. */
+main > section[hidden] { display: none !important; }
+body.section-view-active main > .hero { display: none !important; }
