@@ -178,6 +178,10 @@
               <label for="imageUrl">ફોટાની લિંક</label>
               <input id="imageUrl" type="url" maxlength="2000"
                 placeholder="https://...">
+              <label for="photoFile">અહીંથી ફોટો અપલોડ કરો (મહત્તમ 4 MB)</label>
+              <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
+              <button id="uploadPhotoBtn" type="button" class="secondary">ફોટો GitHub માં અપલોડ કરો</button>
+              <p id="photoUploadStatus" class="status" role="status" aria-live="polite"></p>
               <div id="imagePreview" class="media-preview hidden" aria-live="polite"></div>
             </div>
 
@@ -185,6 +189,10 @@
               <label for="linkUrl">ભજન / વિડિયો / લાઇવ લિંક</label>
               <input id="linkUrl" type="url" maxlength="2000"
                 placeholder="YouTube અથવા અન્ય લિંક">
+              <label for="audioFile">અહીંથી ભજન / આરતીની ઓડિયો ફાઇલ અપલોડ કરો (મહત્તમ 4 MB)</label>
+              <input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,audio/aac,audio/ogg,audio/wav,audio/x-wav,audio/webm">
+              <button id="uploadAudioBtn" type="button" class="secondary">ભજન GitHub માં અપલોડ કરો</button>
+              <p id="audioUploadStatus" class="status" role="status" aria-live="polite"></p>
               <div id="linkPreview" class="media-preview hidden" aria-live="polite"></div>
             </div>
 
@@ -359,6 +367,97 @@
     });
     $("linkUrl").addEventListener("input", () => {
       renderMediaPreview($("linkPreview"), $("linkUrl").value, "link");
+    });
+
+    const MEDIA_WORKER_URL = "https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev";
+
+    async function uploadMediaFile(file, folder, statusId, buttonId) {
+      if (busy) return;
+      if (!file) {
+        setStatus(statusId, "પહેલાં ફાઇલ પસંદ કરો.");
+        return;
+      }
+      if (!auth.currentUser ||
+          (auth.currentUser.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        setStatus(statusId, "પહેલાં અધિકૃત એડમિન તરીકે સાઇન ઇન કરો.");
+        return;
+      }
+      const allowed = folder === "photos"
+        ? ["image/jpeg", "image/png", "image/webp", "image/gif"]
+        : ["audio/mpeg", "audio/mp4", "audio/aac", "audio/ogg", "audio/wav", "audio/x-wav", "audio/webm"];
+      if (!allowed.includes(file.type)) {
+        setStatus(statusId, "આ ફાઇલનો પ્રકાર માન્ય નથી.");
+        return;
+      }
+      if (file.size > 4 * 1024 * 1024) {
+        setStatus(statusId, "ફાઇલ 4 MB કરતાં નાની હોવી જોઈએ.");
+        return;
+      }
+      const extFromName = (file.name.split(".").pop() || "").toLowerCase();
+      const allowedExtensions = folder === "photos"
+        ? ["jpg", "jpeg", "png", "webp", "gif"]
+        : ["mp3", "m4a", "aac", "ogg", "wav", "webm"];
+      if (!allowedExtensions.includes(extFromName)) {
+        setStatus(statusId, "ફાઇલના નામમાં યોગ્ય extension હોવું જરૂરી છે.");
+        return;
+      }
+
+      const safeName = file.name.normalize("NFKD")
+        .replace(/[^A-Za-z0-9._-]+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^[.-]+|[.-]+$/g, "")
+        .slice(-100);
+      const fileName = Date.now() + "-" + (safeName || ("media." + extFromName));
+      const targetPath = folder + "/" + fileName;
+      const button = $(buttonId);
+      button.disabled = true;
+      setStatus(statusId, "ફાઇલ અપલોડ થઈ રહી છે... કૃપા કરીને રાહ જુઓ.");
+
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error("ફાઇલ વાંચી શકાઈ નહીં."));
+          reader.readAsDataURL(file);
+        });
+        const base64 = String(dataUrl).split(",")[1];
+        const idToken = await auth.currentUser.getIdToken(true);
+        const response = await fetch(MEDIA_WORKER_URL + "/upload", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + idToken,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ path: targetPath, contentBase64: base64 })
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.success || !result.url) {
+          throw new Error(result.error || "અપલોડ નિષ્ફળ થયું.");
+        }
+
+        if (folder === "photos") {
+          $("imageUrl").value = result.url;
+          renderMediaPreview($("imagePreview"), result.url, "image");
+          $("photoFile").value = "";
+        } else {
+          $("linkUrl").value = result.url;
+          renderMediaPreview($("linkPreview"), result.url, "link");
+          $("audioFile").value = "";
+        }
+        setStatus(statusId, "અપલોડ સફળ થયું. હવે 'સામગ્રી સાચવો' દબાવવાથી લિંક વેબસાઇટમાં સાચવાશે.");
+      } catch (error) {
+        console.error("Media upload failed:", error);
+        setStatus(statusId, "અપલોડ નિષ્ફળ થયું. Worker settings, GitHub permission અને ઇન્ટરનેટ તપાસો.");
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    $("uploadPhotoBtn").addEventListener("click", () => {
+      uploadMediaFile($("photoFile").files[0], "photos", "photoUploadStatus", "uploadPhotoBtn");
+    });
+    $("uploadAudioBtn").addEventListener("click", () => {
+      uploadMediaFile($("audioFile").files[0], "bhajans", "audioUploadStatus", "uploadAudioBtn");
     });
 
     function resetForm() {
