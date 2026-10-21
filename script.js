@@ -762,7 +762,12 @@ function loadContact(database) {
         card.appendChild(createElement("h3", "", "મંદિરનો સંપર્ક"));
 
         const phone = typeof data.title === "string" ? data.title.trim() : "";
-        const address = typeof data.content === "string" ? data.content.trim() : "";
+        const address = [
+          data.content,
+          data.address,
+          data.description,
+          data.location
+        ].find(value => typeof value === "string" && value.trim())?.trim() || "";
         const mapUrl = typeof data.linkUrl === "string" ? data.linkUrl.trim() : "";
 
         if (phone) {
