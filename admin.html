@@ -169,8 +169,8 @@
               </select>
               <label for="customFolder">નવા પ્રસંગનું પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
               <input id="customFolder" maxlength="100"
-                placeholder="ઉદાહરણ: Ramen 15/10/2026">
-              <p class="muted">અહીં નામ લખશો તો તે આ સામગ્રી માટેના પસંદ કરેલા ઉપવિભાગ કરતાં પ્રાથમિક રહેશે. ફોટા/ઓડિયો અપલોડ કરતી વખતે પણ આ નામથી અલગ ફોલ્ડર બનશે.</p>
+                placeholder="ઉદાહરણ: અહીં પ્રસંગનું નામ જાતે લખો">
+              <p class="muted">દરેક નવા પ્રસંગે તેનું નામ અહીં જાતે લખી શકો છો. કોઈ એક પ્રસંગનું નામ કાયમી નક્કી નથી. ફોટા અને ઓડિયો માટે અલગ નામ લખશો તો તે અલગ નામ પ્રાથમિક રહેશે.</p>
             </div>
 
             <div class="wide">
@@ -199,7 +199,7 @@
               </select>
               <label for="customPhotoFolder">ફોટા માટે પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
               <input id="customPhotoFolder" maxlength="100"
-                placeholder="ઉદાહરણ: Ramen 15/10/2026">
+                placeholder="ઉદાહરણ: અહીં પ્રસંગનું નામ જાતે લખો">
               <label for="photoFile">અહીંથી ફોટો અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
               <button id="uploadPhotoBtn" type="button" class="secondary">ફોટો GitHub માં અપલોડ કરો</button>
@@ -221,7 +221,7 @@
               </select>
               <label for="customAudioFolder">ઓડિયો માટે પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
               <input id="customAudioFolder" maxlength="100"
-                placeholder="ઉદાહરણ: Ramen 15/10/2026">
+                placeholder="ઉદાહરણ: અહીં પ્રસંગનું નામ જાતે લખો">
               <label for="audioFile">અહીંથી ભજન / આરતીની ઓડિયો ફાઇલ અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="audioFile" type="file" accept="audio/mpeg,audio/mp4,audio/aac,audio/ogg,audio/wav,audio/x-wav,audio/webm">
               <button id="uploadAudioBtn" type="button" class="secondary">ભજન GitHub માં અપલોડ કરો</button>
@@ -445,17 +445,22 @@
       const customFolderName = folder === "photos"
         ? ($("customPhotoFolder").value.trim() || $("customFolder").value.trim())
         : ($("customAudioFolder").value.trim() || $("customFolder").value.trim());
+      if (selectedFolder === "custom" && !customFolderName) {
+        setStatus(statusId, "પહેલાં આ પ્રસંગનું પોતાનું ફોલ્ડર નામ લખો.");
+        return;
+      }
       const customFolderSlug = customFolderName
-        ? customFolderName.normalize("NFKD")
-            .replace(/[^A-Za-z0-9]+/g, "-")
+        ? customFolderName.normalize("NFKC")
+            .replace(/[^\\p{L}\\p{N}._-]+/gu, "-")
             .replace(/-+/g, "-")
-            .replace(/^-|-$/g, "")
+            .replace(/^[.-]+|[.-]+$/g, "")
             .toLowerCase()
             .slice(0, 70)
         : "";
+      const defaultRoot = folder === "photos" ? "photos" : "bhajans";
       const uploadFolder = customFolderSlug
-        ? selectedFolder.split("/")[0] + "/" + customFolderSlug
-        : selectedFolder;
+        ? defaultRoot + "/" + customFolderSlug
+        : (selectedFolder === "custom" ? defaultRoot : selectedFolder);
       const targetPath = uploadFolder + "/" + fileName;
       const button = $(buttonId);
       button.disabled = true;
