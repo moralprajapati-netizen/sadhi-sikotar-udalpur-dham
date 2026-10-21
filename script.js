@@ -647,62 +647,43 @@ function loadStories(database) {
 
 function loadGallery(database) {
   const container = document.getElementById("galleryDynamic");
-
   if (!container) return;
 
   getPublishedDocuments(database, "gallery")
     .then((documents) => {
       container.replaceChildren();
-
-      documents.forEach(({ data }) => {
-        const imageUrl =
-          typeof data.imageUrl === "string"
-            ? data.imageUrl.trim()
-            : "";
-
-        if (!isSafeWebUrl(imageUrl)) return;
+      appendFolderGroups(container, documents, (data) => {
+        const imageUrl = typeof data.imageUrl === "string" ? data.imageUrl.trim() : "";
+        if (!isSafeWebUrl(imageUrl)) return null;
 
         const card = createElement("article", "gallery-dynamic-card");
         const button = document.createElement("button");
         const image = document.createElement("img");
-        const caption = createElement(
-          "p",
-          "",
-          typeof data.title === "string" ? data.title : "માતાજીનાં દર્શન"
-        );
+        const caption = createElement("p", "", typeof data.title === "string" ? data.title : "માતાજીનાં દર્શન");
 
         button.type = "button";
         button.dataset.photo = imageUrl;
         button.dataset.caption = caption.textContent;
-        button.setAttribute(
-          "aria-label",
-          `${caption.textContent} - ફોટો મોટો જુઓ`
-        );
-
+        button.setAttribute("aria-label", caption.textContent + " - ફોટો મોટો જુઓ");
         image.src = imageUrl;
         image.alt = caption.textContent;
         image.loading = "lazy";
         image.decoding = "async";
-
-        image.addEventListener("error", () => {
-          card.remove();
-        }, { once: true });
+        image.addEventListener("error", () => card.remove(), { once: true });
 
         button.appendChild(image);
         card.appendChild(button);
         card.appendChild(caption);
-
-        container.appendChild(card);
+        return card;
       });
+
+      if (!container.children.length) {
+        container.appendChild(createMessage("હાલ કોઈ ફોટો પ્રકાશિત નથી."));
+      }
     })
     .catch((error) => {
       console.error("Could not load gallery:", error);
-
-      container.replaceChildren(
-        createMessage(
-          "નવા ફોટા લોડ થઈ શક્યા નથી. ઉપરના ફોટા જોઈ શકો છો."
-        )
-      );
+      container.replaceChildren(createMessage("નવા ફોટા લોડ થઈ શક્યા નથી. ઉપરના ફોટા જોઈ શકો છો."));
     });
 }
 
