@@ -1370,3 +1370,84 @@ button:focus-visible,
     min-height: 260px;
   }
 }
+
+/* Separate the temple contact details and Google Map into individual cards. */
+#contactContent {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  max-width: 880px;
+  margin-inline: auto;
+}
+
+#contactContent > .contact-info-card,
+#contactContent > .contact-map-card {
+  width: 100%;
+  margin: 0;
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid rgba(217, 173, 85, 0.75);
+  border-radius: 18px;
+  background: var(--white, #ffffff);
+  box-shadow: 0 12px 30px rgba(65, 12, 25, 0.09);
+}
+
+#contactContent > .contact-info-card {
+  border-top: 4px solid var(--maroon, #741827);
+}
+
+#contactContent > .contact-map-card {
+  border-top: 4px solid var(--gold, #d9ad55);
+  background: linear-gradient(180deg, #fffdf8 0%, #fff8e9 100%);
+}
+
+#contactContent .contact-card-title,
+#contactContent .contact-map-heading {
+  margin: 0 0 14px;
+  color: var(--deep-maroon, #410c19);
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  line-height: 1.5;
+}
+
+#contactContent .contact-detail {
+  margin: 8px 0 0;
+  color: var(--text, #38251e);
+  line-height: 1.9;
+}
+
+#contactContent .contact-detail a {
+  color: var(--maroon, #741827);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+#contactContent .contact-map-frame {
+  width: 100%;
+  height: clamp(300px, 48vw, 450px);
+  min-height: 0;
+  margin: 0;
+  border: 1px solid rgba(217, 173, 85, 0.8);
+  border-radius: 12px;
+  background: var(--cream, #fff8e9);
+}
+
+#contactContent .contact-map-link {
+  display: inline-flex;
+  margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  #contactContent {
+    gap: 16px;
+  }
+
+  #contactContent > .contact-info-card,
+  #contactContent > .contact-map-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  #contactContent .contact-map-frame {
+    height: 300px;
+  }
+}
+
