@@ -92,21 +92,26 @@
       transform: translate(-50%, -50%);
       display: grid;
       place-items: center;
-      width: 68px;
-      height: 68px;
-      border: 2px solid rgba(255,248,233,.92);
+      width: 72px;
+      height: 72px;
+      border: 1px solid rgba(255,248,233,.9);
       border-radius: 22px;
       color: #fff8e9;
-      background: rgba(65,12,25,.48);
-      box-shadow: 0 5px 18px rgba(20,5,8,.28), inset 0 0 0 1px rgba(217,173,85,.55);
-      font-size: 2.15rem;
-      line-height: 1;
-      backdrop-filter: blur(3px);
+      background: rgba(65,12,25,.58);
+      box-shadow: 0 8px 24px rgba(20,5,8,.30), inset 0 0 0 1px rgba(217,173,85,.7);
+      backdrop-filter: blur(5px);
       transition: transform .2s ease, background .2s ease;
+    }
+    .section-folder-icon svg {
+      display: block;
+      width: 42px;
+      height: 42px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,.22));
     }
     .section-folder-card:hover .section-folder-icon {
       transform: translate(-50%, -50%) scale(1.08);
-      background: rgba(65,12,25,.72);
+      background: rgba(65,12,25,.78);
+      border-color: #d9ad55;
     }
     .section-folder-info { padding: 15px 16px 17px; }
     .section-folder-info h3 { margin: 0 0 6px; color: var(--maroon, #741827); }
@@ -307,31 +312,31 @@
         </div>
         <div class="section-folder-grid">
           <a class="section-folder-card folder-bhajan" href="#bhajan">
-            <div class="section-folder-cover"><img src="./1.png" alt="ભજન અને આરતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🎵</span></div>
+            <div class="section-folder-cover"><img src="./1.png" alt="ભજન અને આરતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M29 9v24.5a7 7 0 1 1-4-6.3V16l16-4v17.5a7 7 0 1 1-4-6.3V7L29 9Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
             <div class="section-folder-info"><h3>ભજન અને આરતી</h3><p>ભજન, આરતી, મંત્ર અને જાપ</p></div>
           </a>
           <a class="section-folder-card folder-stories" href="#stories">
-            <div class="section-folder-cover"><img src="./2.png" alt="ધાર્મિક કથાઓનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">📖</span></div>
+            <div class="section-folder-cover"><img src="./2.png" alt="ધાર્મિક કથાઓનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 14c-5-5-12-5-18-3v25c6-2 13-2 18 3m0-25c5-5 12-5 18-3v25c-6-2-13-2-18 3m0-25v25" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
             <div class="section-folder-info"><h3>ધાર્મિક કથાઓ</h3><p>માતાજીના પ્રસંગો અને કથાઓ</p></div>
           </a>
           <a class="section-folder-card folder-gallery" href="#gallery">
-            <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🙏</span></div>
+            <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 7c-7 0-12 5-12 12 0 5 3 9 7 11v10h10V30c4-2 7-6 7-11 0-7-5-12-12-12Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M18 18h.1M30 18h.1M19 24c3 3 7 3 10 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span></div>
             <div class="section-folder-info"><h3>દર્શન ગેલેરી</h3><p>માતાજીનાં ફોટા અને પાવન દર્શન</p></div>
           </a>
           <a class="section-folder-card folder-festivals" href="#festivals">
-            <div class="section-folder-cover"><img src="./2.png" alt="પર્વ અને ઉત્સવનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🪔</span></div>
+            <div class="section-folder-cover"><img src="./2.png" alt="પર્વ અને ઉત્સવનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 7c-5 6-4 10 0 13 4-3 5-7 0-13Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M10 29c2 8 7 12 14 12s12-4 14-12H10Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M15 25c5 3 13 3 18 0M24 20v5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span></div>
             <div class="section-folder-info"><h3>પર્વ અને ઉત્સવ</h3><p>ધાર્મિક કાર્યક્રમો અને ઉત્સવો</p></div>
           </a>
           <a class="section-folder-card folder-video" href="#video">
-            <div class="section-folder-cover"><img src="./1.png" alt="લાઇવ દર્શન અને વિડિયોનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">▶</span></div>
+            <div class="section-folder-cover"><img src="./1.png" alt="લાઇવ દર્શન અને વિડિયોનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="5" y="10" width="38" height="28" rx="6" stroke="currentColor" stroke-width="2.5"/><path d="m20 17 12 7-12 7V17Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg></span></div>
             <div class="section-folder-info"><h3>લાઇવ દર્શન અને વિડિયો</h3><p>લાઇવ, આરતી અને કાર્યક્રમોના વિડિયો</p></div>
           </a>
           <a class="section-folder-card folder-history" href="#history">
-            <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="ધામના પરિચયનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">🛕</span></div>
+            <div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="ધામના પરિચયનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 5 9 17h30L24 5Z M13 20v18m7-18v18m8-18v18m7-18v18M8 41h32M5 38h38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 5v-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></span></div>
             <div class="section-folder-info"><h3>ધામનો પરિચય</h3><p>મંદિર, પરંપરા અને ઇતિહાસ</p></div>
           </a>
           <a class="section-folder-card folder-contact" href="#contact">
-            <div class="section-folder-cover"><img src="./2.png" alt="સંપર્ક અને માહિતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true">📍</span></div>
+            <div class="section-folder-cover"><img src="./2.png" alt="સંપર્ક અને માહિતીનું કવર" loading="lazy"><span class="section-folder-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M38 20c0 11-14 23-14 23S10 31 10 20a14 14 0 1 1 28 0Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><circle cx="24" cy="20" r="5" stroke="currentColor" stroke-width="2.5"/></svg></span></div>
             <div class="section-folder-info"><h3>સંપર્ક અને માહિતી</h3><p>સરનામું, ફોન અને નકશો</p></div>
           </a>
         </div>
