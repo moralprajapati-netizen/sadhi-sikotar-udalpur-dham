@@ -446,13 +446,7 @@ function loadCollection(
         return;
       }
 
-      documents.forEach((document) => {
-        const card = renderer(document.data);
-
-        if (card) {
-          container.appendChild(card);
-        }
-      });
+      appendFolderGroups(container, documents, renderer);
 
       if (!container.children.length) {
         container.appendChild(createMessage(emptyMessage));
@@ -475,6 +469,47 @@ function loadCollection(
 /* --------------------------------------------------
    8. Reusable content card
 -------------------------------------------------- */
+
+/* Group public content into expandable folders using the Admin Panel's subfolder field. */
+function appendFolderGroups(container, documents, renderer) {
+  const groups = new Map();
+  documents.forEach((item) => {
+    const raw = typeof item.data.subfolder === "string" ? item.data.subfolder.trim() : "";
+    const name = raw || "અન્ય સામગ્રી";
+    if (!groups.has(name)) groups.set(name, []);
+    groups.get(name).push(item);
+  });
+  groups.forEach((items, name) => {
+    const folder = createElement("section", "content-folder");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "content-folder-toggle";
+    toggle.setAttribute("aria-expanded", "false");
+    const titleWrap = createElement("span", "content-folder-title-wrap");
+    titleWrap.appendChild(createElement("span", "content-folder-icon", "▣"));
+    titleWrap.appendChild(createElement("span", "content-folder-title", name));
+    titleWrap.appendChild(createElement("span", "content-folder-count", String(items.length)));
+    toggle.appendChild(titleWrap);
+    toggle.appendChild(createElement("span", "content-folder-chevron", "＋"));
+    const panel = createElement("div", "content-folder-panel");
+    panel.hidden = true;
+    items.forEach(({ data }) => {
+      const card = renderer(data);
+      if (card) panel.appendChild(card);
+    });
+    if (!panel.children.length) return;
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      panel.hidden = open;
+      toggle.querySelector(".content-folder-chevron").textContent = open ? "＋" : "−";
+      folder.classList.toggle("is-open", !open);
+    });
+    folder.appendChild(toggle);
+    folder.appendChild(panel);
+    container.appendChild(folder);
+  });
+}
 
 function createContentCard(data, options = {}) {
   const card = createElement(
@@ -570,16 +605,10 @@ function loadBhajans(database) {
 
       status.textContent = `${documents.length} ભજન ઉપલબ્ધ છે.`;
 
-      documents.forEach(({ data }) => {
-        const card = createContentCard(data, {
-          className: "live-bhajan-card",
-          linkLabel: "ભજન સાંભળો / ખોલો"
-        });
-
-        if (card) {
-          container.appendChild(card);
-        }
-      });
+      appendFolderGroups(container, documents, (data) => createContentCard(data, {
+        className: "live-bhajan-card",
+        linkLabel: "ભજન સાંભળો / ખોલો"
+      }));
 
       if (!container.children.length) {
         status.textContent =
