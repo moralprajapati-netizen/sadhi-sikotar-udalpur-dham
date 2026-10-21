@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeWebsite() {
   updateFooterYear();
   initializeMobileMenu();
+  initializeSectionCards();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
@@ -78,6 +79,62 @@ function initializeMobileMenu() {
       closeMenu();
     }
   });
+}
+
+/* --------------------------------------------------
+   Section cards: show only the section the visitor selects
+-------------------------------------------------- */
+function initializeSectionCards() {
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const home = document.getElementById("home");
+  const cardsSection = document.getElementById("sections");
+  const contentSections = Array.from(main.querySelectorAll(":scope > section"))
+    .filter((section) => section !== home && section !== cardsSection);
+
+  let activeSectionId = "";
+
+  contentSections.forEach((section) => {
+    section.hidden = true;
+  });
+
+  function showOnlySection(id, shouldScroll = true) {
+    const target = contentSections.find((section) => section.id === id);
+    if (!target) return false;
+
+    if (activeSectionId === id) {
+      target.hidden = true;
+      activeSectionId = "";
+      return true;
+    }
+
+    contentSections.forEach((section) => {
+      section.hidden = section !== target;
+    });
+    activeSectionId = id;
+
+    if (shouldScroll) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    return true;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const id = link.getAttribute("href").slice(1);
+      if (!contentSections.some((section) => section.id === id)) return;
+
+      event.preventDefault();
+      showOnlySection(id);
+      history.replaceState(null, "", "#" + id);
+    });
+  });
+
+  // Do not automatically open a section from an old URL hash.
+  if (window.location.hash && contentSections.some((section) => section.id === window.location.hash.slice(1))) {
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
 }
 
 /* --------------------------------------------------
