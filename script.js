@@ -791,7 +791,7 @@ function loadContact(database) {
           const mapFrame = document.createElement("iframe");
           mapFrame.className = "contact-map-frame";
           mapFrame.title = "સધી સિકોતર માતાજી મંદિર ઉદલપુરધામનો નકશો";
-          mapFrame.src = "https://www.google.com/maps?q=" + encodeURIComponent(address) + "&output=embed";
+          mapFrame.src = "https://www.google.com/maps?q=23.5585266,72.4824296&z=18&output=embed";
           mapFrame.loading = "lazy";
           mapFrame.referrerPolicy = "no-referrer-when-downgrade";
           mapFrame.allowFullscreen = true;
