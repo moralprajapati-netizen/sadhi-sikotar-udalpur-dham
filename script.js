@@ -783,6 +783,22 @@ function loadContact(database) {
           card.appendChild(createElement("p", "", "સરનામું: " + address));
         }
 
+        if (address) {
+          const mapHeading = createElement("h3", "", "મંદિરનો નકશો");
+          mapHeading.className = "contact-map-heading";
+          card.appendChild(mapHeading);
+
+          const mapFrame = document.createElement("iframe");
+          mapFrame.className = "contact-map-frame";
+          mapFrame.title = "સધી સિકોતર માતાજી મંદિર ઉદલપુરધામનો નકશો";
+          mapFrame.src = "https://www.google.com/maps?q=" + encodeURIComponent(address) + "&output=embed";
+          mapFrame.loading = "lazy";
+          mapFrame.referrerPolicy = "no-referrer-when-downgrade";
+          mapFrame.allowFullscreen = true;
+          mapFrame.setAttribute("aria-label", "મંદિરનું Google Maps સ્થાન");
+          card.appendChild(mapFrame);
+        }
+
         if (mapUrl && isSafeWebUrl(mapUrl)) {
           const mapLink = createSafeLink(mapUrl, "Google Mapsમાં રસ્તો જુઓ");
           if (mapLink) {
