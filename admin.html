@@ -167,6 +167,10 @@
               <select id="subfolder">
                 <option value="general">સામાન્ય</option>
               </select>
+              <label for="customFolder">નવા પ્રસંગનું પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
+              <input id="customFolder" maxlength="100"
+                placeholder="ઉદાહરણ: Ramen 15/10/2026">
+              <p class="muted">અહીં નામ લખશો તો તે આ સામગ્રી માટેના પસંદ કરેલા ઉપવિભાગ કરતાં પ્રાથમિક રહેશે. ફોટા/ઓડિયો અપલોડ કરતી વખતે પણ આ નામથી અલગ ફોલ્ડર બનશે.</p>
             </div>
 
             <div class="wide">
@@ -430,7 +434,19 @@
         .slice(-100);
       const fileName = Date.now() + "-" + (safeName || ("media." + extFromName));
       const selectedFolder = folder === "photos" ? $("photoFolder").value : $("audioFolder").value;
-      const targetPath = selectedFolder + "/" + fileName;
+      const customFolderName = $("customFolder").value.trim();
+      const customFolderSlug = customFolderName
+        ? customFolderName.normalize("NFKD")
+            .replace(/[^A-Za-z0-9]+/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-|-$/g, "")
+            .toLowerCase()
+            .slice(0, 70)
+        : "";
+      const uploadFolder = customFolderSlug
+        ? selectedFolder.split("/")[0] + "/" + customFolderSlug
+        : selectedFolder;
+      const targetPath = uploadFolder + "/" + fileName;
       const button = $(buttonId);
       button.disabled = true;
       setStatus(statusId, "ફાઇલ અપલોડ થઈ રહી છે... કૃપા કરીને રાહ જુઓ.");
@@ -488,6 +504,7 @@
       $("contentForm").reset();
       $("collection").value = selectedCollection;
       updateSubfolderOptions();
+      $("customFolder").value = "";
       renderMediaPreview($("imagePreview"), "", "image");
       renderMediaPreview($("linkPreview"), "", "link");
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
@@ -606,7 +623,7 @@
         content: $("content").value.trim(),
         imageUrl,
         linkUrl,
-        subfolder: $("subfolder").value,
+        subfolder: $("customFolder").value.trim() || $("subfolder").value,
         date: $("date").value,
         location: $("location").value.trim(),
         published: $("published").checked,
@@ -682,7 +699,7 @@
             (item.location ? " • સ્થળ: " + item.location : "");
           article.appendChild(details);
 
-          if (item.subfolder) {
+              if (item.subfolder) {
             const folderLabel = document.createElement("p");
             folderLabel.className = "muted";
             const folderOption = (SUBFOLDER_OPTIONS[collectionName] || []).find(([value]) => value === item.subfolder);
@@ -735,7 +752,9 @@
             $("title").value = item.title || "";
             $("content").value = item.content || "";
             updateSubfolderOptions();
-            $("subfolder").value = item.subfolder || ($("subfolder").options[0] ? $("subfolder").options[0].value : "general");
+            const knownSubfolder = (SUBFOLDER_OPTIONS[collectionName] || []).some(([value]) => value === item.subfolder);
+            $("subfolder").value = knownSubfolder ? item.subfolder : ($("subfolder").options[0] ? $("subfolder").options[0].value : "general");
+            $("customFolder").value = item.subfolder && !knownSubfolder ? item.subfolder : "";
             $("imageUrl").value = item.imageUrl || "";
             $("linkUrl").value = item.linkUrl || "";
             renderMediaPreview($("imagePreview"), $("imageUrl").value, "image");
