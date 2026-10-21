@@ -1338,3 +1338,13 @@ button:focus-visible,
   .gallery-card.is-active { animation: none; }
   .gallery-slider-btn { transition: none; }
 }
+
+
+/* Ensure contact details remain readable on the white contact card. */
+.contact .section-content .contact-info-card {
+  color: var(--text, #38251e);
+}
+
+.contact .section-content .contact-info-card p {
+  color: var(--text, #38251e);
+}
