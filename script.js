@@ -791,7 +791,7 @@ function loadContact(database) {
           const mapFrame = document.createElement("iframe");
           mapFrame.className = "contact-map-frame";
           mapFrame.title = "સધી સિકોતર માતાજી મંદિર ઉદલપુરધામનો નકશો";
-          mapFrame.src = "https://www.google.com/maps?q=23.5585266,72.4824296&z=18&output=embed";
+          mapFrame.src = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d206.8527750303821!2d72.4825795!3d23.5585248!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c47d8ca1fb72f%3A0xfc8513185e3411fa!2sSadhi%20sikotar%20dham%20udalpur!5e1!3m2!1sen!2sin!4v1792557346113!5m2!1sen!2sin";
           mapFrame.loading = "lazy";
           mapFrame.referrerPolicy = "no-referrer-when-downgrade";
           mapFrame.allowFullscreen = true;
