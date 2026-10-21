@@ -385,10 +385,13 @@
       setStatus("listStatus", "સામગ્રી લોડ થઈ રહી છે...");
 
       try {
-        const snapshot = await db.collection(collectionName)
-          .orderBy("createdAt", "desc")
-          .limit(100)
-          .get();
+        // Contact records may not have a usable createdAt value on older documents.
+        // Load that collection without ordering; keep the existing order for other sections.
+        let itemsQuery = db.collection(collectionName);
+        if (collectionName !== "contact") {
+          itemsQuery = itemsQuery.orderBy("createdAt", "desc");
+        }
+        const snapshot = await itemsQuery.limit(100).get();
 
         if (snapshot.empty) {
           setStatus("listStatus", "આ વિભાગમાં હજી કોઈ સામગ્રી નથી.");
