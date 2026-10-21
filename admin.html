@@ -195,7 +195,11 @@
                 <option value="photos/darshan">દર્શન ગેલેરી</option>
                 <option value="photos/festivals">પર્વ અને ઉત્સવ</option>
                 <option value="photos/events">કાર્યક્રમો</option>
+                <option value="custom">પોતાનું ફોલ્ડર નામ લખવું</option>
               </select>
+              <label for="customPhotoFolder">ફોટા માટે પોતાનું ફોલ્ડર નામ (વૈકલ્પિક)</label>
+              <input id="customPhotoFolder" maxlength="100"
+                placeholder="ઉદાહરણ: Ramen 15/10/2026">
               <label for="photoFile">અહીંથી ફોટો અપલોડ કરો (મહત્તમ 4 MB)</label>
               <input id="photoFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif">
               <button id="uploadPhotoBtn" type="button" class="secondary">ફોટો GitHub માં અપલોડ કરો</button>
@@ -434,7 +438,9 @@
         .slice(-100);
       const fileName = Date.now() + "-" + (safeName || ("media." + extFromName));
       const selectedFolder = folder === "photos" ? $("photoFolder").value : $("audioFolder").value;
-      const customFolderName = $("customFolder").value.trim();
+      const customFolderName = folder === "photos"
+        ? ($("customPhotoFolder").value.trim() || $("customFolder").value.trim())
+        : $("customFolder").value.trim();
       const customFolderSlug = customFolderName
         ? customFolderName.normalize("NFKD")
             .replace(/[^A-Za-z0-9]+/g, "-")
@@ -505,6 +511,7 @@
       $("collection").value = selectedCollection;
       updateSubfolderOptions();
       $("customFolder").value = "";
+      $("customPhotoFolder").value = "";
       renderMediaPreview($("imagePreview"), "", "image");
       renderMediaPreview($("linkPreview"), "", "link");
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
