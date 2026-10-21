@@ -81,6 +81,30 @@
     .muted { color: #66564c; font-size: 14px; }
     .status { overflow-wrap: anywhere; line-height: 1.6; }
     .hidden { display: none !important; }
+    .media-preview {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid #e5d5b5;
+      border-radius: 12px;
+      background: #fffaf1;
+      overflow: hidden;
+    }
+    .media-preview img,
+    .media-preview video,
+    .media-preview iframe {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      max-height: 320px;
+      border: 0;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #2b2020;
+    }
+    .media-preview audio { display: block; width: 100%; max-width: 560px; }
+    .preview-caption { margin: 0 0 8px; font-size: 13px; color: #66564c; }
+    .item-preview { max-width: 260px; margin: 10px 0; }
+    .item-preview img, .item-preview video, .item-preview iframe { max-height: 180px; }
     .checkrow { display: flex; align-items: center; gap: 10px; }
     .checkrow input { width: auto; }
     .checkrow label { margin: 14px 0; }
@@ -154,12 +178,14 @@
               <label for="imageUrl">ફોટાની લિંક</label>
               <input id="imageUrl" type="url" maxlength="2000"
                 placeholder="https://...">
+              <div id="imagePreview" class="media-preview hidden" aria-live="polite"></div>
             </div>
 
             <div class="wide">
               <label for="linkUrl">ભજન / વિડિયો / લાઇવ લિંક</label>
               <input id="linkUrl" type="url" maxlength="2000"
                 placeholder="YouTube અથવા અન્ય લિંક">
+              <div id="linkPreview" class="media-preview hidden" aria-live="polite"></div>
             </div>
 
             <div>
@@ -247,11 +273,101 @@
       }
     }
 
+    function youtubeEmbedUrl(value) {
+      try {
+        const url = new URL(value);
+        let videoId = "";
+        if (url.hostname === "youtu.be" || url.hostname.endsWith(".youtu.be")) {
+          videoId = url.pathname.split("/").filter(Boolean)[0] || "";
+        } else if (url.hostname.includes("youtube.com")) {
+          if (url.pathname === "/watch") videoId = url.searchParams.get("v") || "";
+          else if (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/") || url.pathname.startsWith("/live/")) {
+            videoId = url.pathname.split("/").filter(Boolean)[1] || "";
+          }
+        }
+        return /^[a-zA-Z0-9_-]{11}$/.test(videoId)
+          ? "https://www.youtube-nocookie.com/embed/" + videoId
+          : "";
+      } catch {
+        return "";
+      }
+    }
+
+    function renderMediaPreview(container, rawUrl, kind) {
+      container.replaceChildren();
+      const url = safeUrl(rawUrl);
+      if (!url) {
+        container.classList.add("hidden");
+        return;
+      }
+
+      container.classList.remove("hidden");
+      const caption = document.createElement("p");
+      caption.className = "preview-caption";
+      caption.textContent = kind === "image" ? "ફોટો પ્રીવ્યૂ" : "મીડિયા પ્રીવ્યૂ";
+      container.appendChild(caption);
+
+      let media;
+      if (kind === "image") {
+        media = document.createElement("img");
+        media.src = url;
+        media.alt = "પસંદ કરેલા ફોટાનું પ્રીવ્યૂ";
+        media.loading = "lazy";
+        media.addEventListener("error", () => {
+          container.replaceChildren();
+          const message = document.createElement("p");
+          message.className = "preview-caption";
+          message.textContent = "ફોટો લોડ થયો નથી. લિંક સીધી ઇમેજ ફાઇલની છે કે નહીં તપાસો.";
+          container.appendChild(message);
+        }, { once: true });
+      } else {
+        const embedUrl = youtubeEmbedUrl(url);
+        if (embedUrl) {
+          media = document.createElement("iframe");
+          media.src = embedUrl;
+          media.title = "YouTube વિડિયો પ્રીવ્યૂ";
+          media.loading = "lazy";
+          media.referrerPolicy = "strict-origin-when-cross-origin";
+          media.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+          media.allowFullscreen = true;
+          media.style.aspectRatio = "16 / 9";
+        } else if (/\.(mp3|m4a|ogg|wav|aac)(\?.*)?$/i.test(url)) {
+          media = document.createElement("audio");
+          media.controls = true;
+          media.preload = "none";
+          media.src = url;
+        } else if (/\.(mp4|webm|ogv|mov)(\?.*)?$/i.test(url)) {
+          media = document.createElement("video");
+          media.controls = true;
+          media.preload = "metadata";
+          media.src = url;
+        } else {
+          const link = document.createElement("a");
+          link.href = url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "આ લિંક ખોલીને મીડિયા જુઓ";
+          container.appendChild(link);
+          return;
+        }
+      }
+      container.appendChild(media);
+    }
+
+    $("imageUrl").addEventListener("input", () => {
+      renderMediaPreview($("imagePreview"), $("imageUrl").value, "image");
+    });
+    $("linkUrl").addEventListener("input", () => {
+      renderMediaPreview($("linkPreview"), $("linkUrl").value, "link");
+    });
+
     function resetForm() {
       const selectedCollection = $("collection").value;
       editingId = null;
       $("contentForm").reset();
       $("collection").value = selectedCollection;
+      renderMediaPreview($("imagePreview"), "", "image");
+      renderMediaPreview($("linkPreview"), "", "link");
       $("formHeading").textContent = "નવી સામગ્રી ઉમેરો";
       $("saveBtn").textContent = "સામગ્રી સાચવો";
       $("cancelEditBtn").classList.add("hidden");
@@ -426,20 +542,30 @@
           }
 
           if (item.imageUrl) {
+            const preview = document.createElement("div");
+            preview.className = "media-preview item-preview";
+            renderMediaPreview(preview, item.imageUrl, "image");
+            article.appendChild(preview);
+
             const imageLink = document.createElement("a");
             imageLink.href = item.imageUrl;
             imageLink.target = "_blank";
             imageLink.rel = "noopener noreferrer";
-            imageLink.textContent = "ફોટાની લિંક ખોલો";
+            imageLink.textContent = "ફોટો નવી ટેબમાં ખોલો";
             article.appendChild(imageLink);
           }
 
           if (item.linkUrl) {
+            const preview = document.createElement("div");
+            preview.className = "media-preview item-preview";
+            renderMediaPreview(preview, item.linkUrl, "link");
+            article.appendChild(preview);
+
             const link = document.createElement("a");
             link.href = item.linkUrl;
             link.target = "_blank";
             link.rel = "noopener noreferrer";
-            link.textContent = "મીડિયા લિંક ખોલો";
+            link.textContent = "મીડિયા લિંક નવી ટેબમાં ખોલો";
             link.style.display = "block";
             article.appendChild(link);
           }
@@ -454,6 +580,8 @@
             $("content").value = item.content || "";
             $("imageUrl").value = item.imageUrl || "";
             $("linkUrl").value = item.linkUrl || "";
+            renderMediaPreview($("imagePreview"), $("imageUrl").value, "image");
+            renderMediaPreview($("linkPreview"), $("linkUrl").value, "link");
             $("date").value = item.date || "";
             $("location").value = item.location || "";
             $("published").checked = item.published === true;
