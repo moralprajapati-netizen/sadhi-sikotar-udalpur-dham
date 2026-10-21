@@ -588,5 +588,42 @@
       <p class="footer-admin-link"><a href="admin.html">એડમિન લૉગિન</a></p>
     </div>
   </footer>
+
+<script>
+/* Reliable standalone section navigation, independent of script.js */
+(function () {
+  function setupSectionNavigation() {
+    var main = document.querySelector('main');
+    if (!main) return;
+    var home = document.getElementById('home');
+    var cards = document.getElementById('sections');
+    var sections = Array.prototype.filter.call(main.querySelectorAll(':scope > section'), function (s) { return s !== home && s !== cards; });
+    sections.forEach(function (s) { s.hidden = true; });
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+      var id = link.getAttribute('href').slice(1);
+      if (id === 'home') {
+        event.preventDefault(); event.stopImmediatePropagation();
+        sections.forEach(function (s) { s.hidden = true; });
+        document.body.classList.remove('section-view-active');
+        history.replaceState(null, '', location.pathname + location.search);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      var target = sections.find(function (s) { return s.id === id; });
+      if (!target) return;
+      event.preventDefault(); event.stopImmediatePropagation();
+      sections.forEach(function (s) { s.hidden = s !== target; });
+      document.body.classList.add('section-view-active');
+      history.replaceState(null, '', '#' + id);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, true);
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupSectionNavigation);
+  else setupSectionNavigation();
+})();
+</script>
 </body>
 </html>
