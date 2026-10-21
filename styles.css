@@ -1571,3 +1571,15 @@ button:focus-visible,
 .content-folder-panel[hidden] { display:none !important; }
 .content-folder-panel > * { min-width:0; }
 @media (max-width:560px) { .content-folder-toggle { min-height:62px; padding:12px; } .content-folder-title-wrap { gap:8px; } .content-folder-icon { flex-basis:34px; width:34px; height:34px; } .content-folder-panel { grid-template-columns:1fr; gap:14px; padding:12px; } }
+
+/* Section-folder navigation: keep the page focused on the section the visitor opens. */
+main > section.section:not(#sections):not(:target) {
+  display: none !important;
+}
+main > section#sections {
+  display: block;
+}
+/* When a section is selected, keep the section cards available for switching. */
+main > section.section:target {
+  display: block !important;
+}
