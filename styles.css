@@ -1348,3 +1348,25 @@ button:focus-visible,
 .contact .section-content .contact-info-card p {
   color: var(--text, #38251e);
 }
+
+
+/* Embedded Google Maps in the temple contact card. */
+.contact-map-heading {
+  margin-top: 24px !important;
+}
+
+.contact-map-frame {
+  display: block;
+  width: 100%;
+  min-height: 320px;
+  margin: 12px 0 16px;
+  border: 1px solid rgba(217, 173, 85, 0.7);
+  border-radius: 12px;
+  background: var(--cream, #fff8e9);
+}
+
+@media (max-width: 600px) {
+  .contact-map-frame {
+    min-height: 260px;
+  }
+}
