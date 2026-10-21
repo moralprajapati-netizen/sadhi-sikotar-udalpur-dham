@@ -1,4 +1,7 @@
 
+/* Respect the HTML hidden attribute even where sections define display styles. */
+[hidden] { display: none !important; }
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap');
 
 :root {
