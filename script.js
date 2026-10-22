@@ -9,6 +9,7 @@ function initializeWebsite() {
   updateFooterYear();
   initializeMobileMenu();
   initializeSectionCards();
+  initializeGujaratiCalendar();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
@@ -897,4 +898,65 @@ function loadContact(database) {
       console.error("Could not load contact information:", error);
       container.replaceChildren(createMessage("સંપર્કની માહિતી લોડ થઈ શકી નથી. પછી ફરી પ્રયાસ કરો."));
     });
+}
+
+
+/* --------------------------------------------------
+   Gujarati monthly calendar (displayed inside the website)
+-------------------------------------------------- */
+function initializeGujaratiCalendar() {
+  const grid = document.getElementById("gujaratiCalendar");
+  const title = document.getElementById("calendarMonthTitle");
+  const previous = document.getElementById("calendarPrev");
+  const next = document.getElementById("calendarNext");
+  if (!grid || !title || !previous || !next) return;
+
+  const now = new Date();
+  let shownMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthFormatter = new Intl.DateTimeFormat("gu-IN", { month: "long", year: "numeric" });
+  const number = value => new Intl.NumberFormat("gu-IN").format(value);
+  const weekdays = ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"];
+
+  function render() {
+    grid.replaceChildren();
+    title.textContent = monthFormatter.format(shownMonth);
+    weekdays.forEach(day => {
+      const cell = document.createElement("div");
+      cell.className = "calendar-day weekday";
+      cell.textContent = day;
+      grid.appendChild(cell);
+    });
+
+    const firstWeekday = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), 1).getDay();
+    const daysInMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 0).getDate();
+
+    for (let i = 0; i < firstWeekday; i++) {
+      const blank = document.createElement("div");
+      blank.className = "calendar-day empty";
+      blank.setAttribute("aria-hidden", "true");
+      grid.appendChild(blank);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const cellDate = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), day);
+      const cell = document.createElement("div");
+      cell.className = "calendar-day";
+      if (cellDate.toDateString() === now.toDateString()) cell.classList.add("today");
+      cell.textContent = number(day);
+      const small = document.createElement("small");
+      small.textContent = cellDate.toLocaleDateString("gu-IN", { weekday: "short" });
+      cell.appendChild(small);
+      grid.appendChild(cell);
+    }
+  }
+
+  previous.addEventListener("click", () => {
+    shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() - 1, 1);
+    render();
+  });
+  next.addEventListener("click", () => {
+    shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 1);
+    render();
+  });
+  render();
 }
