@@ -92,6 +92,22 @@
     .folder-video { --folder-tint: rgba(21,67,119,.20); }
     .folder-history { --folder-tint: rgba(112,73,16,.20); }
     .folder-contact { --folder-tint: rgba(25,94,107,.18); }
+    .folder-panchang .panchang-cover-label {
+      position: absolute;
+      z-index: 4;
+      left: 12px;
+      right: 12px;
+      bottom: 14px;
+      padding: 10px 8px;
+      border: 1px solid rgba(217,173,85,.9);
+      border-radius: 12px;
+      background: rgba(65,12,25,.88);
+      color: #fff8e9;
+      text-align: center;
+      font-weight: 800;
+      line-height: 1.45;
+      text-shadow: 0 1px 3px rgba(0,0,0,.45);
+    }
     .section-folder-icon {
       position: absolute;
       z-index: 3;
@@ -355,8 +371,11 @@
             <div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261022" alt="ધામના પરિચયનું કવર" loading="lazy"></div>
             <div class="section-folder-info"><h3>ધામનો પરિચય</h3><p>મંદિર, પરંપરા અને ઇતિહાસ</p></div>
           </a>
-          <a class="section-folder-card folder-panchang" href="#panchang">
-            <div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261022" alt="ગુજરાતી પંચાંગ અને કેલેન્ડરનું કવર" loading="lazy"></div>
+          <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ અને કેલેન્ડર ખોલો">
+            <div class="section-folder-cover">
+              <img src="./covers/festivals-cover.jpg?v=20261022" alt="ગુજરાતી પંચાંગ અને કેલેન્ડરનું કવર" loading="lazy">
+              <span class="panchang-cover-label">ગુજરાતી પંચાંગ<br>અને કેલેન્ડર</span>
+            </div>
             <div class="section-folder-info"><h3>ગુજરાતી પંચાંગ અને કેલેન્ડર</h3><p>આજની તિથિ, નક્ષત્ર, તહેવારો અને શુભ સમય</p></div>
           </a>
           <a class="section-folder-card folder-contact" href="#contact">
