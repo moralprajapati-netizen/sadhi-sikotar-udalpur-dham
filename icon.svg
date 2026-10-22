@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#410c19"/><stop offset="1" stop-color="#8d2636"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0b8"/><stop offset="1" stop-color="#d9ad55"/></linearGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<rect x="26" y="26" width="460" height="460" rx="94" fill="none" stroke="url(#gold)" stroke-width="10"/>
+<path d="M256 78 C222 132 168 156 126 204 C154 204 178 219 190 244 C210 218 231 208 256 207 C281 208 302 218 322 244 C334 219 358 204 386 204 C344 156 290 132 256 78Z" fill="url(#gold)"/>
+<path d="M256 151 C221 188 204 226 204 265 C204 308 225 341 256 365 C287 341 308 308 308 265 C308 226 291 188 256 151Z" fill="#741827" stroke="url(#gold)" stroke-width="8"/>
+<circle cx="256" cy="250" r="30" fill="url(#gold)"/>
+<path d="M172 330 Q256 382 340 330 M156 354 Q256 422 356 354" fill="none" stroke="url(#gold)" stroke-width="10" stroke-linecap="round"/>
+<text x="256" y="440" text-anchor="middle" font-family="serif" font-size="38" font-weight="bold" fill="#fff8e9">જય માતાજી</text>
+</svg>
