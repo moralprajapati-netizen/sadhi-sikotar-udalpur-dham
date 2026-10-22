@@ -116,15 +116,12 @@
       background: rgba(65,12,25,.78);
       border-color: #d9ad55;
     }
-    .section-folder-info { padding: 15px 16px 17px; }
-    .section-folder-info h3 { margin: 0 0 6px; color: var(--maroon, #741827); }
-    .section-folder-info p { margin: 0; line-height: 1.65; font-size: .94rem; }
+    /* Cover images already contain their Gujarati title: avoid duplicate text below. */
+    .section-folder-info { display: none; }
     @media (max-width: 600px) {
       .section-folder-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .section-folder-cover { height: 138px; }
-      .section-folder-info { padding: 12px; }
-      .section-folder-info h3 { font-size: 1rem; }
-      .section-folder-info p { font-size: .84rem; }
+
     }
 
     .live-bhajan-list,
