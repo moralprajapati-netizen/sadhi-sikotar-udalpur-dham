@@ -130,7 +130,9 @@
     .calendar-day.empty { background:transparent; border-color:transparent; }
     .calendar-day small { display:block; font-size:.72rem; opacity:.8; margin-top:4px; }
     .calendar-note { line-height:1.8; margin:16px 0 0; font-size:.92rem; }
-    @media(max-width:600px) { .gujarati-calendar-grid { gap:3px; } .calendar-day { min-height:52px; font-size:.88rem; padding:5px 1px; } .calendar-day small { font-size:.62rem; } }
+    .calendar-day.has-festival { border-color:#c49a45; background:#fff7df; }
+    .calendar-day .calendar-event { display:block; margin-top:3px; color:#7a281f; font-size:.62rem; line-height:1.15; overflow-wrap:anywhere; }
+    @media(max-width:600px) { .gujarati-calendar-grid { gap:3px; } .calendar-day { min-height:52px; font-size:.88rem; padding:5px 1px; } .calendar-day small { font-size:.62rem; } .calendar-day .calendar-event { font-size:.55rem; } }
     .folder-panchang .panchang-cover-label {
       position: absolute;
       z-index: 4;
