@@ -953,9 +953,11 @@ function initializeGujaratiCalendar() {
 
   const now = new Date();
   let shownMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  let selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const monthFormatter = new Intl.DateTimeFormat("gu-IN", { month: "long", year: "numeric" });
   const number = value => new Intl.NumberFormat("gu-IN").format(value);
   const weekdays = ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"];
+  const isoDate = date => date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
 
   function render() {
     grid.replaceChildren();
@@ -979,13 +981,24 @@ function initializeGujaratiCalendar() {
 
     for (let day = 1; day <= daysInMonth; day++) {
       const cellDate = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), day);
-      const cell = document.createElement("div");
+      const cell = document.createElement("button");
+      cell.type = "button";
       cell.className = "calendar-day";
+      cell.dataset.calendarDate = isoDate(cellDate);
+      cell.setAttribute("aria-label", new Intl.DateTimeFormat("gu-IN", { dateStyle: "full" }).format(cellDate));
       if (cellDate.toDateString() === now.toDateString()) cell.classList.add("today");
-      cell.textContent = number(day);
+      if (cellDate.toDateString() === selectedDate.toDateString()) cell.classList.add("selected");
+      cell.append(document.createTextNode(number(day)));
       const small = document.createElement("small");
       small.textContent = cellDate.toLocaleDateString("gu-IN", { weekday: "short" });
       cell.appendChild(small);
+      cell.addEventListener("click", () => {
+        selectedDate = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
+        render();
+        document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: isoDate(selectedDate) } }));
+        const panel = document.getElementById("panchang-live-panel");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
       grid.appendChild(cell);
     }
   }
@@ -997,6 +1010,14 @@ function initializeGujaratiCalendar() {
   next.addEventListener("click", () => {
     shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 1);
     render();
+  });
+  document.addEventListener("panchang:select-date", event => {
+    const parts = String(event.detail?.date || "").split("-").map(Number);
+    if (parts.length === 3 && parts.every(Number.isFinite)) {
+      selectedDate = new Date(parts[0], parts[1]-1, parts[2]);
+      shownMonth = new Date(parts[0], parts[1]-1, 1);
+      render();
+    }
   });
   render();
 }
@@ -1065,5 +1086,12 @@ function initializePanchangDateControls() {
     const panel = document.getElementById(button.dataset.panchangTab === "calendar" ? "panchangCalendarPanel" : "panchang-live-panel");
     if (panel) panel.scrollIntoView({ behavior:"smooth", block:"start" });
   }));
+  document.addEventListener("panchang:select-date", event => {
+    const parts = String(event.detail?.date || "").split("-").map(Number);
+    if (parts.length === 3 && parts.every(Number.isFinite)) {
+      selected = new Date(parts[0], parts[1]-1, parts[2]);
+      loadDay();
+    }
+  });
   loadDay();
 }
