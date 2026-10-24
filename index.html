@@ -122,6 +122,9 @@
     .calendar-controls button { border:1px solid #d9ad55; border-radius:10px; background:#741827; color:#fff8e9; font-size:1.6rem; width:44px; height:42px; cursor:pointer; }
     .gujarati-calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px; }
     .calendar-day { min-width:0; min-height:64px; border:1px solid #eadfc9; border-radius:9px; padding:6px 2px; text-align:center; background:#fffdf8; color:#38251e; }
+    .calendar-day:not(.weekday):not(.empty) { font:inherit; cursor:pointer; }
+    .calendar-day.selected { outline:3px solid #741827; outline-offset:1px; background:#f8e7d0; }
+    .calendar-day:not(.weekday):not(.empty):hover { border-color:#741827; background:#fff0c8; }
     .calendar-day.weekday { min-height:auto; background:#741827; color:#fff8e9; font-weight:700; padding:9px 2px; }
     .calendar-day.today { border:2px solid #d9ad55; background:#fff0c8; font-weight:800; }
     .calendar-day.empty { background:transparent; border-color:transparent; }
