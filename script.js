@@ -1079,9 +1079,12 @@ function initializePanchangDateControls() {
       setText("panchangNakshatra", "કૃપા કરીને ઇન્ટરનેટ કનેક્શન તપાસો");
     }
   }
-  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); loadDay(); });
-  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); loadDay(); });
-  today.addEventListener("click", () => { selected = new Date(); loadDay(); });
+  function syncCalendarToSelectedDate() {
+    document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: isoDate(selected), source: "panchang-controls" } }));
+  }
+  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); loadDay(); syncCalendarToSelectedDate(); });
+  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); loadDay(); syncCalendarToSelectedDate(); });
+  today.addEventListener("click", () => { selected = new Date(); loadDay(); syncCalendarToSelectedDate(); });
   document.querySelectorAll("[data-panchang-tab]").forEach(button => button.addEventListener("click", () => {
     const panel = document.getElementById(button.dataset.panchangTab === "calendar" ? "panchangCalendarPanel" : "panchang-live-panel");
     if (panel) panel.scrollIntoView({ behavior:"smooth", block:"start" });
