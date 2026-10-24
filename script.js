@@ -1090,7 +1090,8 @@ function initializePanchangDateControls() {
       setText("panchangTithi", paksha ? paksha+" — "+tithiName : tithiName);
       setText("panchangNakshatra", d.nakshatra_name || (d.nakshatra ? nakshatras[(d.nakshatra-1)%27] : "નક્ષત્ર ઉપલબ્ધ નથી"));
       setText("panchangLocation", "અમદાવાદ, ગુજરાત • "+formatter.format(selected));
-      setText("panchangSamvat", digits(selected.getFullYear()+57)+" (અંદાજિત વિક્રમ સંવત)");
+      const samvat = d.vikram_samvat ?? d.vikramSamvat ?? d.samvat;
+      setText("panchangSamvat", samvat !== undefined && samvat !== null && String(samvat).trim() !== "" ? digits(samvat) : "ચોક્કસ સંવત ઉપલબ્ધ નથી");
       const sunrise=d.sunrise, sunset=d.sunset, moonrise=d.moonrise, moonset=d.moonset;
       const sunGrid=document.querySelector(".panchang-sun-grid");
       if (sunGrid) {
