@@ -92,6 +92,7 @@ function initializeSectionCards() {
 
   const home = document.getElementById("home");
   const cardsSection = document.getElementById("sections");
+  const cards = Array.from(document.querySelectorAll(".section-folder-card[href^='#']"));
   const contentSections = Array.from(main.querySelectorAll(":scope > section"))
     .filter((section) => section !== home && section !== cardsSection);
 
@@ -105,14 +106,15 @@ function initializeSectionCards() {
     const target = contentSections.find((section) => section.id === id);
     if (!target) return false;
 
-    if (activeSectionId === id) {
-      // Keep the chosen folder open when tapped again; avoid a confusing blank state.
-      target.hidden = false;
-      return true;
-    }
-
     contentSections.forEach((section) => {
       section.hidden = section !== target;
+    });
+    cards.forEach((card) => {
+      if (card.getAttribute("href") === "#" + id) {
+        card.setAttribute("aria-current", "true");
+      } else {
+        card.removeAttribute("aria-current");
+      }
     });
     activeSectionId = id;
     document.body.classList.add("section-view-active");
@@ -129,6 +131,7 @@ function initializeSectionCards() {
       if (id === "home") {
         event.preventDefault();
         contentSections.forEach((section) => { section.hidden = true; });
+        cards.forEach((card) => card.removeAttribute("aria-current"));
         activeSectionId = "";
         document.body.classList.remove("section-view-active");
         history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -143,9 +146,10 @@ function initializeSectionCards() {
     });
   });
 
-  // Do not automatically open a section from an old URL hash.
-  if (window.location.hash && contentSections.some((section) => section.id === window.location.hash.slice(1))) {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+  // Restore a direct section link on refresh so visitors never land on an empty view.
+  const initialId = window.location.hash.slice(1);
+  if (initialId && contentSections.some((section) => section.id === initialId)) {
+    showOnlySection(initialId, false);
   }
 }
 
