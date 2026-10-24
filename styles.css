@@ -1906,3 +1906,35 @@ body.section-view-active main > .hero { display: none !important; }
  #panchang .panchang-choghadiya-links a { font-size:.73rem; padding:9px 4px; }
  #panchang .panchang-live-card iframe { height:250px!important; min-height:250px!important; }
 }
+
+
+/* Panchang final polish: clear hierarchy, refined cards, and responsive touch targets */
+#panchang.section { background: radial-gradient(ellipse at top, #fffaf0 0%, #f5efe5 58%, #efe5d9 100%); }
+#panchang .panchang-app { gap: 13px !important; }
+#panchang .panchang-cover { box-shadow: 0 12px 28px rgba(65,12,25,.18); }
+#panchang .panchang-cover-shade { background: linear-gradient(90deg,rgba(35,4,14,.88) 0%,rgba(65,12,25,.57) 52%,rgba(40,5,15,.08) 100%); }
+#panchang .panchang-cover-copy h2 { text-wrap: balance; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
+#panchang .panchang-datebar { box-shadow: 0 5px 14px rgba(65,12,25,.06); }
+#panchang .panchang-datebar button, #panchang .calendar-controls button, #panchang .panchang-shortcuts button { transition: transform .16s ease, box-shadow .16s ease, filter .16s ease; }
+#panchang .panchang-datebar button:hover, #panchang .calendar-controls button:hover, #panchang .panchang-shortcuts button:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(65,12,25,.12); filter: brightness(1.02); }
+#panchang .panchang-summary-card { border-top: 3px solid #d9ad55; }
+#panchang .panchang-sun-grid>div { transition: transform .16s ease, border-color .16s ease; }
+#panchang .panchang-sun-grid>div:hover { transform: translateY(-2px); border-color: #d9ad55; }
+#panchang .panchang-event-card { justify-content: flex-start; text-align: left; line-height: 1.45; }
+#panchang .panchang-muhurta-card, #panchang .panchang-choghadiya-card, #panchang .panchang-calendar-card { box-shadow: 0 6px 18px rgba(65,12,25,.055); }
+#panchang .panchang-live-card, #panchang .panchang-calendar-card { scroll-margin-top: 86px; }
+#panchang .calendar-day { min-height: 52px; transition: background .15s ease, border-color .15s ease, transform .15s ease; }
+#panchang .calendar-day:not(.weekday):not(.empty):hover { border-color: #d9ad55; background: #fff0cc; transform: translateY(-1px); }
+#panchang .calendar-day.selected { background: #741827 !important; border-color: #d9ad55 !important; color: #fff8e9 !important; box-shadow: 0 3px 9px rgba(65,12,25,.18); }
+#panchang .calendar-day.selected small { color: #f5dca2 !important; }
+#panchang .calendar-day.today:not(.selected) { outline: 2px solid #d9ad55; outline-offset: -2px; }
+#panchang button:focus-visible, #panchang a:focus-visible { outline: 3px solid #d9ad55; outline-offset: 3px; }
+@media (max-width: 520px) {
+  #panchang .panchang-app { gap: 9px !important; }
+  #panchang .calendar-day { min-height: 43px; border-radius: 7px; }
+  #panchang .panchang-cover { border-radius: 12px; }
+  #panchang .panchang-cover-copy h2 { max-width: 90%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #panchang *, #panchang *::before, #panchang *::after { transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
