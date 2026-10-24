@@ -92,6 +92,24 @@
     .folder-video { --folder-tint: rgba(21,67,119,.20); }
     .folder-history { --folder-tint: rgba(112,73,16,.20); }
     .folder-contact { --folder-tint: rgba(25,94,107,.18); }
+    .folder-panchang .panchang-cover-art {
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+      background:radial-gradient(circle at 50% 28%, #8e3c32 0%, #5a1422 48%, #260711 100%);
+      border:1px solid rgba(217,173,85,.9);
+    }
+    .folder-panchang .panchang-cover-sun {
+      position:absolute; top:10%; right:12%; color:#f4d58b; font-size:clamp(2.3rem,5vw,4rem);
+      text-shadow:0 0 18px rgba(244,213,139,.45);
+    }
+    .folder-panchang .panchang-cover-calendar {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      width:68%; min-height:55%; padding:18px 8px; border:2px solid #e0bd69; border-radius:14px;
+      background:linear-gradient(145deg,rgba(255,249,225,.97),rgba(240,218,163,.96));
+      color:#681b2a; box-shadow:0 8px 24px rgba(0,0,0,.3); text-align:center;
+    }
+    .folder-panchang .panchang-cover-calendar span { font-size:.8rem; font-weight:800; letter-spacing:.12em; }
+    .folder-panchang .panchang-cover-calendar strong { font-size:clamp(1.25rem,3vw,2rem); line-height:1.35; }
+    .folder-panchang .panchang-cover-calendar small { font-size:clamp(.55rem,1.1vw,.8rem); font-weight:700; }
     .folder-panchang .panchang-cover-label {
       position:absolute; z-index:4; left:12px; right:12px; bottom:14px;
       padding:10px 8px; border:1px solid rgba(217,173,85,.9); border-radius:12px;
@@ -390,8 +408,9 @@
             <div class="section-folder-info"><h3>ધામનો પરિચય</h3><p>મંદિર, પરંપરા અને ઇતિહાસ</p></div>
           </a>
           <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ અને કેલેન્ડર ખોલો">
-            <div class="section-folder-cover">
-              <img src="./covers/festivals-cover.jpg?v=20261022" alt="ગુજરાતી પંચાંગ અને કેલેન્ડરનું કવર" loading="lazy">
+            <div class="section-folder-cover panchang-cover-art" role="img" aria-label="ગુજરાતી પંચાંગનું વિશેષ કવર">
+              <span class="panchang-cover-sun" aria-hidden="true">☀</span>
+              <span class="panchang-cover-calendar" aria-hidden="true"><span>શુભ</span><strong>પંચાંગ</strong><small>તિથિ • નક્ષત્ર • તહેવાર</small></span>
               <span class="panchang-cover-label">ગુજરાતી પંચાંગ<br>અને કેલેન્ડર</span>
             </div>
             <div class="section-folder-info"><h3>ગુજરાતી પંચાંગ અને કેલેન્ડર</h3><p>આજની તિથિ, નક્ષત્ર, તહેવારો અને શુભ સમય</p></div>
