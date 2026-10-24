@@ -1124,7 +1124,7 @@ function initializePanchangDateControls() {
     const parts = String(event.detail?.date || "").split("-").map(Number);
     if (parts.length === 3 && parts.every(Number.isFinite)) {
       selected = new Date(parts[0], parts[1]-1, parts[2]);
-      if (event.detail?.source !== "panchang-controls") loadDay();
+      loadDay();
     }
   });
   loadDay();
