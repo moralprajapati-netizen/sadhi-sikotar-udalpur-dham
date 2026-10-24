@@ -1081,10 +1081,40 @@ function initializePanchangDateControls() {
     const stamp = isoDate(selected);
     setText("panchangTithi", "પંચાંગ લોડ થઈ રહ્યું છે…");
     try {
-      const response = await fetch("https://shastrapanchangam.com/api/v1/day/ahmedabad/"+stamp+".json", { cache: "no-store" });
-      if (!response.ok) throw new Error("Panchang API response "+response.status);
-      const payload = await response.json();
-      const d = payload.day || payload;
+      let d;
+      try {
+        const response = await fetch("https://shastrapanchangam.com/api/v1/day/ahmedabad/"+stamp+".json", { cache: "no-store" });
+        if (!response.ok) throw new Error("Primary Panchang API response "+response.status);
+        const payload = await response.json();
+        d = payload.day || payload;
+      } catch (primaryError) {
+        console.warn("Primary Panchang source unavailable; trying fallback:", primaryError);
+        const fallbackResponse = await fetch("https://api.apimitra.in/panchang?city=ahmedabad&date="+stamp, { cache: "no-store" });
+        if (!fallbackResponse.ok) throw new Error("Fallback Panchang API response "+fallbackResponse.status);
+        const fallback = await fallbackResponse.json();
+        if (fallback.status && fallback.status !== "ok") throw new Error("Fallback Panchang data unavailable");
+        const parseClock = value => {
+          if (typeof value !== "string") return null;
+          const match = value.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+          if (!match) return null;
+          let hour = Number(match[1]) % 12;
+          if ((match[3] || "").toUpperCase() === "PM") hour += 12;
+          return hour * 60 + Number(match[2]);
+        };
+        d = {
+          tithi_name: fallback.tithi || "તિથિ ઉપલબ્ધ નથી",
+          paksha: fallback.paksha === "Shukla" ? "Shukla" : fallback.paksha === "Krishna" ? "Krishna" : "",
+          nakshatra_name: fallback.nakshatra || "નક્ષત્ર ઉપલબ્ધ નથી",
+          sunrise: parseClock(fallback.sunrise),
+          sunset: parseClock(fallback.sunset),
+          moonrise: parseClock(fallback.moonrise),
+          moonset: parseClock(fallback.moonset),
+          rahu_kalam: parseClock(fallback.rahu_kalam || fallback.rahukaal),
+          vikram_samvat: fallback.vikram_samvat || fallback.samvat,
+          tithi_ends: null
+        };
+        d._fallback = true;
+      }
       const paksha = d.paksha === "Shukla" ? "શુક્લ પક્ષ" : d.paksha === "Krishna" ? "કૃષ્ણ પક્ષ" : "";
       const tithiName = d.tithi_name || tithis[d.tithi] || "તિથિ ઉપલબ્ધ નથી";
       setText("panchangTithi", paksha ? paksha+" — "+tithiName : tithiName);
