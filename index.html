@@ -506,9 +506,18 @@
     <!-- ગુજરાતી પંચાંગ અને કેલેન્ડર -->
     <section class="section section-alt" id="panchang">
       <div class="container panchang-app">
+        <div class="panchang-cover">
+          <img src="./1.png" alt="સધી સિકોતર માતાજી ઉદલપુરધામ" loading="lazy">
+          <div class="panchang-cover-shade"></div>
+          <div class="panchang-cover-copy">
+            <span>॥ શ્રી સધી સિકોતર માતાજી ॥</span>
+            <h2>ગુજરાતી પંચાંગ</h2>
+            <p>તિથિ • નક્ષત્ર • ચોઘડિયા • શુભ સમય</p>
+          </div>
+        </div>
         <div class="panchang-appbar">
           <span class="panchang-menu-mark" aria-hidden="true">☰</span>
-          <strong>ગુજરાતી કેલેન્ડર</strong>
+          <strong>દૈનિક પંચાંગ</strong>
           <span class="panchang-location">📍 અમદાવાદ</span>
         </div>
         <div class="panchang-datebar">
@@ -518,26 +527,39 @@
           <button type="button" id="panchangToday">આજે</button>
         </div>
         <div class="panchang-summary-card">
-          <div class="panchang-moon" aria-hidden="true">🌘</div>
+          <div class="panchang-moon" aria-hidden="true">🌙</div>
           <div class="panchang-summary-text">
-            <div><span>વિક્રમ સંવત</span> <strong id="panchangSamvat">—</strong></div>
-            <div class="panchang-tithi"><strong id="panchangTithi">તિથિની માહિતી લોડ થઈ રહી છે</strong></div>
-            <div><strong id="panchangNakshatra">નક્ષત્ર</strong></div>
+            <div><span>વિક્રમ સંવત</span> <strong id="panchangSamvat">લાઇવ પંચાંગમાં જુઓ</strong></div>
+            <div class="panchang-tithi"><strong id="panchangTithi">ચોક્કસ તિથિ માટે લાઇવ પંચાંગ જુઓ</strong></div>
+            <div><strong id="panchangNakshatra">નક્ષત્રની માહિતી લાઇવ પંચાંગમાં</strong></div>
             <div id="panchangLocation">અમદાવાદ, ગુજરાત</div>
           </div>
         </div>
         <div class="panchang-sun-grid" aria-label="સૂર્ય અને ચંદ્રના સમય">
-          <div><span class="sunrise-icon" aria-hidden="true">☀</span><strong>સૂર્યોદય</strong><b>સમય ઉપલબ્ધ નથી</b></div>
-          <div><span class="sunset-icon" aria-hidden="true">🌅</span><strong>સૂર્યાસ્ત</strong><b>સમય ઉપલબ્ધ નથી</b></div>
-          <div><span class="moonrise-icon" aria-hidden="true">☾</span><strong>ચંદ્રોદય</strong><b>સમય ઉપલબ્ધ નથી</b></div>
-          <div><span class="moonset-icon" aria-hidden="true">☽</span><strong>ચંદ્રાસ્ત</strong><b>સમય ઉપલબ્ધ નથી</b></div>
+          <div><span class="sunrise-icon" aria-hidden="true">☀️</span><strong>સૂર્યોદય</strong><b>લાઇવ ડેટા જુઓ</b></div>
+          <div><span class="sunset-icon" aria-hidden="true">🌅</span><strong>સૂર્યાસ્ત</strong><b>લાઇવ ડેટા જુઓ</b></div>
+          <div><span class="moonrise-icon" aria-hidden="true">🌔</span><strong>ચંદ્રોદય</strong><b>લાઇવ ડેટા જુઓ</b></div>
+          <div><span class="moonset-icon" aria-hidden="true">🌘</span><strong>ચંદ્રાસ્ત</strong><b>લાઇવ ડેટા જુઓ</b></div>
         </div>
-        <div class="panchang-event-card panchang-festival-primary" id="panchangFestival">આજના તહેવારો અને વ્રત</div>
-        <div class="panchang-event-card panchang-festival-secondary" id="panchangFestival2">આજની તિથિ અને વ્રતની માહિતી</div>
+        <div class="panchang-event-grid">
+          <div class="panchang-event-card panchang-festival-primary" id="panchangFestival">આજના તહેવારો અને વ્રત — લાઇવ પંચાંગમાં જુઓ</div>
+          <div class="panchang-event-card panchang-festival-secondary" id="panchangFestival2">તિથિ અને વ્રતની માહિતી — લાઇવ પંચાંગમાં જુઓ</div>
+        </div>
         <div class="panchang-muhurta-card">
-          <div><span class="muhurta-title">રાહુકાળ</span><strong>ચોક્કસ સમય માટે પંચાંગ ડેટા જરૂરી</strong></div>
+          <div><span class="muhurta-title">રાહુકાળ</span><strong>ચોક્કસ સમય લાઇવ પંચાંગમાં જુઓ</strong></div>
           <div class="panchang-muhurta-arrow" aria-hidden="true">›</div>
-          <div><span class="muhurta-title">શુભ સમય</span><strong>ચોક્કસ સમય માટે પંચાંગ ડેટા જરૂરી</strong></div>
+          <div><span class="muhurta-title">શુભ સમય</span><strong>ચોક્કસ સમય લાઇવ પંચાંગમાં જુઓ</strong></div>
+        </div>
+        <div class="panchang-choghadiya-card">
+          <div class="panchang-choghadiya-heading">
+            <div><span>દૈનિક સમયચક્ર</span><h3>દિવસ અને રાતના ચોઘડિયા</h3></div>
+            <span class="panchang-live-pill"><i></i> લાઇવ સ્ત્રોત</span>
+          </div>
+          <p>ચોઘડિયાના ચોક્કસ સમય અને શુભ/અશુભ પ્રકાર માટે નીચેનું લાઇવ પંચાંગ ખોલો. ચકાસ્યા વગરનો સમય અહીં બતાવવામાં આવતો નથી.</p>
+          <div class="panchang-choghadiya-links">
+            <a href="https://vedpanchang.com/embed/today/ahmedabad?lang=gu&theme=light" target="_blank" rel="noopener noreferrer">દિવસના ચોઘડિયા ↗</a>
+            <a href="https://vedpanchang.com/embed/today/ahmedabad?lang=gu&theme=light" target="_blank" rel="noopener noreferrer">રાતના ચોઘડિયા ↗</a>
+          </div>
         </div>
         <div class="panchang-shortcuts">
           <button type="button" data-panchang-tab="kundali">કુંડળી</button>
@@ -548,14 +570,14 @@
           <span aria-hidden="true">➦</span><div><strong>કેલેન્ડર મોકલો</strong><small>તમારા પરિવાર અને મિત્રો સાથે</small></div>
         </button>
         <div class="dynamic-content-card panchang-live-card">
-          <h3>દૈનિક ગુજરાતી પંચાંગ — અમદાવાદ</h3>
-          <p class="panchang-data-note">આજનું પંચાંગ જીવંત રીતે લોડ થાય છે. સમય અને તિથિ સ્થળ પ્રમાણે બદલાય છે.</p>
+          <h3>લાઇવ ગુજરાતી પંચાંગ — અમદાવાદ</h3>
+          <p class="panchang-data-note">આ માહિતી Ved Panchangના લાઇવ સ્ત્રોતમાંથી આવે છે. APIના ઉપરના કાર્ડ સાથે ડેટા આપમેળે જોડાયેલો નથી, તેથી ચોક્કસ વિગતો માટે આ લાઇવ પંચાંગ જુઓ.</p>
           <iframe
             src="https://vedpanchang.com/embed/today/ahmedabad?lang=gu&theme=light"
             width="100%"
-            height="560"
+            height="360"
             style="border:1px solid #e8e0d0;border-radius:12px;max-width:100%;background:#fff"
-            title="અમદાવાદનું આજનું ગુજરાતી પંચાંગ"
+            title="અમદાવાદનું લાઇવ ગુજરાતી પંચાંગ"
             loading="lazy"
             referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
@@ -567,7 +589,7 @@
             <button type="button" id="calendarNext" aria-label="આગળનો મહિનો">›</button>
           </div>
           <div class="gujarati-calendar-grid" id="gujaratiCalendar" aria-live="polite"></div>
-          <p class="calendar-note">આ માસિક ગ્રીગોરિયન તારીખોનું કેલેન્ડર છે; તિથિ/તહેવાર માટે ઉપરનું દૈનિક પંચાંગ જુઓ.</p>
+          <p class="calendar-note">આ ગ્રીગોરિયન માસિક કેલેન્ડર છે; પંચાંગની તિથિ/ચોઘડિયા માટે ઉપરનો લાઇવ સ્ત્રોત જુઓ.</p>
         </div>
       </div>
     </section>
