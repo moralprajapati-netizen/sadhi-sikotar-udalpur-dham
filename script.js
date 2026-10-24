@@ -1070,7 +1070,7 @@ function initializePanchangDateControls() {
   function clock(minutes) {
     if (typeof minutes !== "number" || !Number.isFinite(minutes)) return "ઉપલબ્ધ નથી";
     const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
-    return new Intl.DateTimeFormat("gu-IN", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" }).format(new Date(Date.UTC(2020,0,1,0,m)));
+    return new Intl.DateTimeFormat("gu-IN", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "UTC" }).format(new Date(Date.UTC(2020,0,1,Math.floor(m/60),m%60)));
   }
   function isoDate(date) {
     return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
