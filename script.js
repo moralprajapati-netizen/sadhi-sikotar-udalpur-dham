@@ -785,9 +785,44 @@ function loadVideos(database) {
     database,
     "videos",
     "videosList",
-    (data) => createContentCard(data, {
-      linkLabel: "વિડિયો જુઓ"
-    }),
+    (data) => {
+      // Show a YouTube preview automatically when the admin saved a YouTube link.
+      const videoData = { ...data };
+      const videoUrl = [data.linkUrl, data.videoUrl, data.url]
+        .find((value) => typeof value === "string" && value.trim()) || "";
+
+      if (!videoData.imageUrl && videoUrl) {
+        try {
+          const parsed = new URL(videoUrl.trim());
+          let videoId = "";
+
+          if (parsed.hostname === "youtu.be" || parsed.hostname.endsWith(".youtu.be")) {
+            videoId = parsed.pathname.split("/").filter(Boolean)[0] || "";
+          } else if (
+            parsed.hostname === "youtube.com" ||
+            parsed.hostname.endsWith(".youtube.com") ||
+            parsed.hostname === "youtube-nocookie.com" ||
+            parsed.hostname.endsWith(".youtube-nocookie.com")
+          ) {
+            videoId = parsed.searchParams.get("v") || "";
+            if (!videoId) {
+              const match = parsed.pathname.match(/^\/(?:embed|shorts|live)\/([\w-]+)/);
+              if (match) videoId = match[1];
+            }
+          }
+
+          if (/^[\w-]{11}$/.test(videoId)) {
+            videoData.imageUrl = "https://i.ytimg.com/vi/" + videoId + "/hqdefault.jpg";
+          }
+        } catch {
+          // Invalid or non-YouTube URLs remain ordinary video links.
+        }
+      }
+
+      return createContentCard(videoData, {
+        linkLabel: "વિડિયો જુઓ"
+      });
+    },
     "હાલ કોઈ વિડિયો પ્રકાશિત નથી."
   );
 }
