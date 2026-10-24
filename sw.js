@@ -1,4 +1,4 @@
-const CACHE_NAME = "sadhi-sikotar-app-v23";
+const CACHE_NAME = "sadhi-sikotar-app-v24";
 const APP_FILES = ["./", "./index.html", "./styles.css", "./script.js", "./manifest.json", "./icon.svg"];
 
 self.addEventListener("install", event => {
