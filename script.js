@@ -10,6 +10,7 @@ function initializeWebsite() {
   initializeMobileMenu();
   initializeSectionCards();
   initializeGujaratiCalendar();
+  initializePanchangDateControls();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
@@ -957,6 +958,49 @@ function initializeGujaratiCalendar() {
   next.addEventListener("click", () => {
     shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 1);
     render();
+  });
+  render();
+}
+
+/* Panchang date navigation UI */
+function initializePanchangDateControls() {
+  const label = document.getElementById("panchangDateLabel");
+  const prev = document.getElementById("panchangPrev");
+  const next = document.getElementById("panchangNext");
+  const today = document.getElementById("panchangToday");
+  if (!label || !prev || !next || !today) return;
+
+  let selected = new Date();
+  const formatter = new Intl.DateTimeFormat("gu-IN", {
+    day: "2-digit", month: "2-digit", year: "numeric"
+  });
+  function render() {
+    label.textContent = formatter.format(selected);
+    const isToday = new Date().toDateString() === selected.toDateString();
+    today.setAttribute("aria-pressed", String(isToday));
+  }
+  prev.addEventListener("click", () => {
+    selected.setDate(selected.getDate() - 1);
+    render();
+  });
+  next.addEventListener("click", () => {
+    selected.setDate(selected.getDate() + 1);
+    render();
+  });
+  today.addEventListener("click", () => {
+    selected = new Date();
+    render();
+  });
+  document.querySelectorAll("[data-panchang-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const panel = document.getElementById("panchangCalendarPanel");
+      if (panel && button.dataset.panchangTab === "calendar") {
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        const live = document.querySelector(".panchang-live-card");
+        if (live) live.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
   });
   render();
 }
