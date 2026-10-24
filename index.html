@@ -174,7 +174,21 @@
       border-color: #d9ad55;
     }
     /* Cover images already contain their Gujarati title: avoid duplicate text below. */
-    .section-folder-info { display: none; }
+    /* Card titles are already part of the cover artwork; never render a second title below it. */
+    .section-folder-info { display: none !important; }
+    .section-folder-card { cursor: pointer; min-width: 0; }
+    .section-folder-cover { aspect-ratio: 4 / 3; height: auto; min-height: 150px; }
+    .section-folder-cover img { object-position: center; }
+    .section-folder-card:focus-visible { outline-offset: 4px; }
+    .section-folder-card[aria-current="true"] { border-color: #f0cf78; box-shadow: 0 0 0 3px rgba(217,173,85,.28), 0 12px 28px rgba(65,12,25,.18); }
+    @media (max-width: 600px) {
+      .section-folder-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .section-folder-cover { min-height: 0; aspect-ratio: 3 / 4; }
+      .section-folder-card { border-radius: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .section-folder-card, .section-folder-cover img { transition: none !important; }
+    }
     @media (max-width: 600px) {
       .section-folder-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .section-folder-cover { height: 138px; }
