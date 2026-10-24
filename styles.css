@@ -1702,3 +1702,51 @@ body.section-view-active main > .hero { display: none !important; }
   #panchang .panchang-live-card iframe { height:440px; }
   #panchang .calendar-day { min-height:46px; font-size:.82rem; }
 }
+
+
+/* Final visual pass: compact, polished Gujarati Panchang cards */
+#panchang { background:linear-gradient(180deg,#fff9ef 0%,#f4f0ed 100%); }
+#panchang .panchang-app { max-width:690px!important; width:100%; padding:0 10px 24px!important; }
+#panchang .panchang-appbar { background:linear-gradient(100deg,#e83d37,#f04d43); min-height:60px; border-radius:8px 8px 0 0; box-shadow:none; }
+#panchang .panchang-datebar { background:#e8e5e5; border-radius:0 0 9px 9px; margin-bottom:9px; }
+#panchang .panchang-summary-card { display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:13px; padding:15px; border-radius:10px; margin-bottom:9px; box-shadow:0 2px 7px rgba(40,20,12,.06); }
+#panchang .panchang-moon { width:66px; height:66px; background:radial-gradient(circle at 35% 30%,#f4f1e9,#c9c5bd 68%,#77716d); color:#fff; border:1px solid #d7d0c5; }
+#panchang .panchang-summary-text { gap:5px; line-height:1.38; }
+#panchang .panchang-summary-text>div:first-child { display:flex; gap:7px; align-items:baseline; }
+#panchang .panchang-tithi { font-size:1.12rem; }
+#panchang .panchang-sun-grid { grid-template-columns:repeat(4,minmax(0,1fr)); border-radius:10px; margin-bottom:9px; padding:12px 2px; }
+#panchang .panchang-sun-grid>div { min-width:0; gap:4px; padding:2px 3px; }
+#panchang .panchang-sun-grid>div:last-child { border-right:0; }
+#panchang .panchang-sun-grid span { display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:#fff5d9; color:#e9a01a; font-size:1.45rem; }
+#panchang .panchang-sun-grid .sunset-icon { color:#e8ad4b; background:#fff2d9; }
+#panchang .panchang-sun-grid .moonrise-icon,#panchang .panchang-sun-grid .moonset-icon { color:#e0a11e; background:#fff7e6; }
+#panchang .panchang-sun-grid strong { font-size:.82rem; white-space:nowrap; }
+#panchang .panchang-sun-grid b { font-size:.75rem; font-weight:500; color:#5b514a; }
+#panchang .panchang-event-card { min-height:0; padding:13px 10px; border-radius:9px; margin-bottom:9px; font-size:1rem; }
+#panchang .panchang-festival-primary { background:#fff; border-left:4px solid #e9ac39; }
+#panchang .panchang-festival-secondary { background:#fff; border-left:4px solid #741827; }
+#panchang .panchang-muhurta-card { grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr); border-radius:9px; margin-bottom:9px; }
+#panchang .panchang-muhurta-card .muhurta-title { font-size:.9rem; color:#6a5146; font-weight:700; }
+#panchang .panchang-muhurta-card strong { color:#b64242; font-size:.82rem; font-weight:700; }
+#panchang .panchang-shortcuts button { border-radius:8px; padding:12px 4px; color:#33231e; }
+#panchang .panchang-share-card { width:100%; text-align:left; cursor:pointer; border-radius:9px; background:#fff; }
+#panchang .panchang-live-card { border:0; padding:0; background:transparent; box-shadow:none; }
+#panchang .panchang-live-card h3 { text-align:left; background:#f5a000; color:#fff; border-radius:10px 10px 0 0; padding:15px; margin:0; font-size:1.08rem; }
+#panchang .panchang-live-card .panchang-data-note { background:#fff7e8; padding:10px 12px; margin:0; max-width:none; }
+#panchang .panchang-live-card iframe { height:430px; border:1px solid #f1d9a6!important; border-radius:0 0 10px 10px!important; background:#fff; }
+#panchang .panchang-calendar-card { background:#fff; }
+@media(max-width:520px){
+ #panchang .panchang-app { padding-left:7px!important; padding-right:7px!important; }
+ #panchang .panchang-summary-card { grid-template-columns:52px minmax(0,1fr); gap:10px; padding:12px 9px; }
+ #panchang .panchang-moon { width:48px; height:48px; font-size:1.9rem; }
+ #panchang .panchang-summary-text { font-size:.84rem; }
+ #panchang .panchang-tithi { font-size:.98rem; }
+ #panchang .panchang-sun-grid { padding:10px 1px; }
+ #panchang .panchang-sun-grid span { width:27px; height:27px; font-size:1.2rem; }
+ #panchang .panchang-sun-grid strong { font-size:.69rem; }
+ #panchang .panchang-sun-grid b { font-size:.65rem; }
+ #panchang .panchang-event-card { padding:11px 7px; font-size:.9rem; }
+ #panchang .panchang-muhurta-card .muhurta-title { font-size:.78rem; }
+ #panchang .panchang-muhurta-card strong { font-size:.7rem; }
+ #panchang .panchang-live-card iframe { height:410px; }
+}
