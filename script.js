@@ -774,6 +774,31 @@ function loadFestivals(database) {
     }),
     "હાલ કોઈ નવો ઉત્સવ અથવા કાર્યક્રમ પ્રકાશિત નથી."
   );
+
+  // Published festival/event dates are also marked on the monthly calendar.
+  getPublishedDocuments(database, "festivals")
+    .then((documents) => {
+      const dates = {};
+      documents.forEach(({ data }) => {
+        const rawDate = data.date;
+        if (!rawDate) return;
+        let key = "";
+        if (typeof rawDate === "string") {
+          key = rawDate.slice(0, 10);
+        } else if (rawDate instanceof Date) {
+          key = rawDate.getFullYear()+"-"+String(rawDate.getMonth()+1).padStart(2,"0")+"-"+String(rawDate.getDate()).padStart(2,"0");
+        } else if (typeof rawDate.toDate === "function") {
+          const date = rawDate.toDate();
+          key = date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
+        }
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) return;
+        const title = String(data.title || data.name || data.heading || "ઉત્સવ").trim();
+        if (!dates[key]) dates[key] = [];
+        if (title && !dates[key].includes(title)) dates[key].push(title);
+      });
+      document.dispatchEvent(new CustomEvent("panchang:festivals-updated", { detail: { dates } }));
+    })
+    .catch((error) => console.warn("Calendar festival dates could not be loaded:", error));
 }
 
 /* --------------------------------------------------
@@ -958,6 +983,11 @@ function initializeGujaratiCalendar() {
   const number = value => new Intl.NumberFormat("gu-IN").format(value);
   const weekdays = ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"];
   const isoDate = date => date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
+  let festivalDates = {};
+  document.addEventListener("panchang:festivals-updated", event => {
+    festivalDates = event.detail?.dates || {};
+    render();
+  });
 
   function render() {
     grid.replaceChildren();
@@ -1082,9 +1112,9 @@ function initializePanchangDateControls() {
   function syncCalendarToSelectedDate() {
     document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: isoDate(selected), source: "panchang-controls" } }));
   }
-  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); loadDay(); syncCalendarToSelectedDate(); });
-  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); loadDay(); syncCalendarToSelectedDate(); });
-  today.addEventListener("click", () => { selected = new Date(); loadDay(); syncCalendarToSelectedDate(); });
+  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); syncCalendarToSelectedDate(); });
+  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); syncCalendarToSelectedDate(); });
+  today.addEventListener("click", () => { selected = new Date(); syncCalendarToSelectedDate(); });
   document.querySelectorAll("[data-panchang-tab]").forEach(button => button.addEventListener("click", () => {
     const panel = document.getElementById(button.dataset.panchangTab === "calendar" ? "panchangCalendarPanel" : "panchang-live-panel");
     if (panel) panel.scrollIntoView({ behavior:"smooth", block:"start" });
@@ -1093,7 +1123,7 @@ function initializePanchangDateControls() {
     const parts = String(event.detail?.date || "").split("-").map(Number);
     if (parts.length === 3 && parts.every(Number.isFinite)) {
       selected = new Date(parts[0], parts[1]-1, parts[2]);
-      loadDay();
+      if (event.detail?.source !== "panchang-controls") loadDay();
     }
   });
   loadDay();
