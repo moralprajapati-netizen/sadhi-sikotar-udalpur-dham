@@ -1001,7 +1001,7 @@ function initializeGujaratiCalendar() {
   render();
 }
 
-/* Panchang date navigation UI */
+/* Live Panchang data for Ahmedabad. Source: ShastraPanchangam public API. */
 function initializePanchangDateControls() {
   const label = document.getElementById("panchangDateLabel");
   const prev = document.getElementById("panchangPrev");
@@ -1010,36 +1010,60 @@ function initializePanchangDateControls() {
   if (!label || !prev || !next || !today) return;
 
   let selected = new Date();
-  const formatter = new Intl.DateTimeFormat("gu-IN", {
-    day: "2-digit", month: "2-digit", year: "numeric"
-  });
-  function render() {
-    label.textContent = formatter.format(selected);
-    const isToday = new Date().toDateString() === selected.toDateString();
-    today.setAttribute("aria-pressed", String(isToday));
+  const formatter = new Intl.DateTimeFormat("gu-IN", { day: "2-digit", month: "long", year: "numeric" });
+  const digits = value => new Intl.NumberFormat("gu-IN").format(value);
+  const tithis = ["", "પ્રથમા", "બીજ", "ત્રીજ", "ચોથ", "પાંચમ", "છઠ્ઠ", "સાતમ", "આઠમ", "નોમ", "દસમ", "એકાદશી", "બારસ", "તેરસ", "ચૌદસ", "પૂર્ણિમા", "અમાસ"];
+  const nakshatras = ["અશ્વિની","ભરણી","કૃતિકા","રોહિણી","મૃગશીર્ષ","આર્દ્રા","પુનર્વસુ","પુષ્ય","આશ્લેષા","મઘા","પૂર્વા ફાલ્ગુની","ઉત્તરા ફાલ્ગુની","હસ્ત","ચિત્રા","સ્વાતિ","વિશાખા","અનુરાધા","જ્યેષ્ઠા","મૂળ","પૂર્વાષાઢા","ઉત્તરાષાઢા","શ્રવણ","ધનિષ્ઠા","શતભિષા","પૂર્વાભાદ્રપદ","ઉત્તરાભાદ્રપદ","રેવતી"];
+  const byId = id => document.getElementById(id);
+  function setText(id, text) { const el = byId(id); if (el) el.textContent = text; }
+  function clock(minutes) {
+    if (typeof minutes !== "number" || !Number.isFinite(minutes)) return "ઉપલબ્ધ નથી";
+    const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
+    return new Intl.DateTimeFormat("gu-IN", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" }).format(new Date(Date.UTC(2020,0,1,0,m)));
   }
-  prev.addEventListener("click", () => {
-    selected.setDate(selected.getDate() - 1);
-    render();
-  });
-  next.addEventListener("click", () => {
-    selected.setDate(selected.getDate() + 1);
-    render();
-  });
-  today.addEventListener("click", () => {
-    selected = new Date();
-    render();
-  });
-  document.querySelectorAll("[data-panchang-tab]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const panel = document.getElementById("panchangCalendarPanel");
-      if (panel && button.dataset.panchangTab === "calendar") {
-        panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        const live = document.querySelector(".panchang-live-card");
-        if (live) live.scrollIntoView({ behavior: "smooth", block: "start" });
+  function isoDate(date) {
+    return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
+  }
+  async function loadDay() {
+    label.textContent = formatter.format(selected);
+    today.setAttribute("aria-pressed", String(new Date().toDateString() === selected.toDateString()));
+    const stamp = isoDate(selected);
+    setText("panchangTithi", "પંચાંગ લોડ થઈ રહ્યું છે…");
+    try {
+      const response = await fetch("https://shastrapanchangam.com/api/v1/day/ahmedabad/"+stamp+".json", { cache: "no-store" });
+      if (!response.ok) throw new Error("Panchang API response "+response.status);
+      const payload = await response.json();
+      const d = payload.day || payload;
+      const paksha = d.paksha === "Shukla" ? "શુક્લ પક્ષ" : d.paksha === "Krishna" ? "કૃષ્ણ પક્ષ" : "";
+      const tithiName = d.tithi_name || tithis[d.tithi] || "તિથિ ઉપલબ્ધ નથી";
+      setText("panchangTithi", paksha ? paksha+" — "+tithiName : tithiName);
+      setText("panchangNakshatra", d.nakshatra_name || (d.nakshatra ? nakshatras[(d.nakshatra-1)%27] : "નક્ષત્ર ઉપલબ્ધ નથી"));
+      setText("panchangLocation", "અમદાવાદ, ગુજરાત • "+formatter.format(selected));
+      setText("panchangSamvat", digits(selected.getFullYear()+57)+" (અંદાજિત વિક્રમ સંવત)");
+      const sunrise=d.sunrise, sunset=d.sunset, moonrise=d.moonrise, moonset=d.moonset;
+      const sunGrid=document.querySelector(".panchang-sun-grid");
+      if (sunGrid) {
+        const vals=[sunrise,sunset,moonrise,moonset];
+        const labels=["સૂર્યોદય","સૂર્યાસ્ત","ચંદ્રોદય","ચંદ્રાસ્ત"];
+        sunGrid.querySelectorAll("div").forEach((card,i)=>{ const b=card.querySelector("b"); if(b) b.textContent=clock(vals[i]); });
       }
-    });
-  });
-  render();
+      const rahu=typeof d.rahu_kalam==="number" ? clock(d.rahu_kalam)+" (શરૂઆતનો સમય)" : "ઉપલબ્ધ નથી";
+      const muhurta=document.querySelector(".panchang-muhurta-card");
+      if(muhurta) { const strong=muhurta.querySelectorAll("strong"); if(strong[0]) strong[0].textContent=rahu; }
+      setText("panchangFestival", "તહેવાર/વ્રત: આ તારીખ માટે અલગથી ચકાસો");
+      setText("panchangFestival2", "તિથિ સમાપ્તિ: "+(typeof d.tithi_ends==="number" ? clock(d.tithi_ends) : "ઉપલબ્ધ નથી"));
+    } catch (error) {
+      console.error("Live Panchang load failed:", error);
+      setText("panchangTithi", "લાઇવ તિથિ લોડ થઈ શકી નથી");
+      setText("panchangNakshatra", "કૃપા કરીને ઇન્ટરનેટ કનેક્શન તપાસો");
+    }
+  }
+  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); loadDay(); });
+  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); loadDay(); });
+  today.addEventListener("click", () => { selected = new Date(); loadDay(); });
+  document.querySelectorAll("[data-panchang-tab]").forEach(button => button.addEventListener("click", () => {
+    const panel = document.getElementById(button.dataset.panchangTab === "calendar" ? "panchangCalendarPanel" : "panchang-live-panel");
+    if (panel) panel.scrollIntoView({ behavior:"smooth", block:"start" });
+  }));
+  loadDay();
 }
