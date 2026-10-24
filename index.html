@@ -505,14 +505,51 @@
 
     <!-- ગુજરાતી પંચાંગ અને કેલેન્ડર -->
     <section class="section section-alt" id="panchang">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">દૈનિક પંચાંગ અને ધાર્મિક તારીખો</span>
-          <h2>ગુજરાતી પંચાંગ અને કેલેન્ડર</h2>
-          <p>સ્થળ: અમદાવાદ, ગુજરાત. તિથિ અને સમય માટે પંચાંગ પ્રદાતા દ્વારા આપવામાં આવતી માહિતી જુઓ.</p>
+      <div class="container panchang-app">
+        <div class="panchang-appbar">
+          <span class="panchang-menu-mark" aria-hidden="true">☰</span>
+          <strong>ગુજરાતી કેલેન્ડર</strong>
+          <span class="panchang-location">📍 અમદાવાદ</span>
+        </div>
+        <div class="panchang-datebar">
+          <button type="button" id="panchangPrev" aria-label="પાછલી તારીખ">‹</button>
+          <strong id="panchangDateLabel">આજની તારીખ</strong>
+          <button type="button" id="panchangNext" aria-label="આગળની તારીખ">›</button>
+          <button type="button" id="panchangToday">આજે</button>
+        </div>
+        <div class="panchang-summary-card">
+          <div class="panchang-moon" aria-hidden="true">🌘</div>
+          <div class="panchang-summary-text">
+            <div><span>વિક્રમ સંવત</span> <strong id="panchangSamvat">—</strong></div>
+            <div class="panchang-tithi"><strong id="panchangTithi">તિથિની માહિતી લોડ થઈ રહી છે</strong></div>
+            <div><strong id="panchangNakshatra">નક્ષત્ર</strong></div>
+            <div id="panchangLocation">અમદાવાદ, ગુજરાત</div>
+          </div>
+        </div>
+        <div class="panchang-sun-grid">
+          <div><span>☀️</span><strong>સૂર્યોદય</strong><b>—</b></div>
+          <div><span>🌤️</span><strong>સૂર્યાસ્ત</strong><b>—</b></div>
+          <div><span>🌙</span><strong>ચંદ્રોદય</strong><b>—</b></div>
+          <div><span>🌘</span><strong>ચંદ્રાસ્ત</strong><b>—</b></div>
+        </div>
+        <div class="panchang-event-card" id="panchangFestival">આજના તહેવારો અને વ્રત</div>
+        <div class="panchang-event-card" id="panchangFestival2">તિથિ અને શુભ સમયની માહિતી</div>
+        <div class="panchang-muhurta-card">
+          <div><span>રાહુકાળ</span><strong>સમય માટે દૈનિક પંચાંગ જુઓ</strong></div>
+          <div class="panchang-muhurta-arrow" aria-hidden="true">›</div>
+          <div><span>શુભ સમય</span><strong>સ્થળ પ્રમાણે બદલાય છે</strong></div>
+        </div>
+        <div class="panchang-shortcuts">
+          <button type="button" data-panchang-tab="kundali">કુંડળી</button>
+          <button type="button" data-panchang-tab="matching">ગુણ મિલન</button>
+          <button type="button" data-panchang-tab="calendar">કેલેન્ડર</button>
+        </div>
+        <div class="panchang-share-card">
+          <span aria-hidden="true">➦</span><div><strong>કેલેન્ડર મોકલો</strong><small>તમારા પરિવાર અને મિત્રો સાથે</small></div>
         </div>
         <div class="dynamic-content-card panchang-live-card">
-          <h3>આજનું ગુજરાતી પંચાંગ — અમદાવાદ</h3>
+          <h3>દૈનિક ગુજરાતી પંચાંગ — અમદાવાદ</h3>
+          <p class="panchang-data-note">નીચેનું પંચાંગ માહિતી પ્રદાતા પાસેથી લોડ થાય છે. ઉપરની ડિઝાઇનમાં ડેટા મળ્યા વગર તિથિ કે સમયનો અંદાજ મૂકવામાં આવતો નથી.</p>
           <iframe
             src="https://vedpanchang.com/embed/today/ahmedabad?lang=gu&theme=light"
             width="100%"
@@ -522,16 +559,16 @@
             loading="lazy"
             referrerpolicy="strict-origin-when-cross-origin"></iframe>
         </div>
-        <div class="dynamic-content-card panchang-calendar-card">
-          <h3>ગુજરાતી માસિક પંચાંગ અને કેલેન્ડર</h3>
-          <div class="panchang-calendar-placeholder">
-            <div aria-hidden="true" style="font-size:2.5rem">🗓️</div>
-            <p><strong>માસિક પંચાંગ</strong></p>
-            <p>આ વિભાગમાં મહિના પ્રમાણે તારીખ, તિથિ, નક્ષત્ર અને તહેવારોનું કેલેન્ડર દેખાશે.</p>
-            <p>હાલ વિશ્વસનીય ગુજરાતી પંચાંગ ડેટા જોડાયેલું નથી, તેથી ખોટી તિથિ કે શુભ સમય બતાવવામાં આવતો નથી.</p>
+        <div class="dynamic-content-card panchang-calendar-card" id="panchangCalendarPanel">
+          <h3>ગુજરાતી માસિક કેલેન્ડર</h3>
+          <div class="calendar-controls">
+            <button type="button" id="calendarPrev" aria-label="પાછલો મહિનો">‹</button>
+            <strong id="calendarMonthTitle">કેલેન્ડર</strong>
+            <button type="button" id="calendarNext" aria-label="આગળનો મહિનો">›</button>
           </div>
+          <div class="gujarati-calendar-grid" id="gujaratiCalendar" aria-live="polite"></div>
+          <p class="calendar-note">આ માસિક ગ્રીગોરિયન તારીખોનું કેલેન્ડર છે; તિથિ/તહેવાર માટે ઉપરનું દૈનિક પંચાંગ જુઓ.</p>
         </div>
-        <p class="content-loading" style="text-align:center;margin-top:20px">નોંધ: પંચાંગના સમય સ્થળ પ્રમાણે બદલાય છે. અન્ય શહેર માટે તે શહેરનું પંચાંગ તપાસો.</p>
       </div>
     </section>
 
