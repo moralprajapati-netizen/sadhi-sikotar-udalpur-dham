@@ -349,7 +349,27 @@
       .section-folder-cover { aspect-ratio: 4 / 3 !important; }
     }
   
-</style>
+
+    /* High-specificity override for the unwanted corner badges on every cover. */
+    body #sections .section-folder-grid .section-folder-card .section-folder-cover::after,
+    body #sections .section-folder-grid .section-folder-card .section-folder-cover::before {
+      content: none !important;
+      display: none !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+    body #sections .section-folder-grid .section-folder-card .section-folder-cover {
+      isolation: isolate;
+    }
+    @media (max-width: 600px) {
+      body #sections .section-folder-grid .section-folder-card .section-folder-cover {
+        aspect-ratio: 4 / 3 !important;
+        height: auto !important;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
