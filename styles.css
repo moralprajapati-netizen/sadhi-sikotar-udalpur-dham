@@ -2245,3 +2245,24 @@ body.section-view-active main > .hero { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .section-folder-cover img { transition: none !important; }
 }
+
+
+/* Fix: remove the extra corner symbols covering the existing cover artwork.
+   The cover images already include their own artwork and Gujarati labels. */
+.section-folder-cover::after,
+.folder-stories .section-folder-cover::after,
+.folder-gallery .section-folder-cover::after,
+.folder-festivals .section-folder-cover::after,
+.folder-video .section-folder-cover::after,
+.folder-history .section-folder-cover::after,
+.folder-contact .section-folder-cover::after,
+.folder-panchang .section-folder-cover::after {
+  content: none !important;
+  display: none !important;
+}
+.section-folder-cover::before {
+  background: linear-gradient(180deg, rgba(35,5,12,.02) 35%, rgba(35,5,12,.10) 100%) !important;
+}
+@media (max-width: 600px) {
+  .section-folder-cover { aspect-ratio: 4 / 3 !important; }
+}
