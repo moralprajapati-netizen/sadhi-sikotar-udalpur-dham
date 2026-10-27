@@ -10,7 +10,6 @@ function initializeWebsite() {
   initializeMobileMenu();
   initializeSectionCards();
   initializeGujaratiCalendar();
-  initializePanchangDateControls();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
