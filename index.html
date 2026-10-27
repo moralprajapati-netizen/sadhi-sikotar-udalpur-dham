@@ -331,6 +331,24 @@
     .site-footer .footer-admin-link a { display:inline-flex; padding:7px 14px; border:1px solid rgba(244,223,171,.35); border-radius:999px; color:#fff8e9; }
     .site-footer .footer-admin-link a:hover { border-color:var(--gold,#d9ad55); color:var(--gold-light,#f4dfab); }
     @media (max-width:600px) { .social-media-heading { gap:9px; margin-top:24px; } .social-media-links { gap:10px; margin:18px auto 24px; } .social-media-link { min-width:0; min-height:48px; flex:1 1 135px; padding:10px 12px; border-radius:13px; font-size:.92rem; } .social-media-link svg { width:22px; height:22px; flex-basis:22px; } }
+
+    /* Final override: the cover artwork already has its own icons/titles.
+       Hide only the extra decorative corner icon added by CSS. */
+    .section-folder-cover::after,
+    .folder-stories .section-folder-cover::after,
+    .folder-gallery .section-folder-cover::after,
+    .folder-festivals .section-folder-cover::after,
+    .folder-video .section-folder-cover::after,
+    .folder-history .section-folder-cover::after,
+    .folder-contact .section-folder-cover::after,
+    .folder-panchang .section-folder-cover::after {
+      content: none !important;
+      display: none !important;
+    }
+    @media (max-width: 600px) {
+      .section-folder-cover { aspect-ratio: 4 / 3 !important; }
+    }
+  
 </style>
 </head>
 
