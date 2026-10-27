@@ -1094,25 +1094,25 @@ function initializeGujaratiCalendar() {
       const c = data.choghadiya || {};
       const ch = c.data || c.result || c;
       const tithi = pick(nested, ["tithi.name","tithi_name","tithiName","tithi"]);
-      const paksha = pick(nested, ["paksha.name","paksha","fortnight"]);
+      const paksha = pick(nested, ["tithi.paksha","paksha.name","paksha","fortnight"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
-      const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat"]);
+      const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
       set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
       set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
-      const sunrise = pick(nested, ["sunrise","sun_rise","sunrise_time"]);
-      const sunset = pick(nested, ["sunset","sun_set","sunset_time"]);
-      const moonrise = pick(nested, ["moonrise","moon_rise","moonrise_time"]);
-      const moonset = pick(nested, ["moonset","moon_set","moonset_time"]);
+      const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
+      const sunset = pick(nested, ["sunset.time","sunset","sun_set","sunset_time","sun_times.sunset","sunTimes.sunset"]);
+      const moonrise = pick(nested, ["moonrise.time","moonrise","moon_rise","moonrise_time","moon_times.moonrise","moonTimes.moonrise"]);
+      const moonset = pick(nested, ["moonset.time","moonset","moon_set","moonset_time","moon_times.moonset","moonTimes.moonset"]);
       const sunGrid = document.querySelector(".panchang-sun-grid");
       if (sunGrid) [sunrise,sunset,moonrise,moonset].forEach((value,i) => {
         const card = sunGrid.querySelectorAll("div")[i];
         const strong = card && card.querySelector("b");
         if (strong) strong.textContent = clock(value);
       });
-      const dayItems = pick(ch, ["day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList"]);
-      const nightItems = pick(ch, ["night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList"]);
+      const dayItems = pick(ch, ["day","day.choghadiya","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
+      const nightItems = pick(ch, ["night","night.choghadiya","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
       drawList(document.getElementById("choghadiyaDayList"), dayItems);
       drawList(document.getElementById("choghadiyaNightList"), nightItems);
     } catch (error) {
