@@ -1017,6 +1017,7 @@ function initializeGujaratiCalendar() {
     return String(h%12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h<12?"AM":"PM");
   }
 
+  let panchangRequestId = 0;
   function renderChoghadiya() {
     const dayList = document.getElementById("choghadiyaDayList");
     const nightList = document.getElementById("choghadiyaNightList");
@@ -1027,11 +1028,105 @@ function initializeGujaratiCalendar() {
       list.replaceChildren();
       const message = document.createElement("p");
       message.className = "choghadiya-empty";
-      message.textContent = "ચોક્કસ સ્થાનિક સમય મેળવવા માટે પંચાંગ API જોડવાનું બાકી છે.";
+      message.textContent = "ઉદલપુર ધામનું પંચાંગ લોડ થઈ રહ્યું છે…";
       list.appendChild(message);
     });
     const selectedISO = isoDate(selectedDate);
     document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: selectedISO, source: "calendar" } }));
+    loadUdalpurPanchang(selectedISO, ++panchangRequestId);
+  }
+
+  async function loadUdalpurPanchang(date, requestId) {
+    const workerURL = "https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev/panchang";
+    const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value == null || value === "" ? "ઉપલબ્ધ નથી" : String(value); };
+    const pick = (obj, keys) => {
+      for (const key of keys) {
+        const value = key.split(".").reduce((v, part) => v && v[part] != null ? v[part] : undefined, obj);
+        if (value != null && value !== "") return value;
+      }
+      return undefined;
+    };
+    const gu = value => typeof value === "number" ? new Intl.NumberFormat("gu-IN").format(value) : value;
+    const clock = value => {
+      if (value == null || value === "") return "ઉપલબ્ધ નથી";
+      if (typeof value === "string") return value;
+      if (typeof value === "number" && value < 1440) {
+        const h = Math.floor(value / 60), m = Math.round(value % 60);
+        return String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h < 12 ? "AM" : "PM");
+      }
+      return String(value);
+    };
+    const drawList = (el, items) => {
+      if (!el) return;
+      el.replaceChildren();
+      if (!Array.isArray(items) || !items.length) {
+        const p = document.createElement("p");
+        p.className = "choghadiya-empty";
+        p.textContent = "આ માહિતી API માંથી ઉપલબ્ધ નથી.";
+        el.appendChild(p);
+        return;
+      }
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "choghadiya-row";
+        const name = pick(item, ["name","choghadiya","label","type","title"]) ?? (typeof item === "string" ? item : "સમયખંડ "+(index+1));
+        const start = pick(item, ["start","start_time","from","startTime","begin"]);
+        const end = pick(item, ["end","end_time","to","endTime","finish"]);
+        const span = document.createElement("span");
+        span.textContent = String(name);
+        const time = document.createElement("strong");
+        time.textContent = start != null || end != null ? clock(start)+" – "+clock(end) : String(pick(item,["time","timing","duration"]) ?? "");
+        row.append(span,time);
+        el.appendChild(row);
+      });
+    };
+    try {
+      const response = await fetch(workerURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "પંચાંગ API જવાબ આપતું નથી");
+      if (requestId !== panchangRequestId) return;
+      const p = data.panchang || {};
+      const nested = p.data || p.result || p;
+      const c = data.choghadiya || {};
+      const ch = c.data || c.result || c;
+      const tithi = pick(nested, ["tithi.name","tithi_name","tithiName","tithi"]);
+      const paksha = pick(nested, ["paksha.name","paksha","fortnight"]);
+      const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
+      const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat"]);
+      set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
+      set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
+      set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
+      set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
+      const sunrise = pick(nested, ["sunrise","sun_rise","sunrise_time"]);
+      const sunset = pick(nested, ["sunset","sun_set","sunset_time"]);
+      const moonrise = pick(nested, ["moonrise","moon_rise","moonrise_time"]);
+      const moonset = pick(nested, ["moonset","moon_set","moonset_time"]);
+      const sunGrid = document.querySelector(".panchang-sun-grid");
+      if (sunGrid) [sunrise,sunset,moonrise,moonset].forEach((value,i) => {
+        const card = sunGrid.querySelectorAll("div")[i];
+        const strong = card && card.querySelector("b");
+        if (strong) strong.textContent = clock(value);
+      });
+      const dayItems = pick(ch, ["day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList"]);
+      const nightItems = pick(ch, ["night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList"]);
+      drawList(document.getElementById("choghadiyaDayList"), dayItems);
+      drawList(document.getElementById("choghadiyaNightList"), nightItems);
+    } catch (error) {
+      if (requestId !== panchangRequestId) return;
+      console.error("Udalpur Panchang load failed:", error);
+      set("panchangTithi", "લાઇવ પંચાંગ લોડ થઈ શક્યું નથી");
+      set("panchangNakshatra", "Worker/API કનેક્શન તપાસવું પડશે");
+      [document.getElementById("choghadiyaDayList"),document.getElementById("choghadiyaNightList")].forEach(el => {
+        if (!el) return;
+        el.replaceChildren();
+        const msg=document.createElement("p"); msg.className="choghadiya-empty";
+        msg.textContent="ચોક્કસ સમય ઉપલબ્ધ નથી. API જવાબ ચકાસવો પડશે."; el.appendChild(msg);
+      });
+    }
   }
 
   function render() {
