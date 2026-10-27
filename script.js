@@ -1018,28 +1018,20 @@ function initializeGujaratiCalendar() {
   }
 
   function renderChoghadiya() {
-    if (!choghadiyaList) return;
-    choghadiyaList.replaceChildren();
-    const weekday = selectedDate.getDay();
-    const sequence = (choghadiyaMode === "day" ? weekdaySequence : nightSequence)[weekday];
-    const startMinutes = choghadiyaMode === "day" ? 6*60 : 18*60;
-    const segment = 90;
-    sequence.forEach((nameIndex, i) => {
-      const row = document.createElement("div");
-      row.className = "choghadiya-row";
-      const name = document.createElement("strong");
-      name.textContent = choghadiyaNames[nameIndex];
-      name.className = [0,2,3,5].includes(nameIndex) ? "choghadiya-auspicious" : "choghadiya-caution";
-      const time = document.createElement("span");
-      time.textContent = timeText(startMinutes+i*segment)+" – "+timeText(startMinutes+(i+1)*segment);
-      const serial = document.createElement("small");
-      serial.textContent = guNumber(i+1);
-      row.append(serial,name,time);
-      choghadiyaList.appendChild(row);
+    const dayList = document.getElementById("choghadiyaDayList");
+    const nightList = document.getElementById("choghadiyaNightList");
+    const dateLabel = document.getElementById("choghadiyaDateLabel");
+    if (dateLabel) dateLabel.textContent = new Intl.DateTimeFormat("gu-IN", { dateStyle: "full" }).format(selectedDate);
+    [dayList, nightList].forEach(list => {
+      if (!list) return;
+      list.replaceChildren();
+      const message = document.createElement("p");
+      message.className = "choghadiya-empty";
+      message.textContent = "ચોક્કસ સ્થાનિક સમય મેળવવા માટે પંચાંગ API જોડવાનું બાકી છે.";
+      list.appendChild(message);
     });
-    if (choghadiyaDateLabel) {
-      choghadiyaDateLabel.textContent = new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(selectedDate);
-    }
+    const selectedISO = isoDate(selectedDate);
+    document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: selectedISO, source: "calendar" } }));
   }
 
   function render() {
