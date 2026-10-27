@@ -535,34 +535,42 @@
           </div>
         </div>
 
-        <div class="simple-calendar-panel">
-          <div class="simple-panel-heading">
-            <span class="simple-heading-icon" aria-hidden="true">🗓️</span>
-            <div><h3>માસિક કેલેન્ડર</h3><p>ગુજરાતી અને અંગ્રેજી મહિનાનું કેલેન્ડર</p></div>
+        <div class="panchang-dashboard-grid">
+          <div class="simple-calendar-panel">
+            <div class="simple-panel-heading">
+              <span class="simple-heading-icon" aria-hidden="true">🗓️</span>
+              <div><h3>ગુજરાતી પંચાંગ કેલેન્ડર</h3><p>ગુજરાતી મહિનો, તિથિ અને અંગ્રેજી તારીખ</p></div>
+            </div>
+            <div class="calendar-controls simple-calendar-controls">
+              <button type="button" id="calendarPrev" aria-label="પાછલો મહિનો">‹</button>
+              <strong id="calendarMonthTitle">ગુજરાતી મહિનો લોડ થઈ રહ્યો છે…</strong>
+              <button type="button" id="calendarNext" aria-label="આગળનો મહિનો">›</button>
+              <button type="button" id="calendarToday" class="calendar-today-btn">આજે</button>
+            </div>
+            <div class="calendar-month-dual" id="calendarMonthDual" aria-live="polite"></div>
+            <div class="calendar-selected-date" id="calendarSelectedDate">તારીખ પસંદ કરો</div>
+            <div class="panchang-day-details" aria-live="polite">
+              <p><strong>તિથિ / પક્ષ:</strong> <span id="panchangTithi">માહિતી લોડ થઈ રહી છે…</span></p>
+              <p><strong>નક્ષત્ર:</strong> <span id="panchangNakshatra">—</span></p>
+              <p><strong>વિક્રમ સંવત:</strong> <span id="panchangSamvat">—</span></p>
+              <p><strong>સ્થળ:</strong> <span id="panchangLocation">ઉદલપુર ધામ, ગુજરાત</span></p>
+            </div>
           </div>
-          <div class="calendar-controls simple-calendar-controls">
-            <button type="button" id="calendarPrev" aria-label="પાછલો મહિનો">‹</button>
-            <strong id="calendarMonthTitle">કેલેન્ડર</strong>
-            <button type="button" id="calendarNext" aria-label="આગળનો મહિનો">›</button>
-            <button type="button" id="calendarToday" class="calendar-today-btn">આજે</button>
+          <div class="simple-choghadiya-panel">
+            <div class="simple-panel-heading">
+              <span class="simple-heading-icon" aria-hidden="true">☀️</span>
+              <div><h3>દિવસ અને રાતનાં ચોઘડિયાં</h3><p id="choghadiyaDateLabel">પસંદ કરેલી તારીખ પ્રમાણે</p></div>
+            </div>
+            <div class="panchang-sun-times">
+              <div><span>સૂર્યોદય</span><strong id="panchangSunrise">—</strong></div>
+              <div><span>સૂર્યાસ્ત</span><strong id="panchangSunset">—</strong></div>
+            </div>
+            <h4 class="choghadiya-period-title">☀️ દિવસનાં ચોઘડિયાં</h4>
+            <div class="choghadiya-list" id="choghadiyaDayList" aria-live="polite"><p class="choghadiya-empty">ચોઘડિયાની માહિતી લોડ થઈ રહી છે…</p></div>
+            <h4 class="choghadiya-period-title">🌙 રાતનાં ચોઘડિયાં</h4>
+            <div class="choghadiya-list" id="choghadiyaNightList" aria-live="polite"><p class="choghadiya-empty">ચોઘડિયાની માહિતી લોડ થઈ રહી છે…</p></div>
+            <p class="calendar-note">સમય સ્થાનિક સૂર્યોદય અને સૂર્યાસ્ત પ્રમાણે દર્શાવવાનો છે.</p>
           </div>
-          <div class="calendar-month-dual" id="calendarMonthDual" aria-live="polite"></div>
-          <div class="calendar-legend"><span><i class="legend-today"></i> આજની તારીખ</span><span><i class="legend-selected"></i> પસંદ કરેલી તારીખ</span></div>
-          <div class="calendar-selected-date" id="calendarSelectedDate">તારીખ પસંદ કરો</div>
-          <p class="calendar-note">નોંધ: અહીં અંગ્રેજી ગ્રેગોરિયન મહિનાનું નામ ગુજરાતી અને English બંનેમાં બતાવ્યું છે. ચંદ્રમાસ/તિથિ માટે ચકાસેલી પંચાંગ માહિતી જરૂરી છે.</p>
-        </div>
-
-        <div class="simple-choghadiya-panel">
-          <div class="simple-panel-heading">
-            <span class="simple-heading-icon" aria-hidden="true">☀️</span>
-            <div><h3>ચોઘડિયા</h3><p id="choghadiyaDateLabel">આજના દિવસ માટે</p></div>
-          </div>
-          <div class="choghadiya-tabs" role="group" aria-label="ચોઘડિયાનો સમય">
-            <button type="button" class="active" data-choghadiya="day">દિવસના ચોઘડિયા</button>
-            <button type="button" data-choghadiya="night">રાતના ચોઘડિયા</button>
-          </div>
-          <div class="choghadiya-list" id="choghadiyaList" aria-live="polite"></div>
-          <p class="calendar-note choghadiya-warning">મહત્વપૂર્ણ: સૂર્યોદય અને સૂર્યાસ્તના સ્થાનિક સમય વિના ચોક્કસ ચોઘડિયાનો સમય નક્કી થઈ શકતો નથી. નીચેના સમય માત્ર અંદાજિત છે (દિવસ 6:00–18:00 અને રાત 18:00–6:00 આધારિત); શુભ કાર્ય માટે સ્થાનિક પંચાંગથી ચકાસો.</p>
         </div>
       </div>
     </section>
