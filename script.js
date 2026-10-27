@@ -991,23 +991,26 @@ function initializeGujaratiCalendar() {
   const weekdays = ["રવિ","સોમ","મંગળ","બુધ","ગુરુ","શુક્ર","શનિ"];
   const englishWeekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   const choghadiyaNames = ["ઉદ્વેગ","ચર","લાભ","અમૃત","કાળ","શુભ","રોગ"];
+  // Standard Gujarati Choghadiya order by weekday (Sunday = 0).
+  // Index order: Udveg, Char, Labh, Amrit, Kaal, Shubh, Rog.
   const weekdaySequence = [
-    [0,1,2,3,4,5,6,1],
-    [6,0,1,2,3,4,5,0],
-    [5,6,0,1,2,3,4,6],
-    [4,5,6,0,1,2,3,5],
-    [3,4,5,6,0,1,2,4],
-    [2,3,4,5,6,0,1,3],
-    [1,2,3,4,5,6,0,2]
+    [0,1,2,3,4,5,6,0], // Sunday
+    [3,4,5,6,0,1,2,3], // Monday
+    [6,0,1,2,3,4,5,6], // Tuesday
+    [2,3,4,5,6,0,1,2], // Wednesday
+    [5,6,0,1,2,3,4,5], // Thursday
+    [1,2,3,4,5,6,0,1], // Friday
+    [4,5,6,0,1,2,3,4]  // Saturday
   ];
+  // Night starts five planetary positions after the weekday lord.
   const nightSequence = [
-    [4,5,6,0,1,2,3,5],
-    [3,4,5,6,0,1,2,4],
-    [2,3,4,5,6,0,1,3],
-    [1,2,3,4,5,6,0,2],
-    [0,1,2,3,4,5,6,1],
-    [6,0,1,2,3,4,5,0],
-    [5,6,0,1,2,3,4,6]
+    [5,3,1,6,4,2,0,5], // Sunday: Shubh
+    [1,6,4,2,0,5,3,1], // Monday: Char
+    [4,2,0,5,3,1,6,4], // Tuesday: Kaal
+    [0,5,3,1,6,4,2,0], // Wednesday: Udveg
+    [3,1,6,4,2,0,5,3], // Thursday: Amrit
+    [6,4,2,0,5,3,1,6], // Friday: Rog
+    [2,0,5,3,1,6,4,2]  // Saturday: Labh
   ];
 
   function timeText(totalMinutes) {
