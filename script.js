@@ -1093,13 +1093,15 @@ function initializeGujaratiCalendar() {
       const nested = p.output || p.data || p.result || p;
       const c = data.choghadiya || data.output?.choghadiya || {};
       const ch = c.output || c.data || c.result || c;
-      const tithi = pick(nested, ["tithi.name","tithi_name","tithiName","tithi"]);
-      const paksha = pick(nested, ["tithi.paksha","paksha.name","paksha","fortnight"]);
+      const tithi = pick(nested, ["tithi.name_gu","tithi.gujarati_name","tithi.nameGujarati","tithi.name","tithi_name","tithiName","tithi"]);
+      const paksha = pick(nested, ["tithi.paksha_gu","tithi.pakshaGujarati","tithi.paksha","paksha.name","paksha","fortnight"]);
+      const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujaratiMonth.name","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.name","month.gujarati","month.name_gu"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
       set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
+      set("panchangGujaratiMonth", gujaratiMonth ?? "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
       set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
       set("panchangYoga", yoga ?? "યોગ ઉપલબ્ધ નથી");
       set("panchangKarana", karana ?? "કરણ ઉપલબ્ધ નથી");
