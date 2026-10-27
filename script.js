@@ -10,7 +10,6 @@ function initializeWebsite() {
   initializeMobileMenu();
   initializeSectionCards();
   initializeGujaratiCalendar();
-  initializePanchangDateControls();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
@@ -970,85 +969,122 @@ function loadContact(database) {
    Gujarati monthly calendar (displayed inside the website)
 -------------------------------------------------- */
 function initializeGujaratiCalendar() {
-  const grid = document.getElementById("gujaratiCalendar");
+  const grid = document.getElementById("calendarMonthDual");
   const title = document.getElementById("calendarMonthTitle");
   const previous = document.getElementById("calendarPrev");
   const next = document.getElementById("calendarNext");
+  const todayButton = document.getElementById("calendarToday");
+  const selectedLabel = document.getElementById("calendarSelectedDate");
+  const choghadiyaList = document.getElementById("choghadiyaList");
+  const choghadiyaDateLabel = document.getElementById("choghadiyaDateLabel");
   if (!grid || !title || !previous || !next) return;
 
   const now = new Date();
+  const dateOnly = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
   let shownMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  let selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const monthFormatter = new Intl.DateTimeFormat("gu-IN", { month: "long", year: "numeric" });
-  const number = value => new Intl.NumberFormat("gu-IN").format(value);
-  const weekdays = ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"];
-  const isoDate = date => date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
-  let festivalDates = {};
-  document.addEventListener("panchang:festivals-updated", event => {
-    festivalDates = event.detail?.dates || {};
-    render();
-  });
+  let selectedDate = dateOnly(now);
+  let choghadiyaMode = "day";
+  const guMonth = new Intl.DateTimeFormat("gu-IN", { month: "long", year: "numeric" });
+  const enMonth = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" });
+  const guNumber = value => new Intl.NumberFormat("gu-IN").format(value);
+  const isoDate = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const weekdays = ["રવિ","સોમ","મંગળ","બુધ","ગુરુ","શુક્ર","શનિ"];
+  const englishWeekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const choghadiyaNames = ["ઉદ્વેગ","ચર","લાભ","અમૃત","કાળ","શુભ","રોગ"];
+  const weekdaySequence = [
+    [0,1,2,3,4,5,6,1],
+    [6,0,1,2,3,4,5,0],
+    [5,6,0,1,2,3,4,6],
+    [4,5,6,0,1,2,3,5],
+    [3,4,5,6,0,1,2,4],
+    [2,3,4,5,6,0,1,3],
+    [1,2,3,4,5,6,0,2]
+  ];
+  const nightSequence = [
+    [4,5,6,0,1,2,3,5],
+    [3,4,5,6,0,1,2,4],
+    [2,3,4,5,6,0,1,3],
+    [1,2,3,4,5,6,0,2],
+    [0,1,2,3,4,5,6,1],
+    [6,0,1,2,3,4,5,0],
+    [5,6,0,1,2,3,4,6]
+  ];
 
-  function render() {
-    grid.replaceChildren();
-    title.textContent = monthFormatter.format(shownMonth);
-    weekdays.forEach(day => {
-      const cell = document.createElement("div");
-      cell.className = "calendar-day weekday";
-      cell.textContent = day;
-      grid.appendChild(cell);
+  function timeText(totalMinutes) {
+    const mins = ((totalMinutes % 1440) + 1440) % 1440;
+    const h = Math.floor(mins/60), m = mins%60;
+    return String(h%12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h<12?"AM":"PM");
+  }
+
+  function renderChoghadiya() {
+    if (!choghadiyaList) return;
+    choghadiyaList.replaceChildren();
+    const weekday = selectedDate.getDay();
+    const sequence = (choghadiyaMode === "day" ? weekdaySequence : nightSequence)[weekday];
+    const startMinutes = choghadiyaMode === "day" ? 6*60 : 18*60;
+    const segment = 90;
+    sequence.forEach((nameIndex, i) => {
+      const row = document.createElement("div");
+      row.className = "choghadiya-row";
+      const name = document.createElement("strong");
+      name.textContent = choghadiyaNames[nameIndex];
+      name.className = [0,2,3,5].includes(nameIndex) ? "choghadiya-auspicious" : "choghadiya-caution";
+      const time = document.createElement("span");
+      time.textContent = timeText(startMinutes+i*segment)+" – "+timeText(startMinutes+(i+1)*segment);
+      const serial = document.createElement("small");
+      serial.textContent = guNumber(i+1);
+      row.append(serial,name,time);
+      choghadiyaList.appendChild(row);
     });
-
-    const firstWeekday = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), 1).getDay();
-    const daysInMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 0).getDate();
-
-    for (let i = 0; i < firstWeekday; i++) {
-      const blank = document.createElement("div");
-      blank.className = "calendar-day empty";
-      blank.setAttribute("aria-hidden", "true");
-      grid.appendChild(blank);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const cellDate = new Date(shownMonth.getFullYear(), shownMonth.getMonth(), day);
-      const cell = document.createElement("button");
-      cell.type = "button";
-      cell.className = "calendar-day";
-      cell.dataset.calendarDate = isoDate(cellDate);
-      cell.setAttribute("aria-label", new Intl.DateTimeFormat("gu-IN", { dateStyle: "full" }).format(cellDate));
-      if (cellDate.toDateString() === now.toDateString()) cell.classList.add("today");
-      if (cellDate.toDateString() === selectedDate.toDateString()) cell.classList.add("selected");
-      cell.append(document.createTextNode(number(day)));
-      const small = document.createElement("small");
-      small.textContent = cellDate.toLocaleDateString("gu-IN", { weekday: "short" });
-      cell.appendChild(small);
-      cell.addEventListener("click", () => {
-        selectedDate = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
-        render();
-        document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: isoDate(selectedDate) } }));
-        const panel = document.getElementById("panchang-live-panel");
-        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-      grid.appendChild(cell);
+    if (choghadiyaDateLabel) {
+      choghadiyaDateLabel.textContent = new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(selectedDate);
     }
   }
 
-  previous.addEventListener("click", () => {
-    shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() - 1, 1);
-    render();
-  });
-  next.addEventListener("click", () => {
-    shownMonth = new Date(shownMonth.getFullYear(), shownMonth.getMonth() + 1, 1);
-    render();
-  });
-  document.addEventListener("panchang:select-date", event => {
-    const parts = String(event.detail?.date || "").split("-").map(Number);
-    if (parts.length === 3 && parts.every(Number.isFinite)) {
-      selectedDate = new Date(parts[0], parts[1]-1, parts[2]);
-      shownMonth = new Date(parts[0], parts[1]-1, 1);
-      render();
+  function render() {
+    grid.replaceChildren();
+    title.textContent = guMonth.format(shownMonth)+"  •  "+enMonth.format(shownMonth);
+    const header = document.createElement("div");
+    header.className = "calendar-weekdays";
+    weekdays.forEach((day,i) => {
+      const cell = document.createElement("div");
+      cell.textContent = day+" / "+englishWeekdays[i];
+      header.appendChild(cell);
+    });
+    grid.appendChild(header);
+    const daysGrid = document.createElement("div");
+    daysGrid.className = "calendar-days-grid";
+    const first = new Date(shownMonth.getFullYear(),shownMonth.getMonth(),1).getDay();
+    const total = new Date(shownMonth.getFullYear(),shownMonth.getMonth()+1,0).getDate();
+    for(let i=0;i<first;i++){
+      const blank=document.createElement("div"); blank.className="calendar-date empty"; daysGrid.appendChild(blank);
     }
-  });
+    for(let day=1;day<=total;day++){
+      const date=new Date(shownMonth.getFullYear(),shownMonth.getMonth(),day);
+      const button=document.createElement("button");
+      button.type="button"; button.className="calendar-date";
+      button.appendChild(document.createTextNode(guNumber(day)));
+      const small=document.createElement("small");
+      small.textContent=String(day);
+      button.appendChild(small);
+      if(date.toDateString()===dateOnly(now).toDateString()) button.classList.add("today");
+      if(date.toDateString()===selectedDate.toDateString()) button.classList.add("selected");
+      button.setAttribute("aria-label",new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(date));
+      button.addEventListener("click",()=>{selectedDate=dateOnly(date);render();renderChoghadiya();});
+      daysGrid.appendChild(button);
+    }
+    grid.appendChild(daysGrid);
+    if(selectedLabel) selectedLabel.textContent = "પસંદ કરેલી તારીખ: "+new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(selectedDate)+"  |  "+new Intl.DateTimeFormat("en-IN",{dateStyle:"full"}).format(selectedDate);
+    renderChoghadiya();
+  }
+  previous.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()-1,1);render();});
+  next.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()+1,1);render();});
+  if(todayButton) todayButton.addEventListener("click",()=>{selectedDate=dateOnly(new Date());shownMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render();});
+  document.querySelectorAll("[data-choghadiya]").forEach(button=>button.addEventListener("click",()=>{
+    choghadiyaMode=button.dataset.choghadiya;
+    document.querySelectorAll("[data-choghadiya]").forEach(b=>b.classList.toggle("active",b===button));
+    renderChoghadiya();
+  }));
   render();
 }
 
