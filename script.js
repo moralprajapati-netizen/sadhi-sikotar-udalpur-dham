@@ -1165,13 +1165,9 @@ function initializeGujaratiCalendar() {
       const button=document.createElement("button");
       button.type="button"; button.className="calendar-date";
       const mainNumber=document.createElement("span");
-      mainNumber.className="calendar-date-gu";
-      mainNumber.textContent=guNumber(day);
+      mainNumber.className="calendar-date-en";
+      mainNumber.textContent=String(day);
       button.appendChild(mainNumber);
-      const small=document.createElement("small");
-      small.className="calendar-date-en";
-      small.textContent=String(day);
-      button.appendChild(small);
       if(date.toDateString()===dateOnly(now).toDateString()) button.classList.add("today");
       if(date.toDateString()===selectedDate.toDateString()) button.classList.add("selected");
       button.setAttribute("aria-label",new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(date));
