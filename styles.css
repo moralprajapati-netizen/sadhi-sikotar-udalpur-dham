@@ -1994,3 +1994,153 @@ body.section-view-active main > .hero { display: none !important; }
 #panchang .choghadiya-period-title{margin:16px 0 9px;color:#741827;font-size:1rem}
 #panchang .choghadiya-empty{grid-column:1/-1;margin:0;padding:14px;background:#fff;border:1px dashed #d8bd79;border-radius:10px;color:#6f5b50}
 @media(max-width:820px){#panchang .panchang-dashboard-grid{grid-template-columns:1fr}}
+
+
+/* Final Panchang layout and Gujarati readability overrides */
+#panchang,
+#panchang * {
+  box-sizing: border-box;
+  min-width: 0;
+}
+#panchang {
+  overflow: clip;
+  font-family: "Noto Serif Gujarati", "Noto Sans Gujarati", serif;
+  line-height: 1.65;
+}
+#panchang button,
+#panchang input,
+#panchang select {
+  font: inherit;
+}
+#panchang .panchang-cover-copy h2,
+#panchang .simple-panel-heading h3,
+#panchang .simple-panel-heading p,
+#panchang .calendar-selected-date,
+#panchang .panchang-day-details,
+#panchang .choghadiya-period-title,
+#panchang .calendar-note {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+#panchang .panchang-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(12px, 2vw, 20px);
+}
+#panchang .simple-calendar-panel,
+#panchang .simple-choghadiya-panel {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  min-width: 0;
+}
+#panchang .simple-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+#panchang .simple-panel-heading > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+#panchang .calendar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+#panchang #calendarMonthTitle {
+  flex: 1 1 130px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#panchang .calendar-month-dual,
+#panchang .calendar-days-grid {
+  min-width: 0;
+  width: 100%;
+}
+#panchang .calendar-days-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+#panchang .calendar-date {
+  min-width: 0;
+  padding: 5px 1px;
+  overflow-wrap: anywhere;
+}
+#panchang .panchang-day-details p {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) minmax(0, 1fr);
+  gap: 6px 9px;
+  overflow-wrap: anywhere;
+}
+#panchang .panchang-sun-times {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#panchang .panchang-sun-times > div {
+  min-width: 0;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+#panchang .panchang-sun-times strong {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+#panchang .choghadiya-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 7px;
+}
+#panchang .choghadiya-row {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: 7px;
+  padding: 10px;
+}
+#panchang .choghadiya-row > span {
+  white-space: normal;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+#panchang .choghadiya-empty {
+  grid-column: 1 / -1;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 820px) {
+  #panchang .panchang-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #panchang .simple-calendar-panel,
+  #panchang .simple-choghadiya-panel {
+    padding: 14px;
+  }
+}
+@media (max-width: 420px) {
+  #panchang .panchang-cover-copy h2 {
+    font-size: clamp(1.2rem, 6vw, 1.7rem);
+  }
+  #panchang .panchang-day-details p {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  #panchang .calendar-controls button {
+    padding: 7px 9px;
+  }
+  #panchang .calendar-weekdays > div {
+    font-size: .68rem;
+    padding-inline: 0;
+    overflow-wrap: anywhere;
+  }
+  #panchang .calendar-date {
+    min-height: 44px;
+    font-size: .9rem;
+  }
+  #panchang .choghadiya-row {
+    grid-template-columns: 24px minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 5px;
+    padding: 8px 6px;
+  }
+}
