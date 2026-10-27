@@ -1979,3 +1979,18 @@ body.section-view-active main > .hero { display: none !important; }
 .calendar-note{margin:14px 0 0;color:#786b60;font-size:.84rem;line-height:1.7}
 .choghadiya-warning{padding:13px 15px;border-left:4px solid #c99b38;background:#fff4d7;border-radius:8px;color:#6c4c1c}
 @media(max-width:600px){.calendar-date{min-height:50px;font-size:.95rem}.calendar-weekdays>div{font-size:.61rem;padding:9px 1px}.choghadiya-list{grid-template-columns:1fr}.choghadiya-row{grid-template-columns:28px 1fr 1.25fr;padding:11px 9px}.choghadiya-row>span{font-size:.78rem}.simple-calendar-panel,.simple-choghadiya-panel{padding:14px;border-radius:16px}.simple-calendar-controls{gap:6px}.simple-calendar-controls button{padding:7px 11px}}
+
+
+/* Panchang: calendar and day/night choghadiya side by side */
+#panchang .panchang-dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+#panchang .simple-calendar-panel,#panchang .simple-choghadiya-panel{max-width:none;min-width:0;margin:0;padding:clamp(12px,2vw,22px)}
+#panchang .panchang-day-details{margin-top:14px;padding:12px 14px;background:#fff8e9;border:1px solid #ead7a8;border-radius:12px}
+#panchang .panchang-day-details p{margin:7px 0;line-height:1.55}
+#panchang .panchang-day-details strong{color:#741827}
+#panchang .panchang-sun-times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}
+#panchang .panchang-sun-times>div{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px;border:1px solid #eadfc8;border-radius:10px;background:#fff}
+#panchang .panchang-sun-times span{font-size:.85rem;color:#6f5b50}
+#panchang .panchang-sun-times strong{color:#741827}
+#panchang .choghadiya-period-title{margin:16px 0 9px;color:#741827;font-size:1rem}
+#panchang .choghadiya-empty{grid-column:1/-1;margin:0;padding:14px;background:#fff;border:1px dashed #d8bd79;border-radius:10px;color:#6f5b50}
+@media(max-width:820px){#panchang .panchang-dashboard-grid{grid-template-columns:1fr}}
