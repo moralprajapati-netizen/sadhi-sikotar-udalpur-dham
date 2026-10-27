@@ -1089,10 +1089,10 @@ function initializeGujaratiCalendar() {
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || "પંચાંગ API જવાબ આપતું નથી");
       if (requestId !== panchangRequestId) return;
-      const p = data.panchang || {};
-      const nested = p.data || p.result || p;
-      const c = data.choghadiya || {};
-      const ch = c.data || c.result || c;
+      const p = data.panchang || data.output?.panchang || {};
+      const nested = p.output || p.data || p.result || p;
+      const c = data.choghadiya || data.output?.choghadiya || {};
+      const ch = c.output || c.data || c.result || c;
       const tithi = pick(nested, ["tithi.name","tithi_name","tithiName","tithi"]);
       const paksha = pick(nested, ["tithi.paksha","paksha.name","paksha","fortnight"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
@@ -1124,6 +1124,13 @@ function initializeGujaratiCalendar() {
       console.error("Udalpur Panchang load failed:", error);
       set("panchangTithi", "લાઇવ પંચાંગ લોડ થઈ શક્યું નથી");
       set("panchangNakshatra", "Worker/API કનેક્શન તપાસવું પડશે");
+      set("panchangYoga", "ઉપલબ્ધ નથી");
+      set("panchangKarana", "ઉપલબ્ધ નથી");
+      set("panchangSamvat", "ઉપલબ્ધ નથી");
+      [".panchang-sun-grid"].forEach(selector => {
+        const grid = document.querySelector(selector);
+        if (grid) grid.querySelectorAll("strong, b").forEach(el => { el.textContent = "ઉપલબ્ધ નથી"; });
+      });
       [document.getElementById("choghadiyaDayList"),document.getElementById("choghadiyaNightList")].forEach(el => {
         if (!el) return;
         el.replaceChildren();
