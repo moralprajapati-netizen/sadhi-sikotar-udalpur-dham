@@ -1121,7 +1121,7 @@ function initializeGujaratiCalendar() {
       const toMinutes = value => {
         if (typeof value === "number" && Number.isFinite(value)) return value < 24 ? Math.round(value * 60) : Math.round(value);
         if (typeof value !== "string") return null;
-        const m = value.match(/(\\d{1,2}):(\\d{2})(?::\\d{2})?\\s*(AM|PM)?/i);
+        const m = value.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
         if (!m) return null;
         let h = Number(m[1]) % 12;
         if ((m[3] || "").toUpperCase() === "PM") h += 12;
