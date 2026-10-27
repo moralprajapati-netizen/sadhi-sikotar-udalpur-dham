@@ -1096,9 +1096,13 @@ function initializeGujaratiCalendar() {
       const tithi = pick(nested, ["tithi.name","tithi_name","tithiName","tithi"]);
       const paksha = pick(nested, ["tithi.paksha","paksha.name","paksha","fortnight"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
+      const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
+      const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
       set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
       set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
+      set("panchangYoga", yoga ?? "યોગ ઉપલબ્ધ નથી");
+      set("panchangKarana", karana ?? "કરણ ઉપલબ્ધ નથી");
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
@@ -1108,7 +1112,7 @@ function initializeGujaratiCalendar() {
       const sunGrid = document.querySelector(".panchang-sun-grid");
       if (sunGrid) [sunrise,sunset,moonrise,moonset].forEach((value,i) => {
         const card = sunGrid.querySelectorAll("div")[i];
-        const strong = card && card.querySelector("b");
+        const strong = card && card.querySelector("strong, b");
         if (strong) strong.textContent = clock(value);
       });
       const dayItems = pick(ch, ["day","day.choghadiya","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
