@@ -1094,7 +1094,7 @@ function initializeGujaratiCalendar() {
       const ch = c.output || c.data || c.result || c;
       const tithi = pick(nested, ["tithi.name_gu","tithi.gujarati_name","tithi.nameGujarati","tithi.name","tithi_name","tithiName","tithi"]);
       const paksha = pick(nested, ["tithi.paksha_gu","tithi.pakshaGujarati","tithi.paksha","paksha.name","paksha","fortnight"]);
-      const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujaratiMonth.name","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.name","month.gujarati","month.name_gu"]);
+      const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujarati_month.gujarati","gujaratiMonth.name_gu","gujaratiMonth.gujarati_name","gujaratiMonth.name","gujaratiMonth.gujarati","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.gujarati_name","lunar_month.name","lunarMonth.name_gu","lunarMonth.name","hindu_month.name","hinduMonth.name","month.gujarati","month.name_gu"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
@@ -1116,8 +1116,34 @@ function initializeGujaratiCalendar() {
         const strong = card && card.querySelector("strong, b");
         if (strong) strong.textContent = clock(value);
       });
-      const dayItems = pick(ch, ["day","day.choghadiya","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
-      const nightItems = pick(ch, ["night","night.choghadiya","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
+      let dayItems = pick(ch, ["day.choghadiya","day.items","day.periods","day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
+      let nightItems = pick(ch, ["night.choghadiya","night.items","night.periods","night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
+      const toMinutes = value => {
+        if (typeof value === "number" && Number.isFinite(value)) return value < 24 ? Math.round(value * 60) : Math.round(value);
+        if (typeof value !== "string") return null;
+        const m = value.match(/(\\d{1,2}):(\\d{2})(?::\\d{2})?\\s*(AM|PM)?/i);
+        if (!m) return null;
+        let h = Number(m[1]) % 12;
+        if ((m[3] || "").toUpperCase() === "PM") h += 12;
+        return h * 60 + Number(m[2]);
+      };
+      const makeFallback = (sunriseValue, sunsetValue, isNight) => {
+        const sunriseMin = toMinutes(sunriseValue), sunsetMin = toMinutes(sunsetValue);
+        if (sunriseMin == null || sunsetMin == null || sunriseMin === sunsetMin) return null;
+        const start = isNight ? sunsetMin : sunriseMin;
+        let duration = isNight ? (sunriseMin + 1440 - sunsetMin) : (sunsetMin - sunriseMin);
+        if (duration <= 0) duration += 1440;
+        const sequence = isNight ? nightSequence : weekdaySequence;
+        const weekday = new Date(date + "T12:00:00").getDay();
+        const names = sequence[weekday];
+        return names.map((nameIndex, index) => {
+          const a = start + duration * index / 8;
+          const b = start + duration * (index + 1) / 8;
+          return { name: choghadiyaNames[nameIndex], start: timeText(a), end: timeText(b) };
+        });
+      };
+      if (!Array.isArray(dayItems)) dayItems = makeFallback(sunrise, sunset, false);
+      if (!Array.isArray(nightItems)) nightItems = makeFallback(sunrise, sunset, true);
       drawList(document.getElementById("choghadiyaDayList"), dayItems);
       drawList(document.getElementById("choghadiyaNightList"), nightItems);
     } catch (error) {
@@ -1143,7 +1169,7 @@ function initializeGujaratiCalendar() {
 
   function render() {
     grid.replaceChildren();
-    title.textContent = guMonth.format(shownMonth)+"  •  "+enMonth.format(shownMonth);
+    title.textContent = enMonth.format(shownMonth);
     const header = document.createElement("div");
     header.className = "calendar-weekdays";
     weekdays.forEach((day,i) => {
