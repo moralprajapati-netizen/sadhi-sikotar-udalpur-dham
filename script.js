@@ -1046,6 +1046,29 @@ function initializeGujaratiCalendar() {
       return undefined;
     };
     const gu = value => typeof value === "number" ? new Intl.NumberFormat("gu-IN").format(value) : value;
+    // Panchang providers sometimes return localized fields as nested objects.
+    // Convert those safely instead of displaying "[object Object]" in the UI.
+    const readable = (value, preferred = []) => {
+      if (value == null || value === "") return undefined;
+      if (typeof value === "string" || typeof value === "number") return String(value);
+      if (Array.isArray(value)) {
+        const parts = value.map(item => readable(item, preferred)).filter(Boolean);
+        return parts.length ? parts.join(", ") : undefined;
+      }
+      if (typeof value === "object") {
+        const keys = [...preferred, "name_gu", "gujarati_name", "nameGujarati", "gujarati", "label_gu", "label", "name", "text", "value"];
+        for (const key of [...new Set(keys)]) {
+          if (value[key] != null && value[key] !== "" && typeof value[key] !== "object") return String(value[key]);
+        }
+        for (const key of [...new Set(keys)]) {
+          if (value[key] != null) {
+            const nestedValue = readable(value[key], preferred);
+            if (nestedValue) return nestedValue;
+          }
+        }
+      }
+      return undefined;
+    };
     const clock = value => {
       if (value == null || value === "") return "ઉપલબ્ધ નથી";
       if (typeof value === "string") return value;
@@ -1099,11 +1122,14 @@ function initializeGujaratiCalendar() {
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
-      set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
-      set("panchangGujaratiMonth", gujaratiMonth ?? "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
-      set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
-      set("panchangYoga", yoga ?? "યોગ ઉપલબ્ધ નથી");
-      set("panchangKarana", karana ?? "કરણ ઉપલબ્ધ નથી");
+      const tithiText = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const pakshaText = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const monthText = readable(gujaratiMonth, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "name"]);
+      set("panchangTithi", [pakshaText,tithiText].filter(Boolean).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
+      set("panchangGujaratiMonth", monthText || "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
+      set("panchangNakshatra", readable(nakshatra, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "નક્ષત્ર ઉપલબ્ધ નથી");
+      set("panchangYoga", readable(yoga, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "યોગ ઉપલબ્ધ નથી");
+      set("panchangKarana", readable(karana, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "કરણ ઉપલબ્ધ નથી");
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
