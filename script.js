@@ -990,24 +990,27 @@ function initializeGujaratiCalendar() {
   const isoDate = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
   const weekdays = ["રવિ","સોમ","મંગળ","બુધ","ગુરુ","શુક્ર","શનિ"];
   const englishWeekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  const choghadiyaNames = ["ઉદ્વેગ","ચર","લાભ","અમૃત","કાળ","શુભ","રોગ"];
+  const choghadiyaNames = ["ઉદ્વેગ","ચલ","લાભ","અમૃત","કાળ","શુભ","રોગ"];
+  // Standard Gujarati Choghadiya order by weekday (Sunday = 0).
+  // Index order: Udveg, Char, Labh, Amrit, Kaal, Shubh, Rog.
   const weekdaySequence = [
-    [0,1,2,3,4,5,6,1],
-    [6,0,1,2,3,4,5,0],
-    [5,6,0,1,2,3,4,6],
-    [4,5,6,0,1,2,3,5],
-    [3,4,5,6,0,1,2,4],
-    [2,3,4,5,6,0,1,3],
-    [1,2,3,4,5,6,0,2]
+    [0,1,2,3,4,5,6,0], // Sunday
+    [3,4,5,6,0,1,2,3], // Monday
+    [6,0,1,2,3,4,5,6], // Tuesday
+    [2,3,4,5,6,0,1,2], // Wednesday
+    [5,6,0,1,2,3,4,5], // Thursday
+    [1,2,3,4,5,6,0,1], // Friday
+    [4,5,6,0,1,2,3,4]  // Saturday
   ];
+  // Night starts five planetary positions after the weekday lord.
   const nightSequence = [
-    [4,5,6,0,1,2,3,5],
-    [3,4,5,6,0,1,2,4],
-    [2,3,4,5,6,0,1,3],
-    [1,2,3,4,5,6,0,2],
-    [0,1,2,3,4,5,6,1],
-    [6,0,1,2,3,4,5,0],
-    [5,6,0,1,2,3,4,6]
+    [5,3,1,6,4,2,0,5], // Sunday: Shubh
+    [1,6,4,2,0,5,3,1], // Monday: Char
+    [4,2,0,5,3,1,6,4], // Tuesday: Kaal
+    [0,5,3,1,6,4,2,0], // Wednesday: Udveg
+    [3,1,6,4,2,0,5,3], // Thursday: Amrit
+    [6,4,2,0,5,3,1,6], // Friday: Rog
+    [2,0,5,3,1,6,4,2]  // Saturday: Labh
   ];
 
   function timeText(totalMinutes) {
@@ -1046,6 +1049,29 @@ function initializeGujaratiCalendar() {
       return undefined;
     };
     const gu = value => typeof value === "number" ? new Intl.NumberFormat("gu-IN").format(value) : value;
+    // Panchang providers sometimes return localized fields as nested objects.
+    // Convert those safely instead of displaying "[object Object]" in the UI.
+    const readable = (value, preferred = []) => {
+      if (value == null || value === "") return undefined;
+      if (typeof value === "string" || typeof value === "number") return String(value);
+      if (Array.isArray(value)) {
+        const parts = value.map(item => readable(item, preferred)).filter(Boolean);
+        return parts.length ? parts.join(", ") : undefined;
+      }
+      if (typeof value === "object") {
+        const keys = [...preferred, "name_gu", "gujarati_name", "nameGujarati", "gujarati", "label_gu", "label", "name", "text", "value"];
+        for (const key of [...new Set(keys)]) {
+          if (value[key] != null && value[key] !== "" && typeof value[key] !== "object") return String(value[key]);
+        }
+        for (const key of [...new Set(keys)]) {
+          if (value[key] != null) {
+            const nestedValue = readable(value[key], preferred);
+            if (nestedValue) return nestedValue;
+          }
+        }
+      }
+      return undefined;
+    };
     const clock = value => {
       if (value == null || value === "") return "ઉપલબ્ધ નથી";
       if (typeof value === "string") return value;
@@ -1094,16 +1120,33 @@ function initializeGujaratiCalendar() {
       const ch = c.output || c.data || c.result || c;
       const tithi = pick(nested, ["tithi.name_gu","tithi.gujarati_name","tithi.nameGujarati","tithi.name","tithi_name","tithiName","tithi"]);
       const paksha = pick(nested, ["tithi.paksha_gu","tithi.pakshaGujarati","tithi.paksha","paksha.name","paksha","fortnight"]);
-      const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujarati_month.gujarati","gujaratiMonth.name_gu","gujaratiMonth.gujarati_name","gujaratiMonth.name","gujaratiMonth.gujarati","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.gujarati_name","lunar_month.name","lunarMonth.name_gu","lunarMonth.name","hindu_month.name","hinduMonth.name","month.gujarati","month.name_gu"]);
+      const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujarati_month.gujarati","gujaratiMonth.name_gu","gujaratiMonth.gujarati_name","gujaratiMonth.name","gujaratiMonth.gujarati","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.gujarati_name","lunar_month.name","lunar_month.amanta","lunarMonth.name_gu","lunarMonth.gujarati_name","lunarMonth.name","lunarMonth.amanta","lunarMonth.amanta_month","masa.amanta","masa.name","masa","hindu_month.name","hinduMonth.name","month.gujarati","month.name_gu"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
-      set("panchangTithi", [paksha,tithi].filter(Boolean).map(String).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
-      set("panchangGujaratiMonth", gujaratiMonth ?? "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
-      set("panchangNakshatra", nakshatra ?? "નક્ષત્ર ઉપલબ્ધ નથી");
-      set("panchangYoga", yoga ?? "યોગ ઉપલબ્ધ નથી");
-      set("panchangKarana", karana ?? "કરણ ઉપલબ્ધ નથી");
+      const tithiText = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const pakshaText = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const monthText = readable(gujaratiMonth, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "amanta", "amanta_month", "name"]);
+      const monthEnglishKey = String(monthText || "").toLowerCase().replace(/[^a-z]/g, "");
+      const gujaratiMonthMap = {
+        chaitra:"ચૈત્ર", chaitram:"ચૈત્ર", vaishakha:"વૈશાખ", vaishakh:"વૈશાખ",
+        jyeshtha:"જેઠ", jyeshta:"જેઠ", ashada:"અષાઢ", ashadha:"અષાઢ",
+        shravana:"શ્રાવણ", shravan:"શ્રાવણ", bhadrapada:"ભાદરવો", bhadra:"ભાદરવો",
+        ashvina:"આસો", ashwin:"આસો", ashwina:"આસો", kartika:"કારતક", kartik:"કારતક",
+        margashirsha:"માગશર", margashira:"માગશર", agrahayana:"માગશર",
+        pausha:"પોષ", paush:"પોષ", magha:"મહા", magh:"મહા",
+        phalguna:"ફાગણ", phalgun:"ફાગણ"
+      };
+      const adhikaMonth = pick(nested, ["lunarMonth.isAdhika", "lunar_month.is_adhika", "lunar_month.adhika", "masa.isAdhika", "masa.adhika"]);
+      const monthGujaratiText = gujaratiMonthMap[monthEnglishKey]
+        ? ((adhikaMonth === true || String(adhikaMonth).toLowerCase() === "true") ? "અધિક " : "") + gujaratiMonthMap[monthEnglishKey]
+        : monthText;
+      set("panchangTithi", [pakshaText,tithiText].filter(Boolean).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
+      set("panchangGujaratiMonth", monthGujaratiText || "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
+      set("panchangNakshatra", readable(nakshatra, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "નક્ષત્ર ઉપલબ્ધ નથી");
+      set("panchangYoga", readable(yoga, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "યોગ ઉપલબ્ધ નથી");
+      set("panchangKarana", readable(karana, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "કરણ ઉપલબ્ધ નથી");
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
