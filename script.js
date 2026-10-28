@@ -1121,6 +1121,8 @@ function initializeGujaratiCalendar() {
       const c = data.choghadiya || data.output?.choghadiya || {};
       const ch = c.output || c.data || c.result || c;
       const tithi = pick(nested, ["tithi.name_gu","tithi.gujarati_name","tithi.nameGujarati","tithi.name","tithi_name","tithiName","tithi"]);
+      const tithiNumberRaw = pick(nested, ["tithi.number","tithi.tithi_number","tithiNumber","tithi_number","tithi.index"]);
+      const tithiNumber = Number(tithiNumberRaw);
       const paksha = pick(nested, ["tithi.paksha_gu","tithi.pakshaGujarati","tithi.paksha","paksha.name","paksha","fortnight"]);
       const gujaratiMonth = pick(nested, ["gujarati_month.name_gu","gujarati_month.gujarati_name","gujarati_month.gujarati","gujaratiMonth.name_gu","gujaratiMonth.gujarati_name","gujaratiMonth.name","gujaratiMonth.gujarati","gujarati_month","gujaratiMonth","lunar_month.name_gu","lunar_month.gujarati_name","lunar_month.name","lunar_month.amanta","lunarMonth.name_gu","lunarMonth.gujarati_name","lunarMonth.name","lunarMonth.amanta","lunarMonth.amanta_month","masa.amanta","masa.name","masa","hindu_month.name","hinduMonth.name","month.gujarati","month.name_gu"]);
       const nakshatra = pick(nested, ["nakshatra.name","nakshatra_name","nakshatraName","nakshatra"]);
@@ -1136,14 +1138,23 @@ function initializeGujaratiCalendar() {
         chaturdashi:"ચૌદસ", purnima:"પૂનમ", purnimaa:"પૂનમ", amavasya:"અમાસ", amavasyaa:"અમાસ"
       };
       const tithiKey = String(tithiTextRaw || "").toLowerCase().replace(/[^a-zā]/g, "");
-      const tithiText = tithiGujaratiMap[tithiKey] || tithiTextRaw;
+      const tithiByNumber = {
+        1:"પ્રથમા", 2:"બીજ", 3:"ત્રીજ", 4:"ચોથ", 5:"પાંચમ", 6:"છઠ્ઠ", 7:"સાતમ",
+        8:"આઠમ", 9:"નોમ", 10:"દશમ", 11:"અગિયારસ", 12:"બારસ", 13:"તેરસ", 14:"ચૌદસ",
+        15:"પૂનમ", 16:"પ્રથમા", 17:"બીજ", 18:"ત્રીજ", 19:"ચોથ", 20:"પાંચમ",
+        21:"છઠ્ઠ", 22:"સાતમ", 23:"આઠમ", 24:"નોમ", 25:"દશમ", 26:"અગિયારસ",
+        27:"બારસ", 28:"તેરસ", 29:"ચૌદસ", 30:"અમાસ"
+      };
+      const tithiText = tithiGujaratiMap[tithiKey] || (Number.isFinite(tithiNumber) ? tithiByNumber[tithiNumber] : undefined) || tithiTextRaw;
       const pakshaRaw = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
       const pakshaKey = String(pakshaRaw || "").toLowerCase().replace(/[^a-z]/g, "");
       const pakshaText = /^(shukla|shuklapaksha|sukla|suklapaksha)$/.test(pakshaKey)
         ? "શુક્લ પક્ષ"
         : /^(krishna|krishnapaksha|krsna|krsnapaksha)$/.test(pakshaKey)
           ? "કૃષ્ણ પક્ષ"
-          : pakshaRaw;
+          : pakshaRaw || (Number.isFinite(tithiNumber) && tithiNumber >= 1 && tithiNumber <= 30
+            ? (tithiNumber <= 15 ? "શુક્લ પક્ષ" : "કૃષ્ણ પક્ષ")
+            : undefined);
       const monthText = readable(gujaratiMonth, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "amanta", "amanta_month", "name"]);
       const monthEnglishKey = String(monthText || "").toLowerCase().replace(/[^a-z]/g, "");
       const gujaratiMonthMap = {
@@ -1179,12 +1190,16 @@ function initializeGujaratiCalendar() {
       let dayItems = pick(ch, ["day.choghadiya","day.items","day.periods","day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
       let nightItems = pick(ch, ["night.choghadiya","night.items","night.periods","night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
       const toMinutes = value => {
+        if (value && typeof value === "object") value = readable(value, ["time","local_time","formatted","value","start"]);
         if (typeof value === "number" && Number.isFinite(value)) return value < 24 ? Math.round(value * 60) : Math.round(value);
         if (typeof value !== "string") return null;
         const m = value.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?/i);
         if (!m) return null;
-        let h = Number(m[1]) % 12;
-        if ((m[3] || "").toUpperCase() === "PM") h += 12;
+        let h = Number(m[1]);
+        if (m[3]) {
+          h %= 12;
+          if (m[3].toUpperCase() === "PM") h += 12;
+        }
         return h * 60 + Number(m[2]);
       };
       const makeFallback = (sunriseValue, sunsetValue, isNight) => {
