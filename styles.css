@@ -2339,3 +2339,36 @@ body.section-view-active main > .hero { display: none !important; }
   #sections .section-folder-card,
   #sections .section-folder-cover img { transition: none !important; }
 }
+
+
+/* Fix: keep section names below the first-row cover icons visible and unclipped. */
+#sections .section-folder-info {
+  display: block !important;
+  min-height: 48px;
+  padding: 10px 8px 12px;
+  text-align: center;
+  background: #fffdf8;
+  border-top: 1px solid rgba(217,173,85,.55);
+}
+#sections .section-folder-info h3 {
+  display: block;
+  margin: 0;
+  color: #741827;
+  font-size: clamp(.84rem, 1.15vw, 1rem);
+  font-weight: 800;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+#sections .section-folder-info p {
+  display: none !important;
+}
+@media (max-width: 600px) {
+  #sections .section-folder-info {
+    min-height: 46px;
+    padding: 8px 5px 10px;
+  }
+  #sections .section-folder-info h3 {
+    font-size: .82rem;
+    line-height: 1.4;
+  }
+}
