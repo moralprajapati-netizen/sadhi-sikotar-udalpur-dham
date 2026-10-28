@@ -1131,11 +1131,14 @@ function initializeGujaratiCalendar() {
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
       const tithiTextRaw = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
       const tithiGujaratiMap = {
-        pratipada:"પ્રથમા", pratipāda:"પ્રથમા", dwitiya:"બીજ", dvitiya:"બીજ", tritiya:"ત્રીજ",
-        chaturthi:"ચોથ", panchami:"પાંચમ", shashthi:"છઠ્ઠ", sashti:"છઠ્ઠ", saptami:"સાતમ",
-        ashtami:"આઠમ", astami:"આઠમ", navami:"નોમ", dashami:"દશમ", ekadashi:"અગિયારસ",
-        ekadasi:"અગિયારસ", dwadashi:"બારસ", dvadashi:"બારસ", trayodashi:"તેરસ",
-        chaturdashi:"ચૌદસ", purnima:"પૂનમ", purnimaa:"પૂનમ", amavasya:"અમાસ", amavasyaa:"અમાસ"
+        pratipada:"પ્રથમા", pratipadam:"પ્રથમા", prathamai:"પ્રથમા", pratipāda:"પ્રથમા",
+        dwitiya:"બીજ", dvitiya:"બીજ", dvitiyai:"બીજ", tritiya:"ત્રીજ", tritiyai:"ત્રીજ",
+        chaturthi:"ચોથ", chaturthī:"ચોથ", panchami:"પાંચમ", panchami:"પાંચમ",
+        shashthi:"છઠ્ઠ", sashti:"છઠ્ઠ", shashti:"છઠ્ઠ", shashthi:"છઠ્ઠ", saptami:"સાતમ",
+        ashtami:"આઠમ", astami:"આઠમ", navami:"નોમ", navami:"નોમ", dashami:"દશમ", dasami:"દશમ",
+        ekadashi:"અગિયારસ", ekadasi:"અગિયારસ", ekadashi:"અગિયારસ", dwadashi:"બારસ",
+        dvadashi:"બારસ", trayodashi:"તેરસ", chaturdashi:"ચૌદસ", purnima:"પૂનમ",
+        purnimaa:"પૂનમ", paurnima:"પૂનમ", amavasya:"અમાસ", amavasyaa:"અમાસ"
       };
       const tithiKey = String(tithiTextRaw || "").toLowerCase().replace(/[^a-zā]/g, "");
       const tithiByNumber = {
