@@ -17,11 +17,11 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/svg+xml" href="./icon.svg">
 
-  <link rel="stylesheet" href="./styles.css?v=20261028d">
+  <link rel="stylesheet" href="./styles.css?v=20261028f">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261028e"></script>
+  <script defer src="./script.js?v=20261028f"></script>
 
   <style>
     .section-folder-grid {
@@ -439,35 +439,14 @@
           <h2>વિભાગ પસંદ કરો</h2>
           <p>દરેક વિભાગ તેના કવર ફોટા સાથે — ખોલવા માટે કાર્ડ પર ક્લિક કરો.</p>
         </div>
-        <div class="section-folder-grid">
-          <a class="section-folder-card folder-bhajan" href="#bhajan">
-            <div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261022" alt="ભજન અને આરતીનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>ભજન અને આરતી</h3><p>ભજન, આરતી, મંત્ર અને જાપ</p></div>
-          </a>
-          <a class="section-folder-card folder-stories" href="#stories">
-            <div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261022" alt="ધાર્મિક કથાઓનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>ધાર્મિક કથાઓ</h3><p>માતાજીના પ્રસંગો અને કથાઓ</p></div>
-          </a>
-          <a class="section-folder-card folder-gallery" href="#gallery">
-            <div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261022" alt="દર્શન ગેલેરીનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>દર્શન ગેલેરી</h3><p>માતાજીનાં ફોટા અને પાવન દર્શન</p></div>
-          </a>
-          <a class="section-folder-card folder-festivals" href="#festivals">
-            <div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261022" alt="પર્વ અને ઉત્સવનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>પર્વ અને ઉત્સવ</h3><p>ધાર્મિક કાર્યક્રમો અને ઉત્સવો</p></div>
-          </a>
-          <a class="section-folder-card folder-video" href="#video">
-            <div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261022" alt="લાઇવ દર્શન અને વિડિયોનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>લાઇવ દર્શન અને વિડિયો</h3><p>લાઇવ, આરતી અને કાર્યક્રમોના વિડિયો</p></div>
-          </a>
-          <a class="section-folder-card folder-history" href="#history">
-            <div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261022" alt="ધામના પરિચયનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>ધામનો પરિચય</h3><p>મંદિર, પરંપરા અને ઇતિહાસ</p></div>
-          </a>
-          <a class="section-folder-card folder-contact" href="#contact">
-            <div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261022" alt="સંપર્ક અને માહિતીનું કવર" loading="lazy"></div>
-            <div class="section-folder-info"><h3>સંપર્ક અને નકશો</h3><p>સરનામું, ફોન અને નકશો</p></div>
-          </a>
+        <div class="section-folder-grid" aria-label="ધામના મુખ્ય વિભાગો">
+          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261028f" alt="ધામનો પરિચય" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">⌂</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/temple-cover.svg?v=20261028f" alt="મંદિર વિશે" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">ॐ</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261028f" alt="ભજન અને આરતી" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">♫</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-media" href="#media" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/media-cover.svg?v=20261028f" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">▶</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261028f" alt="પર્વ અને ઉત્સવ" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">✺</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261028f" alt="ધાર્મિક કથા" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">ॐ</span> વિભાગ ખોલો</span></a>
+          <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરવો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261028f" alt="સંપર્ક કરવો" loading="lazy"></div><span class="section-card-hint"><span aria-hidden="true">⌖</span> વિભાગ ખોલો</span></a>
         </div>
       </div>
     </section>
@@ -497,7 +476,19 @@
       </div>
     </section>
 
-    <!-- ધાર્મિક પ્રસંગો અને વાર્તાઓ -->
+<!-- મંદિર વિશે -->
+    <section class="section section-alt" id="temple">
+      <div class="container">
+        <div class="section-heading"><span class="section-kicker">માતાજીનું પાવન સ્થાન</span><h2>મંદિર વિશે</h2><p>સધી સિકોતર માતાજી ઉદલપુરધામ</p></div>
+        <div class="section-content temple-intro">
+          <p>ઉદલપુરધામમાં સધી સિકોતર માતાજી પ્રત્યેની શ્રદ્ધા અને ભક્તિ સાથે ભક્તજનો દર્શન અને પ્રાર્થના માટે જોડાય છે.</p>
+          <p>મંદિરના ઇતિહાસ, પરંપરા, દર્શનના સમય અને કાર્યક્રમોની પ્રમાણિત માહિતી ઉપલબ્ધ થતાં અહીં અપડેટ કરવામાં આવશે.</p>
+          <a class="btn btn-primary" href="#contact">મંદિરનો સંપર્ક કરો</a>
+        </div>
+      </div>
+    </section>
+
+        <!-- ધાર્મિક પ્રસંગો અને વાર્તાઓ -->
     <section class="section section-alt" id="stories">
       <div class="container">
         <div class="section-heading">
