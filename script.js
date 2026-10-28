@@ -87,57 +87,46 @@ function initializeMobileMenu() {
 function initializeSectionCards() {
   const main = document.querySelector("main");
   if (!main) return;
-
   const home = document.getElementById("home");
   const cardsSection = document.getElementById("sections");
   const cards = Array.from(document.querySelectorAll(".section-folder-card[href^='#']"));
-  const contentSections = Array.from(main.querySelectorAll(":scope > section"))
-    .filter((section) => section !== home && section !== cardsSection);
+  const sections = Array.from(main.querySelectorAll(":scope > section")).filter(s => s !== home && s !== cardsSection);
   const mediaIds = ["gallery", "video"];
-
-  contentSections.forEach((section) => { section.hidden = true; });
+  sections.forEach(s => { s.hidden = true; });
 
   function showOnlySection(id, shouldScroll = true) {
-    const isMedia = id === "media";
-    const targetIds = isMedia ? mediaIds : [id];
-    const target = contentSections.find((section) => section.id === targetIds[0]);
-    if (!target || (isMedia && !contentSections.some((section) => section.id === "video"))) return false;
-
-    contentSections.forEach((section) => {
-      section.hidden = !targetIds.includes(section.id);
-    });
-    cards.forEach((card) => {
+    const ids = id === "media" ? mediaIds : [id];
+    const target = sections.find(s => s.id === ids[0]);
+    if (!target || (id === "media" && !sections.some(s => s.id === "video"))) return false;
+    sections.forEach(s => { s.hidden = !ids.includes(s.id); });
+    cards.forEach(card => {
       if (card.getAttribute("href") === "#" + id) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
     });
     document.body.classList.add("section-view-active");
-
     if (shouldScroll) target.scrollIntoView({ behavior: "smooth", block: "start" });
     return true;
   }
 
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", (event) => {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", event => {
       const id = link.getAttribute("href").slice(1);
       if (id === "home") {
         event.preventDefault();
-        contentSections.forEach((section) => { section.hidden = true; });
-        cards.forEach((card) => card.removeAttribute("aria-current"));
+        sections.forEach(s => { s.hidden = true; });
+        cards.forEach(card => card.removeAttribute("aria-current"));
         document.body.classList.remove("section-view-active");
         history.replaceState(null, "", window.location.pathname + window.location.search);
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
-      if (id !== "media" && !contentSections.some((section) => section.id === id)) return;
+      if (id !== "media" && !sections.some(s => s.id === id)) return;
       event.preventDefault();
       if (showOnlySection(id)) history.replaceState(null, "", "#" + id);
     });
   });
-
   const initialId = window.location.hash.slice(1);
-  if (initialId && (initialId === "media" || contentSections.some((section) => section.id === initialId))) {
-    showOnlySection(initialId, false);
-  }
+  if (initialId && (initialId === "media" || sections.some(s => s.id === initialId))) showOnlySection(initialId, false);
 }
 
 /* --------------------------------------------------
