@@ -9,7 +9,6 @@ function initializeWebsite() {
   updateFooterYear();
   initializeMobileMenu();
   initializeSectionCards();
-  initializeGujaratiCalendar();
   initializePhotoLightbox();
   initializeGallerySlider();
   initializeFirebaseContent();
