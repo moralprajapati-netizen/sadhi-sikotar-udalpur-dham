@@ -1127,8 +1127,23 @@ function initializeGujaratiCalendar() {
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
-      const tithiText = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
-      const pakshaText = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const tithiTextRaw = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const tithiGujaratiMap = {
+        pratipada:"પ્રથમા", pratipāda:"પ્રથમા", dwitiya:"બીજ", dvitiya:"બીજ", tritiya:"ત્રીજ",
+        chaturthi:"ચોથ", panchami:"પાંચમ", shashthi:"છઠ્ઠ", sashti:"છઠ્ઠ", saptami:"સાતમ",
+        ashtami:"આઠમ", astami:"આઠમ", navami:"નોમ", dashami:"દશમ", ekadashi:"અગિયારસ",
+        ekadasi:"અગિયારસ", dwadashi:"બારસ", dvadashi:"બારસ", trayodashi:"તેરસ",
+        chaturdashi:"ચૌદસ", purnima:"પૂનમ", purnimaa:"પૂનમ", amavasya:"અમાસ", amavasyaa:"અમાસ"
+      };
+      const tithiKey = String(tithiTextRaw || "").toLowerCase().replace(/[^a-zā]/g, "");
+      const tithiText = tithiGujaratiMap[tithiKey] || tithiTextRaw;
+      const pakshaRaw = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
+      const pakshaKey = String(pakshaRaw || "").toLowerCase().replace(/[^a-z]/g, "");
+      const pakshaText = /^(shukla|shuklapaksha|sukla|suklapaksha)$/.test(pakshaKey)
+        ? "શુક્લ પક્ષ"
+        : /^(krishna|krishnapaksha|krsna|krsnapaksha)$/.test(pakshaKey)
+          ? "કૃષ્ણ પક્ષ"
+          : pakshaRaw;
       const monthText = readable(gujaratiMonth, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "amanta", "amanta_month", "name"]);
       const monthEnglishKey = String(monthText || "").toLowerCase().replace(/[^a-z]/g, "");
       const gujaratiMonthMap = {
