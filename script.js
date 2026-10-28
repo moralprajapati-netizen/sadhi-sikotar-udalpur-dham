@@ -1094,13 +1094,15 @@ function initializeGujaratiCalendar() {
       items.forEach((item, index) => {
         const row = document.createElement("div");
         row.className = "choghadiya-row";
-        const name = pick(item, ["name","choghadiya","label","type","title"]) ?? (typeof item === "string" ? item : "સમયખંડ "+(index+1));
-        const start = pick(item, ["start","start_time","from","startTime","begin"]);
-        const end = pick(item, ["end","end_time","to","endTime","finish"]);
+        const rawName = pick(item, ["name_gu","gujarati_name","nameGujarati","name","choghadiya","label","type","title"]) ?? (typeof item === "string" ? item : "સમયખંડ "+(index+1));
+        const name = readable(rawName, ["name_gu","gujarati_name","nameGujarati","gujarati","label","name","text","value"]) || "સમયખંડ "+(index+1);
+        const start = pick(item, ["start","start_time","from","startTime","begin","start.time","start.value"]);
+        const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
         span.textContent = String(name);
         const time = document.createElement("strong");
-        time.textContent = start != null || end != null ? clock(start)+" – "+clock(end) : String(pick(item,["time","timing","duration"]) ?? "");
+        const rawTime = pick(item,["time","timing","duration"]);
+        time.textContent = start != null || end != null ? clock(readable(start) || start)+" – "+clock(readable(end) || end) : (readable(rawTime) || "");
         row.append(span,time);
         el.appendChild(row);
       });
@@ -1212,7 +1214,7 @@ function initializeGujaratiCalendar() {
 
   function render() {
     grid.replaceChildren();
-    title.textContent = enMonth.format(shownMonth);
+    title.textContent = guMonth.format(shownMonth) + " / " + enMonth.format(shownMonth);
     const header = document.createElement("div");
     header.className = "calendar-weekdays";
     weekdays.forEach((day,i) => {
