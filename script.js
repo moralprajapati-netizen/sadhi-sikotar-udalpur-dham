@@ -646,7 +646,7 @@ function createBhajanCard(data) {
 
   let isAudioFile = false;
   try {
-    isAudioFile = /\\.(mp3|m4a|aac|ogg|wav|webm)$/i.test(new URL(linkUrl).pathname);
+    isAudioFile = /\.(mp3|m4a|aac|ogg|wav|webm)$/i.test(new URL(linkUrl).pathname);
   } catch {
     isAudioFile = false;
   }
