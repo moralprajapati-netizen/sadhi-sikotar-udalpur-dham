@@ -93,33 +93,26 @@ function initializeSectionCards() {
   const cards = Array.from(document.querySelectorAll(".section-folder-card[href^='#']"));
   const contentSections = Array.from(main.querySelectorAll(":scope > section"))
     .filter((section) => section !== home && section !== cardsSection);
+  const mediaIds = ["gallery", "video"];
 
-  let activeSectionId = "";
-
-  contentSections.forEach((section) => {
-    section.hidden = true;
-  });
+  contentSections.forEach((section) => { section.hidden = true; });
 
   function showOnlySection(id, shouldScroll = true) {
-    const target = contentSections.find((section) => section.id === id);
-    if (!target) return false;
+    const isMedia = id === "media";
+    const targetIds = isMedia ? mediaIds : [id];
+    const target = contentSections.find((section) => section.id === targetIds[0]);
+    if (!target || (isMedia && !contentSections.some((section) => section.id === "video"))) return false;
 
     contentSections.forEach((section) => {
-      section.hidden = section !== target;
+      section.hidden = !targetIds.includes(section.id);
     });
     cards.forEach((card) => {
-      if (card.getAttribute("href") === "#" + id) {
-        card.setAttribute("aria-current", "true");
-      } else {
-        card.removeAttribute("aria-current");
-      }
+      if (card.getAttribute("href") === "#" + id) card.setAttribute("aria-current", "true");
+      else card.removeAttribute("aria-current");
     });
-    activeSectionId = id;
     document.body.classList.add("section-view-active");
 
-    if (shouldScroll) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (shouldScroll) target.scrollIntoView({ behavior: "smooth", block: "start" });
     return true;
   }
 
@@ -130,23 +123,19 @@ function initializeSectionCards() {
         event.preventDefault();
         contentSections.forEach((section) => { section.hidden = true; });
         cards.forEach((card) => card.removeAttribute("aria-current"));
-        activeSectionId = "";
         document.body.classList.remove("section-view-active");
         history.replaceState(null, "", window.location.pathname + window.location.search);
         window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
-      if (!contentSections.some((section) => section.id === id)) return;
-
+      if (id !== "media" && !contentSections.some((section) => section.id === id)) return;
       event.preventDefault();
-      showOnlySection(id);
-      history.replaceState(null, "", "#" + id);
+      if (showOnlySection(id)) history.replaceState(null, "", "#" + id);
     });
   });
 
-  // Restore a direct section link on refresh so visitors never land on an empty view.
   const initialId = window.location.hash.slice(1);
-  if (initialId && contentSections.some((section) => section.id === initialId)) {
+  if (initialId && (initialId === "media" || contentSections.some((section) => section.id === initialId))) {
     showOnlySection(initialId, false);
   }
 }
