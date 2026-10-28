@@ -2365,3 +2365,14 @@ body.section-view-active main > .hero { display: none !important; }
   #sections .section-folder-grid { gap: 10px; }
   #sections .section-folder-cover { aspect-ratio: 4 / 3 !important; }
 }
+
+
+/* Keep the embedded Gujarati titles visible on the first four cover cards. */
+#sections .section-folder-card:nth-child(-n+4) .section-folder-cover img {
+  object-position: center bottom !important;
+}
+@media (max-width: 600px) {
+  #sections .section-folder-card:nth-child(-n+4) .section-folder-cover img {
+    object-position: center bottom !important;
+  }
+}
