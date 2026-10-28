@@ -634,6 +634,39 @@ function createContentCard(data, options = {}) {
    9. Bhajans
 -------------------------------------------------- */
 
+/* Render uploaded audio files with an in-page player; keep external links for other media. */
+function createBhajanCard(data) {
+  const linkUrl = typeof data.linkUrl === "string" ? data.linkUrl.trim() : "";
+  const card = createContentCard({ ...data, linkUrl: "" }, {
+    className: "live-bhajan-card"
+  });
+  if (!card) return null;
+
+  if (!linkUrl || !isSafeWebUrl(linkUrl)) return card;
+
+  let isAudioFile = false;
+  try {
+    isAudioFile = /\\.(mp3|m4a|aac|ogg|wav|webm)$/i.test(new URL(linkUrl).pathname);
+  } catch {
+    isAudioFile = false;
+  }
+
+  if (isAudioFile) {
+    const audio = document.createElement("audio");
+    audio.className = "bhajan-audio-player";
+    audio.controls = true;
+    audio.preload = "none";
+    audio.src = linkUrl;
+    audio.setAttribute("aria-label", (data.title || "ભજન") + " સાંભળો");
+    card.appendChild(audio);
+  } else {
+    const link = createSafeLink(linkUrl, "ભજન સાંભળો / ખોલો");
+    if (link) card.appendChild(link);
+  }
+
+  return card;
+}
+
 function loadBhajans(database) {
   const status = document.getElementById("bhajanStatus");
   const container = document.getElementById("bhajanList");
@@ -654,10 +687,7 @@ function loadBhajans(database) {
 
       status.textContent = `${documents.length} ભજન ઉપલબ્ધ છે.`;
 
-      appendFolderGroups(container, documents, (data) => createContentCard(data, {
-        className: "live-bhajan-card",
-        linkLabel: "ભજન સાંભળો / ખોલો"
-      }));
+      appendFolderGroups(container, documents, createBhajanCard);
 
       if (!container.children.length) {
         status.textContent =
