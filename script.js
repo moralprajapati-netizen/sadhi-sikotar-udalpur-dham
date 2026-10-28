@@ -1096,10 +1096,21 @@ function initializeGujaratiCalendar() {
         row.className = "choghadiya-row";
         const rawName = pick(item, ["name_gu","gujarati_name","nameGujarati","name","choghadiya","label","type","title"]) ?? (typeof item === "string" ? item : "સમયખંડ "+(index+1));
         const name = readable(rawName, ["name_gu","gujarati_name","nameGujarati","gujarati","label","name","text","value"]) || "સમયખંડ "+(index+1);
+        const choghadiyaKey = String(name).toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z]/g,"");
+        const choghadiyaGujarati = {
+          udveg:"ઉદ્વેગ", udvega:"ઉદ્વેગ", udvegam:"ઉદ્વેગ",
+          char:"ચલ", chara:"ચલ", chala:"ચલ",
+          labh:"લાભ", labha:"લાભ",
+          amrit:"અમૃત", amrita:"અમૃત", amruth:"અમૃત",
+          kaal:"કાળ", kala:"કાળ", kaala:"કાળ",
+          shubh:"શુભ", shubha:"શુભ", shubham:"શુભ",
+          rog:"રોગ", roga:"રોગ"
+        };
+        const displayName = choghadiyaGujarati[choghadiyaKey] || name;
         const start = pick(item, ["start","start_time","from","startTime","begin","start.time","start.value"]);
         const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
-        span.textContent = String(name);
+        span.textContent = String(displayName);
         const time = document.createElement("strong");
         const rawTime = pick(item,["time","timing","duration"]);
         time.textContent = start != null || end != null ? clock(readable(start) || start)+" – "+clock(readable(end) || end) : (readable(rawTime) || "");
