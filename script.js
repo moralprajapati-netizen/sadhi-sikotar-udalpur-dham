@@ -1432,3 +1432,19 @@ function initializePanchangDateControls() {
   });
   loadDay();
 }
+
+
+/* Accessible back-to-top shortcut; hidden until the visitor scrolls down. */
+(() => {
+  const backToTopButton = document.getElementById("backToTop");
+  if (!backToTopButton) return;
+  const updateBackToTopVisibility = () => {
+    backToTopButton.classList.toggle("is-visible", window.scrollY > 320);
+  };
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  backToTopButton.addEventListener("click", () => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+  updateBackToTopVisibility();
+})();
