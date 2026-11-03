@@ -1,5 +1,5 @@
-const CACHE_NAME = "sadhi-sikotar-app-v35";
-const APP_FILES = ["./", "./index.html", "./styles.css?v=20261103d", "./script.js?v=20261103a", "./manifest.json", "./icon.svg", "./1.png", "./covers/bhajan-cover.jpg", "./covers/stories-cover.jpg", "./covers/gallery-cover.jpg", "./covers/festivals-cover.jpg", "./covers/video-cover.jpg", "./covers/history-cover.jpg", "./covers/contact-cover.jpg"];
+const CACHE_NAME = "sadhi-sikotar-app-v36";
+const APP_FILES = ["./", "./index.html", "./styles.css?v=20261103d", "./script.js?v=20261103a", "./manifest.json", "./icon.svg", "./1.png", "./covers/bhajan-cover.jpg?v=20261028j", "./covers/stories-cover.jpg?v=20261028j", "./covers/gallery-cover.jpg?v=20261028k", "./covers/festivals-cover.jpg?v=20261028j", "./covers/video-cover.jpg?v=20261028k", "./covers/history-cover.jpg?v=20261028j", "./covers/contact-cover.jpg?v=20261028j", "./2.png", "./copilot_20250729_095554.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
