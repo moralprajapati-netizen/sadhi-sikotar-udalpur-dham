@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moralprajapati-netizen.github.io/sadhi-sikotar-udalpur-dham/sitemap.xml
