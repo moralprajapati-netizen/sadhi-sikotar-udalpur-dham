@@ -92,13 +92,23 @@ function initializeSectionCards() {
   const cards = Array.from(document.querySelectorAll(".section-folder-card[href^='#']"));
   const sections = Array.from(main.querySelectorAll(":scope > section")).filter(s => s !== home && s !== cardsSection);
   const mediaIds = ["gallery", "video"];
+  const mainNavLinks = Array.from(document.querySelectorAll("#mainNav a[href^='#']"));
   sections.forEach(s => { s.hidden = true; });
+
+  function syncCurrentNavigation(id) {
+    mainNavLinks.forEach(link => {
+      const current = link.getAttribute("href") === "#" + id;
+      if (current) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  }
 
   function showOnlySection(id, shouldScroll = true) {
     const ids = id === "media" ? mediaIds : [id];
     const target = sections.find(s => s.id === ids[0]);
     if (!target || (id === "media" && !sections.some(s => s.id === "video"))) return false;
     sections.forEach(s => { s.hidden = !ids.includes(s.id); });
+    syncCurrentNavigation(id);
     cards.forEach(card => {
       if (card.getAttribute("href") === "#" + id) card.setAttribute("aria-current", "true");
       else card.removeAttribute("aria-current");
@@ -114,6 +124,7 @@ function initializeSectionCards() {
       if (id === "home") {
         event.preventDefault();
         sections.forEach(s => { s.hidden = true; });
+        syncCurrentNavigation("home");
         cards.forEach(card => card.removeAttribute("aria-current"));
         document.body.classList.remove("section-view-active");
         history.replaceState(null, "", window.location.pathname + window.location.search);
