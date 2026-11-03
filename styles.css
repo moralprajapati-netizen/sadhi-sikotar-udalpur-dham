@@ -2560,3 +2560,96 @@ body.section-view-active main > .hero { display: none !important; }
  }
  .hero-actions { margin-top: 20px; }
 }
+
+
+/* 2026-11 mobile usability pass: keep artwork and typography unchanged. */
+@media (max-width: 600px) {
+  #sections .section-folder-grid,
+  .section-folder-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    align-items: stretch;
+  }
+  #sections .section-folder-card,
+  .section-folder-card {
+    min-width: 0;
+    border-radius: 14px;
+  }
+  #sections .section-folder-cover,
+  .section-folder-cover {
+    aspect-ratio: 4 / 3 !important;
+  }
+  #sections .section-folder-cover img,
+  .section-folder-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    object-position: center !important;
+  }
+  #sections .section-card-hint,
+  .section-card-hint {
+    min-height: 42px;
+    padding: 7px 5px;
+    gap: 5px;
+    font-size: .78rem;
+    line-height: 1.45;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .live-bhajan-list,
+  .dynamic-content-list,
+  .gallery-dynamic-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .live-bhajan-card,
+  .dynamic-content-card {
+    min-width: 0;
+    padding: 17px 15px;
+    border-radius: 14px;
+  }
+  .live-bhajan-card h3,
+  .dynamic-content-card h3 {
+    font-size: 1.08rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .bhajan-audio-player {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 48px;
+    margin-top: 12px;
+    border-radius: 999px;
+  }
+  .live-bhajan-card a,
+  .dynamic-content-card a {
+    min-height: 46px;
+    max-width: 100%;
+    align-items: center;
+  }
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .gallery-card { min-width: 0; padding: 7px; }
+  .gallery-card > span { padding: 9px 4px 5px; font-size: .88rem; line-height: 1.5; }
+}
+
+@media (max-width: 360px) {
+  #sections .section-folder-grid,
+  .section-folder-grid { gap: 8px !important; }
+  #sections .section-card-hint,
+  .section-card-hint { font-size: .71rem; }
+  .live-bhajan-card,
+  .dynamic-content-card { padding: 14px 12px; }
+}
+
+.bhajan-audio-player {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 46px;
+  margin-top: 14px;
+}
