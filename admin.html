@@ -20,6 +20,13 @@
       --text: #38251e;
     }
     * { box-sizing: border-box; }
+    .skip-link {
+      position: absolute; top: 8px; left: 8px; z-index: 1000;
+      padding: 10px 14px; border: 2px solid var(--gold); border-radius: 8px;
+      background: var(--cream); color: var(--deep); font-weight: 700;
+      transform: translateY(-150%);
+    }
+    .skip-link:focus { transform: translateY(0); }
     body {
       margin: 0;
       padding: 18px;
@@ -151,12 +158,13 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#admin-main">મુખ્ય માહિતી પર જાઓ</a>
   <header>
     <h1>🛕 સધી સિકોતર માતાજી ઉદલપુરધામ</h1>
     <div>વેબસાઇટ મેનેજમેન્ટ પેનલ</div>
   </header>
 
-  <main>
+  <main id="admin-main" tabindex="-1">
     <section class="panel" id="loginPanel">
       <h2>એડમિન સાઇન ઇન</h2>
       <p>અધિકૃત Google એકાઉન્ટથી સાઇન ઇન કરો.</p>
