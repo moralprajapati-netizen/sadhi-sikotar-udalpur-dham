@@ -370,9 +370,10 @@
       try {
         const url = new URL(value);
         let videoId = "";
-        if (url.hostname === "youtu.be" || url.hostname.endsWith(".youtu.be")) {
+        const host = url.hostname.toLowerCase();
+        if (host === "youtu.be") {
           videoId = url.pathname.split("/").filter(Boolean)[0] || "";
-        } else if (url.hostname.includes("youtube.com")) {
+        } else if (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(host)) {
           if (url.pathname === "/watch") videoId = url.searchParams.get("v") || "";
           else if (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/") || url.pathname.startsWith("/live/")) {
             videoId = url.pathname.split("/").filter(Boolean)[1] || "";
@@ -789,12 +790,15 @@
             renderMediaPreview(preview, item.imageUrl, "image");
             article.appendChild(preview);
 
-            const imageLink = document.createElement("a");
-            imageLink.href = item.imageUrl;
-            imageLink.target = "_blank";
-            imageLink.rel = "noopener noreferrer";
-            imageLink.textContent = "ફોટો નવી ટેબમાં ખોલો";
-            article.appendChild(imageLink);
+            const safeImageUrl = safeUrl(item.imageUrl);
+            if (safeImageUrl) {
+              const imageLink = document.createElement("a");
+              imageLink.href = safeImageUrl;
+              imageLink.target = "_blank";
+              imageLink.rel = "noopener noreferrer";
+              imageLink.textContent = "ફોટો નવી ટેબમાં ખોલો";
+              article.appendChild(imageLink);
+            }
           }
 
           if (item.linkUrl) {
@@ -803,13 +807,16 @@
             renderMediaPreview(preview, item.linkUrl, "link");
             article.appendChild(preview);
 
-            const link = document.createElement("a");
-            link.href = item.linkUrl;
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-            link.textContent = "મીડિયા લિંક નવી ટેબમાં ખોલો";
-            link.style.display = "block";
-            article.appendChild(link);
+            const safeMediaUrl = safeUrl(item.linkUrl);
+            if (safeMediaUrl) {
+              const link = document.createElement("a");
+              link.href = safeMediaUrl;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              link.textContent = "મીડિયા લિંક નવી ટેબમાં ખોલો";
+              link.style.display = "block";
+              article.appendChild(link);
+            }
           }
 
           const editBtn = document.createElement("button");
