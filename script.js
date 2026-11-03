@@ -137,7 +137,11 @@ function initializeSectionCards() {
     });
   });
   const initialId = window.location.hash.slice(1);
-  if (initialId && (initialId === "media" || sections.some(s => s.id === initialId))) showOnlySection(initialId, false);
+  if (initialId && (initialId === "media" || sections.some(s => s.id === initialId))) {
+    showOnlySection(initialId, false);
+  } else {
+    syncCurrentNavigation("home");
+  }
 }
 
 /* --------------------------------------------------
