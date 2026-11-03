@@ -20,6 +20,15 @@
       --text: #38251e;
     }
     * { box-sizing: border-box; }
+    /* Visible keyboard focus for admin forms and actions. */
+    :where(a, button, input, textarea, select):focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+      box-shadow: 0 0 0 2px rgba(116,24,39,.14);
+    }
+    :where(input, textarea, select):focus-visible {
+      border-color: var(--maroon);
+    }
     .skip-link {
       position: absolute; top: 8px; left: 8px; z-index: 1000;
       padding: 10px 14px; border: 2px solid var(--gold); border-radius: 8px;
