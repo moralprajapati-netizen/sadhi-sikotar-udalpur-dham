@@ -2653,3 +2653,26 @@ body.section-view-active main > .hero { display: none !important; }
   min-height: 46px;
   margin-top: 14px;
 }
+
+
+/* Keyboard accessibility: reveal a skip-to-content link only when focused. */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 10000;
+  padding: 11px 16px;
+  border: 2px solid #d9ad55;
+  border-radius: 8px;
+  background: #410c19;
+  color: #fff8e9;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid #d9ad55;
+  outline-offset: 3px;
+}
