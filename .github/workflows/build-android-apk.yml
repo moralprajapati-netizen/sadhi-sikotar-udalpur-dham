@@ -1,5 +1,6 @@
 name: Build Android APK
 
+# Build is triggered by Android source/workflow changes or manually.
 on:
   workflow_dispatch:
   push:
