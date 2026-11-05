@@ -51,7 +51,7 @@
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261105a"></script>
+  <script defer src="./script.js?v=20261105c"></script>
 
   <style>
     .section-folder-grid {
@@ -498,146 +498,7 @@
           <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261028j" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
           <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261028j" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
           <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરવો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261028j" alt="સંપર્ક કરવો" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ ખોલો"><div class="section-folder-cover"><div class="panchang-cover-art" aria-hidden="true"><span class="panchang-cover-sun">☀</span><span class="panchang-cover-calendar"><span>ગુજરાતી પંચાંગ</span><strong>તિથિ • વાર</strong><small>ચોઘડિયા અને સમય</small></span></div><span class="panchang-cover-label">ગુજરાતી પંચાંગ</span></div></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ઉદલપુર ધામનું ગુજરાતી પંચાંગ -->
-    <section class="section section-alt" id="panchang">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">ઉદલપુર ધામ • પંચાંગ</span>
-          <h2>ગુજરાતી પંચાંગ અને ચોઘડિયા</h2>
-          <p>ઉદલપુર ધામના સ્થાન પ્રમાણે પસંદ કરેલી તારીખની તિથિ, ગુજરાતી મહિનો અને ચોઘડિયાની માહિતી.</p>
-        </div>
-        <div class="panchang-live-card section-content">
-          <p class="panchang-location" id="panchangLocation">ઉદલપુર ધામ, ગુજરાત</p>
-          <div class="panchang-summary-grid">
-            <article><span>ગુજરાતી મહિનો</span><strong id="panchangGujaratiMonth">લોડ થઈ રહ્યું છે…</strong></article>
-            <article><span>તિથિ અને પક્ષ</span><strong id="panchangTithi">લોડ થઈ રહ્યું છે…</strong></article>
-            <article><span>નક્ષત્ર</span><strong id="panchangNakshatra">લોડ થઈ રહ્યું છે…</strong></article>
-            <article><span>યોગ</span><strong id="panchangYoga">લોડ થઈ રહ્યું છે…</strong></article>
-            <article><span>કરણ</span><strong id="panchangKarana">લોડ થઈ રહ્યું છે…</strong></article>
-            <article><span>વિક્રમ સંવત</span><strong id="panchangSamvat">લોડ થઈ રહ્યું છે…</strong></article>
-          </div>
-          <div class="panchang-sun-grid">
-            <div><span>સૂર્યોદય</span><strong>લોડ થઈ રહ્યું છે…</strong></div>
-            <div><span>સૂર્યાસ્ત</span><strong>લોડ થઈ રહ્યું છે…</strong></div>
-            <div><span>ચંદ્રોદય</span><strong>લોડ થઈ રહ્યું છે…</strong></div>
-            <div><span>ચંદ્રાસ્ત</span><strong>લોડ થઈ રહ્યું છે…</strong></div>
-          </div>
-        </div>
-        <div class="panchang-calendar-card section-content">
-          <h3>તારીખ પસંદ કરો</h3>
-          <div class="calendar-controls">
-            <button id="calendarPrev" type="button" aria-label="પાછલો મહિનો">‹</button>
-            <strong id="calendarMonthTitle">ગુજરાતી મહિનો</strong>
-            <button id="calendarNext" type="button" aria-label="આગળનો મહિનો">›</button>
-          </div>
-          <div class="calendar-actions"><button id="calendarToday" class="btn btn-secondary" type="button">આજની તારીખ</button></div>
-          <div id="calendarMonthDual" class="gujarati-calendar-grid" aria-label="માસિક કેલેન્ડર"></div>
-          <p id="calendarSelectedDate" class="calendar-note" aria-live="polite"></p>
-          <h3>ચોઘડિયા</h3>
-          <p id="choghadiyaDateLabel" class="calendar-note"></p>
-          <div class="choghadiya-columns">
-            <section><h4>દિવસના ચોઘડિયા</h4><div id="choghadiyaDayList" aria-live="polite"><p>લોડ થઈ રહ્યું છે…</p></div></section>
-            <section><h4>રાત્રિના ચોઘડિયા</h4><div id="choghadiyaNightList" aria-live="polite"><p>લોડ થઈ રહ્યું છે…</p></div></section>
-          </div>
-          <p class="calendar-note">નોંધ: પંચાંગ અને સમયની માહિતી ઉપલબ્ધ સેવા પરથી લાઇવ મેળવવામાં આવે છે. માહિતી ન મળે તો તેને અનુમાનથી દર્શાવવામાં આવતી નથી.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- મંદિર વિશે -->
-    <section class="section" id="history">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">માતાજીની મહિમા</span>
-          <h2>ધામનો પરિચય</h2>
-          <p>સધી સિકોતર માતાજી ઉદલપુરધામ</p>
-        </div>
-
-        <div class="section-content" id="historyContent">
-          <p>
-            સધી સિકોતર માતાજી પ્રત્યેની શ્રદ્ધા અને ભક્તિ
-            ભક્તજનોના જીવનમાં વિશેષ સ્થાન ધરાવે છે.
-            માતાજીનાં દર્શન અને ભક્તિભાવ સાથે જોડાવા માટે
-            આ વેબસાઇટ બનાવવામાં આવી છે.
-          </p>
-
-          <p>
-            મંદિરનો ઇતિહાસ, પરંપરા અને પ્રમાણિત માહિતી
-            ઉપલબ્ધ થયા પછી અહીં પ્રકાશિત કરવામાં આવશે.
-          </p>
-        </div>
-      </div>
-    </section>
-
-<!-- મંદિર વિશે -->
-    <section class="section section-alt" id="temple">
-      <div class="container">
-        <div class="section-heading"><span class="section-kicker">માતાજીનું પાવન સ્થાન</span><h2>મંદિર વિશે</h2><p>સધી સિકોતર માતાજી ઉદલપુરધામ</p></div>
-        <div class="section-content temple-intro">
-          <p>ઉદલપુરધામમાં સધી સિકોતર માતાજી પ્રત્યેની શ્રદ્ધા અને ભક્તિ સાથે ભક્તજનો દર્શન અને પ્રાર્થના માટે જોડાય છે.</p>
-          <p>મંદિરના ઇતિહાસ, પરંપરા, દર્શનના સમય અને કાર્યક્રમોની પ્રમાણિત માહિતી ઉપલબ્ધ થતાં અહીં અપડેટ કરવામાં આવશે.</p>
-          <a class="btn btn-primary" href="#contact">મંદિરનો સંપર્ક કરો</a>
-        </div>
-      </div>
-    </section>
-
-        <!-- ધાર્મિક પ્રસંગો અને વાર્તાઓ -->
-    <section class="section section-alt" id="stories">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">શ્રદ્ધા અને સંસ્કાર</span>
-          <h2>ધાર્મિક કથાઓ</h2>
-          <p>ભક્તિપ્રેરક પ્રસંગો અને માતાજી સંબંધિત માહિતી</p>
-        </div>
-
-        <div id="storiesList" class="dynamic-content-list" aria-live="polite">
-          <p class="content-loading">પ્રસંગોની માહિતી લોડ થઈ રહી છે...</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ભક્તિ વિશેષતાઓ -->
-    <section class="section" id="bhakti">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-kicker">ભક્તિનો માર્ગ</span>
-          <h2>માતાજીની ભક્તિ</h2>
-          <p>ભક્તિ સાથે જોડાયેલા રહો</p>
-        </div>
-
-        <div class="features-grid">
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🙏</div>
-            <h3>માતાજીનાં દર્શન</h3>
-            <p>
-              ફોટો વિભાગમાં ઉપલબ્ધ માતાજીનાં દર્શન કરો.
-            </p>
-            <a href="#gallery">ફોટો જુઓ</a>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🎵</div>
-            <h3>ભજન અને આરતી</h3>
-            <p>
-              પ્રકાશિત ભજન અને ભક્તિ સંબંધિત માહિતી જુઓ.
-            </p>
-            <a href="#bhajan">ભજન વિભાગ</a>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon" aria-hidden="true">🪔</div>
-            <h3>ધાર્મિક ઉત્સવો</h3>
-            <p>
-              પ્રકાશિત ધાર્મિક કાર્યક્રમો અને ઉત્સવોની માહિતી મેળવો.
-            </p>
-            <a href="#festivals">ઉત્સવો જુઓ</a>
-          </article>
-        </div>
+                  </div>
       </div>
     </section>
 
