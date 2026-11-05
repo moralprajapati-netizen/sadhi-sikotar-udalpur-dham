@@ -11,6 +11,7 @@ function initializeWebsite() {
   initializeSectionCards();
   initializePhotoLightbox();
   initializeGallerySlider();
+  initializeGujaratiCalendar();
   initializeFirebaseContent();
 }
 
@@ -1324,115 +1325,6 @@ function initializeGujaratiCalendar() {
   }));
   render();
 }
-
-/* Live Panchang data for Ahmedabad. Source: ShastraPanchangam public API. */
-function initializePanchangDateControls() {
-  const label = document.getElementById("panchangDateLabel");
-  const prev = document.getElementById("panchangPrev");
-  const next = document.getElementById("panchangNext");
-  const today = document.getElementById("panchangToday");
-  if (!label || !prev || !next || !today) return;
-
-  let selected = new Date();
-  const formatter = new Intl.DateTimeFormat("gu-IN", { day: "2-digit", month: "long", year: "numeric" });
-  const digits = value => new Intl.NumberFormat("gu-IN").format(value);
-  const tithis = ["", "પ્રથમા", "બીજ", "ત્રીજ", "ચોથ", "પાંચમ", "છઠ્ઠ", "સાતમ", "આઠમ", "નોમ", "દસમ", "એકાદશી", "બારસ", "તેરસ", "ચૌદસ", "પૂર્ણિમા", "અમાસ"];
-  const nakshatras = ["અશ્વિની","ભરણી","કૃતિકા","રોહિણી","મૃગશીર્ષ","આર્દ્રા","પુનર્વસુ","પુષ્ય","આશ્લેષા","મઘા","પૂર્વા ફાલ્ગુની","ઉત્તરા ફાલ્ગુની","હસ્ત","ચિત્રા","સ્વાતિ","વિશાખા","અનુરાધા","જ્યેષ્ઠા","મૂળ","પૂર્વાષાઢા","ઉત્તરાષાઢા","શ્રવણ","ધનિષ્ઠા","શતભિષા","પૂર્વાભાદ્રપદ","ઉત્તરાભાદ્રપદ","રેવતી"];
-  const byId = id => document.getElementById(id);
-  function setText(id, text) { const el = byId(id); if (el) el.textContent = text; }
-  function clock(minutes) {
-    if (typeof minutes !== "number" || !Number.isFinite(minutes)) return "ઉપલબ્ધ નથી";
-    const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
-    return new Intl.DateTimeFormat("gu-IN", { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "UTC" }).format(new Date(Date.UTC(2020,0,1,Math.floor(m/60),m%60)));
-  }
-  function isoDate(date) {
-    return date.getFullYear()+"-"+String(date.getMonth()+1).padStart(2,"0")+"-"+String(date.getDate()).padStart(2,"0");
-  }
-  async function loadDay() {
-    label.textContent = formatter.format(selected);
-    today.setAttribute("aria-pressed", String(new Date().toDateString() === selected.toDateString()));
-    const stamp = isoDate(selected);
-    setText("panchangTithi", "પંચાંગ લોડ થઈ રહ્યું છે…");
-    try {
-      let d;
-      try {
-        const response = await fetch("https://shastrapanchangam.com/api/v1/day/ahmedabad/"+stamp+".json", { cache: "no-store" });
-        if (!response.ok) throw new Error("Primary Panchang API response "+response.status);
-        const payload = await response.json();
-        d = payload.day || payload;
-      } catch (primaryError) {
-        console.warn("Primary Panchang source unavailable; trying fallback:", primaryError);
-        const fallbackResponse = await fetch("https://api.apimitra.in/panchang?city=ahmedabad&date="+stamp, { cache: "no-store" });
-        if (!fallbackResponse.ok) throw new Error("Fallback Panchang API response "+fallbackResponse.status);
-        const fallback = await fallbackResponse.json();
-        if (fallback.status && fallback.status !== "ok") throw new Error("Fallback Panchang data unavailable");
-        const parseClock = value => {
-          if (typeof value !== "string") return null;
-          const match = value.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
-          if (!match) return null;
-          let hour = Number(match[1]) % 12;
-          if ((match[3] || "").toUpperCase() === "PM") hour += 12;
-          return hour * 60 + Number(match[2]);
-        };
-        d = {
-          tithi_name: fallback.tithi || "તિથિ ઉપલબ્ધ નથી",
-          paksha: fallback.paksha === "Shukla" ? "Shukla" : fallback.paksha === "Krishna" ? "Krishna" : "",
-          nakshatra_name: fallback.nakshatra || "નક્ષત્ર ઉપલબ્ધ નથી",
-          sunrise: parseClock(fallback.sunrise),
-          sunset: parseClock(fallback.sunset),
-          moonrise: parseClock(fallback.moonrise),
-          moonset: parseClock(fallback.moonset),
-          rahu_kalam: parseClock(fallback.rahu_kalam || fallback.rahukaal),
-          vikram_samvat: fallback.vikram_samvat || fallback.samvat,
-          tithi_ends: null
-        };
-        d._fallback = true;
-      }
-      const paksha = d.paksha === "Shukla" ? "શુક્લ પક્ષ" : d.paksha === "Krishna" ? "કૃષ્ણ પક્ષ" : "";
-      const tithiName = d.tithi_name || tithis[d.tithi] || "તિથિ ઉપલબ્ધ નથી";
-      setText("panchangTithi", paksha ? paksha+" — "+tithiName : tithiName);
-      setText("panchangNakshatra", d.nakshatra_name || (d.nakshatra ? nakshatras[(d.nakshatra-1)%27] : "નક્ષત્ર ઉપલબ્ધ નથી"));
-      setText("panchangLocation", "અમદાવાદ, ગુજરાત • "+formatter.format(selected));
-      const samvat = d.vikram_samvat ?? d.vikramSamvat ?? d.samvat;
-      setText("panchangSamvat", samvat !== undefined && samvat !== null && String(samvat).trim() !== "" ? digits(samvat) : "ચોક્કસ સંવત ઉપલબ્ધ નથી");
-      const sunrise=d.sunrise, sunset=d.sunset, moonrise=d.moonrise, moonset=d.moonset;
-      const sunGrid=document.querySelector(".panchang-sun-grid");
-      if (sunGrid) {
-        const vals=[sunrise,sunset,moonrise,moonset];
-        const labels=["સૂર્યોદય","સૂર્યાસ્ત","ચંદ્રોદય","ચંદ્રાસ્ત"];
-        sunGrid.querySelectorAll("div").forEach((card,i)=>{ const b=card.querySelector("b"); if(b) b.textContent=clock(vals[i]); });
-      }
-      const rahu=typeof d.rahu_kalam==="number" ? clock(d.rahu_kalam)+" (શરૂઆતનો સમય)" : "ઉપલબ્ધ નથી";
-      const muhurta=document.querySelector(".panchang-muhurta-card");
-      if(muhurta) { const strong=muhurta.querySelectorAll("strong"); if(strong[0]) strong[0].textContent=rahu; }
-      setText("panchangFestival", "તહેવાર/વ્રત: આ તારીખ માટે અલગથી ચકાસો");
-      setText("panchangFestival2", "તિથિ સમાપ્તિ: "+(typeof d.tithi_ends==="number" ? clock(d.tithi_ends) : "ઉપલબ્ધ નથી"));
-    } catch (error) {
-      console.error("Live Panchang load failed:", error);
-      setText("panchangTithi", "લાઇવ તિથિ લોડ થઈ શકી નથી");
-      setText("panchangNakshatra", "કૃપા કરીને ઇન્ટરનેટ કનેક્શન તપાસો");
-    }
-  }
-  function syncCalendarToSelectedDate() {
-    document.dispatchEvent(new CustomEvent("panchang:select-date", { detail: { date: isoDate(selected), source: "panchang-controls" } }));
-  }
-  prev.addEventListener("click", () => { selected.setDate(selected.getDate()-1); syncCalendarToSelectedDate(); });
-  next.addEventListener("click", () => { selected.setDate(selected.getDate()+1); syncCalendarToSelectedDate(); });
-  today.addEventListener("click", () => { selected = new Date(); syncCalendarToSelectedDate(); });
-  document.querySelectorAll("[data-panchang-tab]").forEach(button => button.addEventListener("click", () => {
-    const panel = document.getElementById(button.dataset.panchangTab === "calendar" ? "panchangCalendarPanel" : "panchang-live-panel");
-    if (panel) panel.scrollIntoView({ behavior:"smooth", block:"start" });
-  }));
-  document.addEventListener("panchang:select-date", event => {
-    const parts = String(event.detail?.date || "").split("-").map(Number);
-    if (parts.length === 3 && parts.every(Number.isFinite)) {
-      selected = new Date(parts[0], parts[1]-1, parts[2]);
-      loadDay();
-    }
-  });
-  loadDay();
-}
-
 
 /* Accessible back-to-top shortcut; hidden until the visitor scrolls down. */
 (() => {
