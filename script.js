@@ -998,7 +998,6 @@ function initializeGujaratiCalendar() {
   const next = document.getElementById("calendarNext");
   const todayButton = document.getElementById("calendarToday");
   const selectedLabel = document.getElementById("calendarSelectedDate");
-  const choghadiyaList = document.getElementById("choghadiyaList");
   const choghadiyaDateLabel = document.getElementById("choghadiyaDateLabel");
   if (!grid || !title || !previous || !next) return;
 
@@ -1006,7 +1005,6 @@ function initializeGujaratiCalendar() {
   const dateOnly = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
   let shownMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   let selectedDate = dateOnly(now);
-  let choghadiyaMode = "day";
   const guMonth = new Intl.DateTimeFormat("gu-IN", { month: "long", year: "numeric" });
   const enMonth = new Intl.DateTimeFormat("en-IN", { month: "long", year: "numeric" });
   const guNumber = value => new Intl.NumberFormat("gu-IN").format(value);
@@ -1318,11 +1316,6 @@ function initializeGujaratiCalendar() {
   previous.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()-1,1);render();});
   next.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()+1,1);render();});
   if(todayButton) todayButton.addEventListener("click",()=>{selectedDate=dateOnly(new Date());shownMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render();});
-  document.querySelectorAll("[data-choghadiya]").forEach(button=>button.addEventListener("click",()=>{
-    choghadiyaMode=button.dataset.choghadiya;
-    document.querySelectorAll("[data-choghadiya]").forEach(b=>b.classList.toggle("active",b===button));
-    renderChoghadiya();
-  }));
   render();
 }
 
