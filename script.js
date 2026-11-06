@@ -1130,7 +1130,31 @@ function initializeGujaratiCalendar() {
     };
     const clock = value => {
       if (value == null || value === "") return "ઉપલબ્ધ નથી";
-      if (typeof value === "string") return value;
+
+      // API timestamps are UTC ISO strings; display them in Udalpur local time.
+      if (typeof value === "string" && /^\\d{4}-\\d{2}-\\d{2}T/.test(value)) {
+        const dateValue = new Date(value);
+        if (!Number.isNaN(dateValue.getTime())) {
+          const parts = new Intl.DateTimeFormat("en-IN", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            hourCycle: "h23"
+          }).formatToParts(dateValue);
+          const hour = Number(parts.find(part => part.type === "hour")?.value);
+          const minute = parts.find(part => part.type === "minute")?.value || "00";
+          const period = hour >= 5 && hour < 12
+            ? "સવારે"
+            : hour >= 12 && hour < 16
+              ? "બપોરે"
+              : hour >= 16 && hour < 19
+                ? "સાંજે"
+                : "રાત્રે";
+          const displayHour = hour % 12 || 12;
+          return String(displayHour).padStart(2, "0") + ":" + minute + " " + period;
+        }
+      }
+
       if (typeof value === "number" && value < 1440) {
         const h = Math.floor(value / 60), m = Math.round(value % 60);
         return String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h < 12 ? "AM" : "PM");
