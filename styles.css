@@ -2254,18 +2254,43 @@ body.section-view-active main > .hero { display: none !important; }
 }
 
 
-/* Fix: remove the extra corner symbols covering the existing cover artwork.
-   The cover images already include their own artwork and Gujarati labels. */
-.section-folder-cover::after,
-.folder-stories .section-folder-cover::after,
-.folder-gallery .section-folder-cover::after,
-.folder-festivals .section-folder-cover::after,
-.folder-video .section-folder-cover::after,
-.folder-history .section-folder-cover::after,
-.folder-contact .section-folder-cover::after,
-.folder-panchang .section-folder-cover::after {
-  content: none !important;
-  display: none !important;
+/* Clean, meaningful section icons: small badges that do not cover the Gujarati cover titles. */
+.section-folder-cover::after {
+  content: "♫" !important;
+  display: grid !important;
+  top: 10px;
+  left: 10px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,248,233,.9);
+  border-radius: 50%;
+  color: #fff8e9;
+  background: rgba(65,12,25,.86);
+  box-shadow: 0 4px 13px rgba(0,0,0,.24), inset 0 0 0 1px rgba(217,173,85,.45);
+  font-family: system-ui, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  text-shadow: none;
+  pointer-events: none;
+}
+.folder-history .section-folder-cover::after { content: "⌂" !important; }
+.folder-temple .section-folder-cover::after { content: "🏛️" !important; font-size: 1.15rem; }
+.folder-bhajan .section-folder-cover::after { content: "♫" !important; }
+.folder-media .section-folder-cover::after { content: "▶" !important; font-size: 1.05rem; }
+.folder-festivals .section-folder-cover::after { content: "✺" !important; }
+.folder-stories .section-folder-cover::after { content: "ॐ" !important; font-size: 1.1rem; }
+.folder-contact .section-folder-cover::after { content: "☎" !important; }
+@media (max-width: 600px) {
+  .section-folder-cover::after {
+    top: 8px;
+    left: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  .folder-temple .section-folder-cover::after { font-size: 1rem; }
+  .folder-media .section-folder-cover::after { font-size: .95rem; }
+  .folder-stories .section-folder-cover::after { font-size: 1rem; }
 }
 .section-folder-cover::before {
   background: linear-gradient(180deg, rgba(35,5,12,.02) 35%, rgba(35,5,12,.10) 100%) !important;
