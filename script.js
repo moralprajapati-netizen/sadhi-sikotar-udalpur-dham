@@ -1526,6 +1526,8 @@ function initializeGujaratiCalendar() {
       calendarData = next;
       renderCalendarGrid();
     } catch (error) {
+      monthCache.delete(key);
+      yearFestivalCache.delete(year);
       console.error("Gujarati monthly calendar load failed:",error);
     }
   }
