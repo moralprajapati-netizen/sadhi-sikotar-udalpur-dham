@@ -47,11 +47,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261106g">
+  <link rel="stylesheet" href="./styles.css?v=20261106h">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261106g"></script>
+  <script defer src="./script.js?v=20261106h"></script>
 
   <style>
     .section-folder-grid {
@@ -546,6 +546,31 @@
         padding:10px 8px;
       }
       #panchang .choghadiya-row > strong { font-size:.82rem; }
+    }
+
+  
+    /* Minimal Gujarati-only calendar */
+    #panchang .panchang-calendar-card > h3:first-child { margin:0 0 12px; text-align:center; font-size:1.15rem; }
+    #panchang .calendar-controls { display:grid; grid-template-columns:42px minmax(0,1fr) 42px; align-items:center; gap:10px; margin:12px 0; }
+    #panchang .calendar-controls strong { text-align:center; font-size:1.05rem; color:#741827; line-height:1.4; }
+    #panchang .calendar-actions { margin:0 0 12px; }
+    #panchang #calendarSelectedDate { display:none; }
+    #panchang #calendarMonthDual { display:block; width:100%; border:1px solid #eadfc9; border-radius:12px; overflow:hidden; background:#fff; }
+    #panchang .calendar-weekdays, #panchang .calendar-days-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:0; width:100%; }
+    #panchang .calendar-weekdays { background:#741827; color:#fff8e9; }
+    #panchang .calendar-weekdays > div { min-width:0; padding:10px 1px; text-align:center; font-size:.82rem; font-weight:800; line-height:1.3; }
+    #panchang .calendar-date { display:flex; justify-content:center; align-items:center; min-width:0; min-height:48px; padding:4px 1px; border:0; border-right:1px solid #f0e8d8; border-bottom:1px solid #f0e8d8; border-radius:0; background:#fffdf8; color:#38251e; font-size:1rem; font-weight:700; }
+    #panchang .calendar-date.today { box-shadow:inset 0 0 0 2px #d9ad55; background:#fff4d7; }
+    #panchang .calendar-date.selected { background:#741827; color:#fff8e9; outline:none; }
+    #panchang .calendar-date.empty { background:#faf6ee; }
+    #panchang .calendar-date-en { display:block; }
+    #panchang #choghadiyaDateLabel { margin:12px 0; text-align:center; font-weight:700; color:#765b48; }
+    @media(max-width:600px) {
+      #panchang .calendar-weekdays > div { padding:8px 0; font-size:.72rem; }
+      #panchang .calendar-date { min-height:43px; font-size:.9rem; }
+      #panchang .calendar-controls { grid-template-columns:38px minmax(0,1fr) 38px; gap:6px; }
+      #panchang .calendar-controls button { width:38px; height:38px; }
+      #panchang .calendar-controls strong { font-size:.95rem; }
     }
 
   </style>
