@@ -1348,12 +1348,12 @@ function initializeGujaratiCalendar() {
 
   function render() {
     grid.replaceChildren();
-    title.textContent = guMonth.format(shownMonth) + " / " + enMonth.format(shownMonth);
+    title.textContent = guMonth.format(shownMonth);
     const header = document.createElement("div");
     header.className = "calendar-weekdays";
     weekdays.forEach((day,i) => {
       const cell = document.createElement("div");
-      cell.textContent = day+" / "+englishWeekdays[i];
+      cell.textContent = day;
       header.appendChild(cell);
     });
     grid.appendChild(header);
@@ -1370,7 +1370,7 @@ function initializeGujaratiCalendar() {
       button.type="button"; button.className="calendar-date";
       const mainNumber=document.createElement("span");
       mainNumber.className="calendar-date-en";
-      mainNumber.textContent=String(day);
+      mainNumber.textContent=guNumber(day);
       button.appendChild(mainNumber);
       if(date.toDateString()===dateOnly(now).toDateString()) button.classList.add("today");
       if(date.toDateString()===selectedDate.toDateString()) button.classList.add("selected");
@@ -1379,7 +1379,7 @@ function initializeGujaratiCalendar() {
       daysGrid.appendChild(button);
     }
     grid.appendChild(daysGrid);
-    if(selectedLabel) selectedLabel.textContent = "પસંદ કરેલી તારીખ: "+new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(selectedDate)+"  |  "+new Intl.DateTimeFormat("en-IN",{dateStyle:"full"}).format(selectedDate);
+    if(selectedLabel) selectedLabel.textContent = "";
     renderChoghadiya();
   }
   previous.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()-1,1);render();});
