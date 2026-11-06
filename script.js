@@ -1374,7 +1374,7 @@ function initializeGujaratiCalendar() {
     bestuvaras:"બેસતું વર્ષ", govardhanpuja:"ગોવર્ધન પૂજા",
     annakut:"અન્નકૂટ", bhaidooj:"ભાઈબીજ", bhaibeej:"ભાઈબીજ",
     yamadvitiya:"ભાઈબીજ", devutthanaekadashi:"દેવઉઠી એકાદશી",
-    tul vivah:"તુલસી વિવાહ", tulsivivah:"તુલસી વિવાહ",
+    tulsivivah:"તુલસી વિવાહ",
     kartikpurnima:"કારતક પૂનમ", sharadpurnima:"શરદ પૂનમ",
     navratri:"નવરાત્રી", vijayadashami:"દશેરા", dussehra:"દશેરા",
     janmashtami:"જન્માષ્ટમી", ganeshchaturthi:"ગણેશ ચતુર્થી",
@@ -1596,5 +1596,4 @@ function initializeGujaratiCalendar() {
     renderChoghadiya();
   }));
   render();
-
-
+}
