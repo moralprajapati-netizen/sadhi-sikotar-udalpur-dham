@@ -1132,7 +1132,7 @@ function initializeGujaratiCalendar() {
       if (value == null || value === "") return "ઉપલબ્ધ નથી";
 
       // API timestamps are UTC ISO strings; display them in Udalpur local time.
-      if (typeof value === "string" && /^\\d{4}-\\d{2}-\\d{2}T/.test(value)) {
+      if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
         const dateValue = new Date(value);
         if (!Number.isNaN(dateValue.getTime())) {
           const parts = new Intl.DateTimeFormat("en-IN", {
