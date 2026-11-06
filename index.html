@@ -47,11 +47,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261106b">
+  <link rel="stylesheet" href="./styles.css?v=20261106c">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261105c"></script>
+  <script defer src="./script.js?v=20261106c"></script>
 
   <style>
     .section-folder-grid {
@@ -476,9 +476,12 @@
           આપનું હાર્દિક સ્વાગત છે.
         </p>
 
+        <div class="hero-darshan-pair" aria-label="માતાજી અને ઉદલપુરધામનાં દર્શન">
+          <a href="#gallery" class="hero-photo hero-photo-mataji"><img src="./1.png" alt="સધી સિકોતર માતાજીનાં પાવન દર્શન" fetchpriority="high"><span>માતાજીનાં દર્શન</span></a>
+          <a href="#temple" class="hero-photo hero-photo-temple"><img src="./2.png" alt="ઉદલપુરધામનું મંદિર"><span>ઉદલપુરધામ મંદિર</span></a>
+        </div>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#gallery">માતાજીનાં દર્શન</a>
-          <a class="btn btn-secondary" href="#bhajan">ભજન સાંભળો</a>
+          <a class="btn btn-primary" href="#contact">☎　સંપર્ક કરવું　›</a>
         </div>
       </div>
     </section>
@@ -498,8 +501,9 @@
           <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261028k" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div></a>
           <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261028j" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
           <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261028j" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરવો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261028j" alt="સંપર્ક કરવો" loading="lazy" decoding="async"></div></a>
+
                   </div>
+        <a class="home-contact-cta" href="#contact"><span aria-hidden="true">☎</span> સંપર્ક કરવું <span aria-hidden="true">›</span></a>
       </div>
     </section>
 
@@ -703,6 +707,14 @@
 
     <p id="lightboxCaption"></p>
   </dialog>
+
+  <nav class="mobile-bottom-nav" aria-label="મોબાઇલ મેનૂ">
+    <a href="#home" class="is-active"><span aria-hidden="true">⌂</span><small>હોમ</small></a>
+    <a href="#gallery"><span aria-hidden="true">▧</span><small>ગેલેરી</small></a>
+    <a href="#bhajan"><span aria-hidden="true">♫</span><small>ભજન</small></a>
+    <a href="#contact"><span aria-hidden="true">⌖</span><small>મેપ / સંપર્ક</small></a>
+    <a href="#sections"><span aria-hidden="true">•••</span><small>વધુ</small></a>
+  </nav>
 
   <footer class="site-footer">
     <div class="container">
