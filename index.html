@@ -47,11 +47,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261106f">
+  <link rel="stylesheet" href="./styles.css?v=20261106g">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261106f"></script>
+  <script defer src="./script.js?v=20261106g"></script>
 
   <style>
     .section-folder-grid {
@@ -503,6 +503,47 @@
         grid-template-columns:72px minmax(0,1fr);
         gap:8px;
         padding:10px 7px;
+      }
+      #panchang .choghadiya-row > strong { font-size:.82rem; }
+    }
+
+  
+    /* Final Panchang readability pass */
+    #panchang .choghadiya-row {
+      display:grid;
+      grid-template-columns:minmax(70px,.65fr) minmax(0,1.35fr);
+      align-items:center;
+      gap:12px;
+      padding:12px 10px;
+      margin:7px 0;
+      border:1px solid #eadfc9;
+      border-radius:10px;
+      background:#fffdf8;
+    }
+    #panchang .choghadiya-row > span {
+      display:block;
+      text-align:left;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      color:#741827;
+      font-weight:800;
+      line-height:1.4;
+    }
+    #panchang .choghadiya-row > strong {
+      display:block;
+      min-width:0;
+      text-align:right;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      line-height:1.5;
+      font-size:.88rem;
+    }
+    #panchang .choghadiya-columns section { min-width:0; }
+    @media(max-width:600px) {
+      #panchang .choghadiya-row {
+        grid-template-columns:64px minmax(0,1fr);
+        gap:8px;
+        padding:10px 8px;
       }
       #panchang .choghadiya-row > strong { font-size:.82rem; }
     }
