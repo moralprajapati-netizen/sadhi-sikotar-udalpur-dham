@@ -47,11 +47,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261106e">
+  <link rel="stylesheet" href="./styles.css?v=20261106f">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261106e"></script>
+  <script defer src="./script.js?v=20261106f"></script>
 
   <style>
     .section-folder-grid {
@@ -418,6 +418,94 @@
     .choghadiya-row strong { text-align:right; white-space:nowrap; }
     .choghadiya-empty { color:#765b48; font-size:.9rem; }
     @media(max-width:600px) { .panchang-summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .panchang-sun-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .choghadiya-columns { grid-template-columns:1fr; } .calendar-weekdays div { font-size:.68rem; } }
+
+  
+    /* Panchang layout cleanup: keep every calendar date in its own clear cell. */
+    #panchang .calendar-weekdays,
+    #panchang .calendar-days-grid {
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:6px;
+      width:100%;
+    }
+    #panchang .calendar-weekdays > div {
+      min-width:0;
+      padding:9px 2px;
+      line-height:1.35;
+      overflow-wrap:anywhere;
+      text-align:center;
+    }
+    #panchang .calendar-date {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      min-width:0;
+      min-height:48px;
+      padding:6px 2px;
+      border:1px solid #eadfc9;
+      border-radius:9px;
+      font-size:1rem;
+      line-height:1.2;
+      overflow-wrap:normal;
+    }
+    #panchang .calendar-date-en { display:block; }
+    #panchang .choghadiya-columns {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+    }
+    #panchang .choghadiya-row {
+      display:grid;
+      grid-template-columns:minmax(58px,.7fr) minmax(0,1.3fr);
+      align-items:center;
+      gap:8px;
+      padding:11px 8px;
+      border-bottom:1px solid #eadfc9;
+      font-size:.9rem;
+    }
+    #panchang .choghadiya-row > span {
+      text-align:left;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      font-weight:800;
+      color:#741827;
+    }
+    #panchang .choghadiya-row > strong {
+      min-width:0;
+      text-align:right;
+      white-space:normal;
+      overflow-wrap:anywhere;
+      font-size:.86rem;
+      line-height:1.4;
+    }
+    #panchang .calendar-controls { flex-wrap:wrap; }
+    #panchang .calendar-controls strong {
+      flex:1 1 160px;
+      min-width:0;
+      text-align:center;
+      overflow-wrap:anywhere;
+    }
+    @media(max-width:600px) {
+      #panchang .calendar-weekdays,
+      #panchang .calendar-days-grid { gap:3px; }
+      #panchang .calendar-weekdays > div {
+        padding:7px 1px;
+        font-size:.66rem;
+      }
+      #panchang .calendar-date {
+        min-height:42px;
+        padding:4px 1px;
+        font-size:.88rem;
+      }
+      #panchang .choghadiya-columns { grid-template-columns:minmax(0,1fr); }
+      #panchang .choghadiya-row {
+        grid-template-columns:72px minmax(0,1fr);
+        gap:8px;
+        padding:10px 7px;
+      }
+      #panchang .choghadiya-row > strong { font-size:.82rem; }
+    }
 
   </style>
 </head>
