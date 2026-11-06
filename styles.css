@@ -2719,3 +2719,58 @@ body.section-view-active main > .hero { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .back-to-top { transition: none; }
 }
+
+
+/* Two authentic darshan photographs: Mataji and Udalpur Dham temple */
+.hero-darshan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: min(100%, 760px);
+  margin-top: 28px;
+}
+.hero-darshan-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  height: clamp(150px, 24vw, 245px);
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  border-radius: 18px;
+  background: var(--deep-maroon);
+  box-shadow: 0 12px 28px rgba(15, 2, 6, .34), inset 0 0 0 1px rgba(255,248,233,.3);
+}
+.hero-darshan-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .35s ease;
+}
+.hero-mataji-card img { object-position: center 24%; }
+.hero-temple-card img { object-position: center 50%; }
+.hero-darshan-card:hover img,
+.hero-darshan-card:focus-visible img { transform: scale(1.045); }
+.hero-darshan-card span {
+  position: absolute;
+  inset: auto 0 0;
+  display: block;
+  padding: 10px 8px;
+  color: var(--gold-light);
+  background: linear-gradient(0deg, rgba(45,5,14,.96), rgba(65,12,25,.68));
+  border-top: 1px solid rgba(217,173,85,.8);
+  text-align: center;
+  font-weight: 800;
+  line-height: 1.5;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+@media (max-width: 600px) {
+  .hero { padding: 54px 0 60px; }
+  .hero-darshan-grid { gap: 9px; margin-top: 20px; }
+  .hero-darshan-card { height: clamp(135px, 39vw, 190px); border-radius: 13px; }
+  .hero-darshan-card span { padding: 8px 4px; font-size: .82rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-darshan-card img { transition: none; }
+}
