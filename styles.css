@@ -2799,3 +2799,29 @@ body.section-view-active main > .hero { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .hero-darshan-card img { transition: none; }
 }
+
+
+/* Final icon mapping for the seven main Dham sections. */
+#sections .section-folder-cover::after {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border-color: rgba(255,242,200,.96);
+  color: #fff2c8;
+  background: linear-gradient(145deg, rgba(48,7,17,.97), rgba(116,24,39,.94));
+  box-shadow: 0 4px 13px rgba(20,2,7,.3), inset 0 0 0 2px rgba(217,173,85,.2);
+}
+#sections .folder-history .section-folder-cover::after { content: "⌂" !important; }
+#sections .folder-temple .section-folder-cover::after { content: "🏛️" !important; }
+#sections .folder-bhajan .section-folder-cover::after { content: "♫" !important; }
+#sections .folder-media .section-folder-cover::after { content: "▶" !important; }
+#sections .folder-festivals .section-folder-cover::after { content: "✺" !important; }
+#sections .folder-stories .section-folder-cover::after { content: "ॐ" !important; }
+#sections .folder-contact .section-folder-cover::after { content: "☎" !important; }
+@media (max-width: 600px) {
+  #sections .section-folder-cover::after {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+}
