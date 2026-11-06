@@ -1001,3 +1001,22 @@ function loadContact(database) {
   });
   updateBackToTopVisibility();
 })();
+
+/* Keep the compact bottom app navigation in sync with the selected section. */
+document.addEventListener("DOMContentLoaded", () => {
+  const bottomLinks = document.querySelectorAll(".mobile-bottom-nav a");
+  const syncBottom = () => {
+    const hash = location.hash || "#home";
+    bottomLinks.forEach(link => {
+      const href = link.getAttribute("href");
+      const active = href === hash || (href === "#sections" && hash === "#sections");
+      link.classList.toggle("is-active", active);
+    });
+  };
+  bottomLinks.forEach(link => link.addEventListener("click", () => {
+    bottomLinks.forEach(item => item.classList.remove("is-active"));
+    link.classList.add("is-active");
+  }));
+  window.addEventListener("hashchange", syncBottom);
+  syncBottom();
+});
