@@ -1178,15 +1178,18 @@ function initializeGujaratiCalendar() {
         const name = readable(rawName, ["name_gu","gujarati_name","nameGujarati","gujarati","label","name","text","value"]) || "સમયખંડ "+(index+1);
         const choghadiyaKey = String(name).toLowerCase().normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-z]/g,"");
         const choghadiyaGujarati = {
-          udveg:"ઉદ્વેગ", udvega:"ઉદ્વેગ", udvegam:"ઉદ્વેગ",
-          char:"ચલ", chara:"ચલ", chala:"ચલ",
+          udveg:"ઉદ્વેગ", udvega:"ઉદ્વેગ", udvegam:"ઉદ્વેગ", udvegh:"ઉદ્વેગ",
+          char:"ચલ", chara:"ચલ", chala:"ચલ", chal:"ચલ",
           labh:"લાભ", labha:"લાભ",
           amrit:"અમૃત", amrita:"અમૃત", amruth:"અમૃત",
           kaal:"કાળ", kala:"કાળ", kaala:"કાળ",
-          shubh:"શુભ", shubha:"શુભ", shubham:"શુભ",
+          shubh:"શુભ", shubha:"શુભ", shubham:"શુભ", subh:"શુભ", subha:"શુભ",
           rog:"રોગ", roga:"રોગ"
         };
-        const displayName = choghadiyaGujarati[choghadiyaKey] || name;
+        const displayName = choghadiyaGujarati[choghadiyaKey]
+          || (choghadiyaKey.includes("shubh") || choghadiyaKey.includes("subh") ? "શુભ" : "")
+          || (choghadiyaKey.includes("udveg") || choghadiyaKey.includes("udvegh") ? "ઉદ્વેગ" : "")
+          || name;
         const start = pick(item, ["start","start_time","from","startTime","begin","start.time","start.value"]);
         const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
