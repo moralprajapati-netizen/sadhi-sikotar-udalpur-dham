@@ -1266,6 +1266,13 @@ function initializeGujaratiCalendar() {
         : monthText;
       set("panchangTithi", [pakshaText,tithiText].filter(Boolean).join(" — ") || "તિથિ API માંથી ઓળખી શકાઈ નથી");
       set("panchangGujaratiMonth", monthGujaratiText || "ગુજરાતી મહિનો API માંથી ઉપલબ્ધ નથી");
+      const weekdayRaw = readable(pick(nested, ["weekday.name_gu","weekday.gujarati_name","weekday.nameGujarati","weekday.name","vara.name","vara","weekday"]), ["name_gu","gujarati_name","nameGujarati","name"]);
+      const weekdayKey = String(weekdayRaw || "").toLowerCase().replace(/[^a-z]/g, "");
+      const weekdayGujarati = { sunday:"રવિવાર", monday:"સોમવાર", tuesday:"મંગળવાર", wednesday:"બુધવાર", thursday:"ગુરુવાર", friday:"શુક્રવાર", saturday:"શનિવાર" };
+      const selectedDateValue = new Date(date + "T12:00:00+05:30");
+      const weekdayFallback = ["રવિવાર","સોમવાર","મંગળવાર","બુધવાર","ગુરુવાર","શુક્રવાર","શનિવાર"][selectedDateValue.getDay()];
+      set("panchangWeekday", weekdayGujarati[weekdayKey] || weekdayRaw || weekdayFallback);
+      set("panchangDate", new Intl.DateTimeFormat("gu-IN", { day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" }).format(selectedDateValue));
       set("panchangNakshatra", readable(nakshatra, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "નક્ષત્ર ઉપલબ્ધ નથી");
       set("panchangYoga", readable(yoga, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "યોગ ઉપલબ્ધ નથી");
       set("panchangKarana", readable(karana, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "કરણ ઉપલબ્ધ નથી");
