@@ -2943,3 +2943,13 @@ body.section-view-active main > .hero { display: none !important; }
   #panchang .choghadiya-columns { grid-template-columns:1fr; }
   .map-screen-card iframe { height:390px; }
 }
+
+
+/* Gujarati monthly calendar labels */
+#panchang .calendar-date{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;min-width:0;min-height:78px;padding:6px 2px;overflow:hidden;text-align:center}
+#panchang .calendar-date-en{display:block;font-size:1rem;font-weight:850;line-height:1.2}
+#panchang .calendar-tithi{display:block;max-width:100%;color:#6f5b50;font-size:clamp(.58rem,1.4vw,.72rem);font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+#panchang .calendar-festival{display:block;max-width:100%;padding:2px 3px;border-radius:4px;color:#741827;background:#f8e7bd;font-size:clamp(.54rem,1.25vw,.68rem);font-weight:850;line-height:1.25;overflow-wrap:anywhere}
+#panchang .calendar-date.selected .calendar-tithi{color:#fff1cf}
+#panchang .calendar-date.selected .calendar-festival{color:#5a101d;background:#ffe6a0}
+@media(max-width:600px){#panchang .calendar-date{min-height:67px;padding:5px 1px;gap:2px}#panchang .calendar-date-en{font-size:.88rem}#panchang .calendar-tithi{font-size:.56rem}#panchang .calendar-festival{font-size:.52rem;padding:2px 1px}}
