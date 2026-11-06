@@ -1346,50 +1346,253 @@ function initializeGujaratiCalendar() {
     }
   }
 
-  function render() {
+  const monthCache = new Map();
+  const yearFestivalCache = new Map();
+  let calendarData = new Map();
+  let calendarLoadId = 0;
+
+  const guMonthNames = {
+    chaitra:"ચૈત્ર", vaishakha:"વૈશાખ", jyeshtha:"જેઠ", ashada:"અષાઢ",
+    shravana:"શ્રાવણ", bhadrapada:"ભાદરવો", ashvina:"આસો",
+    kartika:"કારતક", kartik:"કારતક", margashirsha:"માગશર",
+    margashira:"માગશર", agrahayana:"માગશર", pausha:"પોષ",
+    magha:"મહા", phalguna:"ફાગણ"
+  };
+  const guTithiNames = {
+    pratipada:"પ્રથમા", dwitiya:"બીજ", dvitiya:"બીજ", tritiya:"ત્રીજ",
+    chaturthi:"ચોથ", panchami:"પાંચમ", shashthi:"છઠ્ઠ", shashti:"છઠ્ઠ",
+    saptami:"સાતમ", ashtami:"આઠમ", navami:"નોમ", dashami:"દશમ",
+    ekadashi:"અગિયારસ", ekadasi:"અગિયારસ", dwadashi:"બારસ",
+    dvadashi:"બારસ", trayodashi:"તેરસ", chaturdashi:"ચૌદસ",
+    purnima:"પૂનમ", paurnima:"પૂનમ", amavasya:"અમાસ"
+  };
+  const guFestivalNames = {
+    dhanteras:"ધનતેરસ", dhantrayodashi:"ધનતેરસ",
+    narakachaturdashi:"કાળી ચૌદશ", kalichaudas:"કાળી ચૌદશ",
+    roopchaudas:"કાળી ચૌદશ", deepavali:"દિવાળી", diwali:"દિવાળી",
+    lakshmipuja:"દિવાળી", gujaratinewyear:"ગુજરાતી નવું વર્ષ",
+    bestuvaras:"બેસતું વર્ષ", govardhanpuja:"ગોવર્ધન પૂજા",
+    annakut:"અન્નકૂટ", bhaidooj:"ભાઈબીજ", bhaibeej:"ભાઈબીજ",
+    yamadvitiya:"ભાઈબીજ", devutthanaekadashi:"દેવઉઠી એકાદશી",
+    tul vivah:"તુલસી વિવાહ", tulsivivah:"તુલસી વિવાહ",
+    kartikpurnima:"કારતક પૂનમ", sharadpurnima:"શરદ પૂનમ",
+    navratri:"નવરાત્રી", vijayadashami:"દશેરા", dussehra:"દશેરા",
+    janmashtami:"જન્માષ્ટમી", ganeshchaturthi:"ગણેશ ચતુર્થી",
+    rakshabandhan:"રક્ષાબંધન", holi:"હોળી", dhulandi:"ધૂળેટી"
+  };
+
+  function calendarText(value) {
+    if (value == null || value === "") return "";
+    if (typeof value === "string" || typeof value === "number") return String(value);
+    if (Array.isArray(value)) return value.map(calendarText).filter(Boolean).join(", ");
+    if (typeof value === "object") {
+      for (const key of ["name_gu","gujarati_name","nameGujarati","gujarati","label_gu","name","label","title","text","value","amanta"]) {
+        if (value[key] != null && typeof value[key] !== "object") return String(value[key]);
+      }
+    }
+    return "";
+  }
+
+  function unwrapCalendar(value) {
+    let data = value;
+    for (let i=0; i<4 && data && !Array.isArray(data); i++) {
+      const next = data.calendar ?? data.output ?? data.data ?? data.result;
+      if (!next || next === data) break;
+      data = next;
+    }
+    return data;
+  }
+
+  function findCalendarRecords(root, monthMode) {
+    const arrays = [];
+    const seen = new Set();
+    function walk(node, depth) {
+      if (!node || typeof node !== "object" || depth > 7 || seen.has(node)) return;
+      seen.add(node);
+      if (Array.isArray(node)) {
+        const records = node.filter(item => item && typeof item === "object" &&
+          (item.date != null || item.gregorian_date != null || item.gregorianDate != null ||
+           item.iso_date != null || item.festival_date != null || (monthMode && item.day != null)));
+        if (records.length) arrays.push(records);
+        node.forEach(item => walk(item, depth+1));
+      } else Object.values(node).forEach(value => walk(value, depth+1));
+    }
+    walk(root,0);
+    arrays.sort((a,b)=>b.length-a.length);
+    return arrays[0] || [];
+  }
+
+  function calendarISO(record, year, month) {
+    const raw = record.date ?? record.gregorian_date ?? record.gregorianDate ??
+      record.iso_date ?? record.isoDate ?? record.festival_date ??
+      record.observance_date ?? record.datetime;
+    if (typeof raw === "string") {
+      const m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (m) return m[1]+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
+    }
+    const day = Number(raw ?? record.day ?? record.dayOfMonth ?? record.day_of_month);
+    if (Number.isInteger(day) && day >= 1 && day <= 31 && month) {
+      return year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+    }
+    return "";
+  }
+
+  function calendarTithi(record) {
+    const t = record.tithi ?? record.tithi_name ?? record.tithiName ?? record.lunar_day;
+    const raw = calendarText(t);
+    const key = raw.toLowerCase().replace(/[^a-z]/g,"");
+    const number = Number(record.tithi_number ?? record.tithiNumber ?? t?.number);
+    const numberNames = {
+      1:"પ્રથમા",2:"બીજ",3:"ત્રીજ",4:"ચોથ",5:"પાંચમ",6:"છઠ્ઠ",7:"સાતમ",
+      8:"આઠમ",9:"નોમ",10:"દશમ",11:"અગિયારસ",12:"બારસ",13:"તેરસ",
+      14:"ચૌદસ",15:"પૂનમ",16:"પ્રથમા",17:"બીજ",18:"ત્રીજ",19:"ચોથ",
+      20:"પાંચમ",21:"છઠ્ઠ",22:"સાતમ",23:"આઠમ",24:"નોમ",25:"દશમ",
+      26:"અગિયારસ",27:"બારસ",28:"તેરસ",29:"ચૌદસ",30:"અમાસ"
+    };
+    const name = guTithiNames[key] || numberNames[number] || raw;
+    const paksha = calendarText(record.paksha ?? t?.paksha).toLowerCase();
+    return (/shukla|sukla/.test(paksha) ? "શુ. " : /krishna|krsna/.test(paksha) ? "કૃ. " : "") + name;
+  }
+
+  function calendarMonthName(record) {
+    const raw = calendarText(record.lunarMonth ?? record.lunar_month ??
+      record.gujaratiMonth ?? record.gujarati_month ?? record.month_name ??
+      record.monthName ?? record.masa ?? record.month);
+    return guMonthNames[raw.toLowerCase().replace(/[^a-z]/g,"")] || raw;
+  }
+
+  function calendarFestivalName(record) {
+    const raw = calendarText(record);
+    const key = raw.toLowerCase().replace(/[^a-z]/g,"");
+    return guFestivalNames[key] || raw;
+  }
+
+  async function calendarAPI(path, body) {
+    const response = await fetch("https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev"+path, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(body)
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success) throw new Error(data.error || "માહિતી ઉપલબ્ધ નથી");
+    return data;
+  }
+
+  async function loadCalendarData() {
+    const year = shownMonth.getFullYear();
+    const month = shownMonth.getMonth()+1;
+    const key = year+"-"+String(month).padStart(2,"0");
+    const requestId = ++calendarLoadId;
+    if (!monthCache.has(key)) monthCache.set(key, calendarAPI("/panchang/month",{year,month}));
+    if (!yearFestivalCache.has(year)) yearFestivalCache.set(year,calendarAPI("/panchang/festivals",{year}));
+    try {
+      const [monthResult, festivalResult] = await Promise.all([monthCache.get(key),yearFestivalCache.get(year)]);
+      if (requestId !== calendarLoadId) return;
+      const monthRecords = findCalendarRecords(unwrapCalendar(monthResult.calendar),"month");
+      const festivalRecords = findCalendarRecords(unwrapCalendar(festivalResult.festivals),"festival");
+      const next = new Map();
+
+      monthRecords.forEach(record => {
+        const dateKey = calendarISO(record,year,month);
+        if (!dateKey) return;
+        next.set(dateKey,{
+          tithi:calendarTithi(record),
+          month:calendarMonthName(record),
+          festivals:[]
+        });
+      });
+
+      festivalRecords.forEach(record => {
+        const dateKey = calendarISO(record,year,month);
+        const name = calendarFestivalName(record);
+        if (!dateKey || !name) return;
+        if (!next.has(dateKey)) next.set(dateKey,{tithi:"",month:"",festivals:[]});
+        next.get(dateKey).festivals.push(name);
+      });
+
+      monthRecords.forEach(record => {
+        const dateKey = calendarISO(record,year,month);
+        if (!dateKey) return;
+        const marks = record.parva ?? record.parvas ?? record.festival ?? record.festivals ?? record.events ?? record.marker;
+        (Array.isArray(marks) ? marks : marks ? [marks] : []).forEach(mark => {
+          const name = calendarFestivalName(typeof mark === "object" ? mark : {name:mark});
+          if (!name) return;
+          if (!next.has(dateKey)) next.set(dateKey,{tithi:"",month:"",festivals:[]});
+          next.get(dateKey).festivals.push(name);
+        });
+      });
+
+      next.forEach(info => info.festivals = [...new Set(info.festivals)]);
+      calendarData = next;
+      renderCalendarGrid();
+    } catch (error) {
+      console.error("Gujarati monthly calendar load failed:",error);
+    }
+  }
+
+  function renderCalendarGrid() {
     grid.replaceChildren();
-    title.textContent = guMonth.format(shownMonth);
+    const year = shownMonth.getFullYear();
+    const month = shownMonth.getMonth();
+    const gregorianTitle = guMonth.format(shownMonth);
+    const visibleMonths = [...new Set([...calendarData.entries()]
+      .filter(([key])=>key.startsWith(year+"-"+String(month+1).padStart(2,"0")+"-"))
+      .map(([,info])=>info.month).filter(Boolean))];
+    title.textContent = visibleMonths.length ? visibleMonths.join(" / ")+" • "+gregorianTitle : gregorianTitle;
+
     const header = document.createElement("div");
     header.className = "calendar-weekdays";
-    weekdays.forEach((day,i) => {
-      const cell = document.createElement("div");
-      cell.textContent = day;
-      header.appendChild(cell);
-    });
+    weekdays.forEach(day=>{const cell=document.createElement("div");cell.textContent=day;header.appendChild(cell);});
     grid.appendChild(header);
+
     const daysGrid = document.createElement("div");
     daysGrid.className = "calendar-days-grid";
-    const first = new Date(shownMonth.getFullYear(),shownMonth.getMonth(),1).getDay();
-    const total = new Date(shownMonth.getFullYear(),shownMonth.getMonth()+1,0).getDate();
-    for(let i=0;i<first;i++){
-      const blank=document.createElement("div"); blank.className="calendar-date empty"; daysGrid.appendChild(blank);
-    }
+    const first = new Date(year,month,1).getDay();
+    const total = new Date(year,month+1,0).getDate();
+    for(let i=0;i<first;i++){const blank=document.createElement("div");blank.className="calendar-date empty";daysGrid.appendChild(blank);}
+
     for(let day=1;day<=total;day++){
-      const date=new Date(shownMonth.getFullYear(),shownMonth.getMonth(),day);
-      const button=document.createElement("button");
-      button.type="button"; button.className="calendar-date";
-      const mainNumber=document.createElement("span");
-      mainNumber.className="calendar-date-en";
-      mainNumber.textContent=guNumber(day);
-      button.appendChild(mainNumber);
-      if(date.toDateString()===dateOnly(now).toDateString()) button.classList.add("today");
-      if(date.toDateString()===selectedDate.toDateString()) button.classList.add("selected");
-      button.setAttribute("aria-label",new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(date));
-      button.addEventListener("click",()=>{selectedDate=dateOnly(date);render();renderChoghadiya();});
+      const date = new Date(year,month,day);
+      const key = isoDate(date);
+      const info = calendarData.get(key) || {tithi:"",festivals:[]};
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "calendar-date";
+
+      const number = document.createElement("span");
+      number.className = "calendar-date-en";
+      number.textContent = guNumber(day);
+      button.appendChild(number);
+
+      if(info.tithi){const t=document.createElement("small");t.className="calendar-tithi";t.textContent=info.tithi;button.appendChild(t);}
+      (info.festivals||[]).slice(0,2).forEach(name=>{const f=document.createElement("small");f.className="calendar-festival";f.textContent=name;button.appendChild(f);});
+
+      if(date.toDateString()===dateOnly(now).toDateString())button.classList.add("today");
+      if(date.toDateString()===selectedDate.toDateString())button.classList.add("selected");
+      button.setAttribute("aria-label",[
+        new Intl.DateTimeFormat("gu-IN",{dateStyle:"full"}).format(date),
+        info.tithi,...(info.festivals||[])
+      ].filter(Boolean).join(" — "));
+      button.addEventListener("click",()=>{selectedDate=dateOnly(date);renderCalendarGrid();renderChoghadiya();});
       daysGrid.appendChild(button);
     }
     grid.appendChild(daysGrid);
-    if(selectedLabel) selectedLabel.textContent = "";
+    if(selectedLabel)selectedLabel.textContent="";
+  }
+
+  function render() {
+    renderCalendarGrid();
     renderChoghadiya();
+    loadCalendarData();
   }
   previous.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()-1,1);render();});
   next.addEventListener("click",()=>{shownMonth=new Date(shownMonth.getFullYear(),shownMonth.getMonth()+1,1);render();});
-  if(todayButton) todayButton.addEventListener("click",()=>{selectedDate=dateOnly(new Date());shownMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render();});
+  if(todayButton)todayButton.addEventListener("click",()=>{selectedDate=dateOnly(new Date());shownMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render();});
   document.querySelectorAll("[data-choghadiya]").forEach(button=>button.addEventListener("click",()=>{
     choghadiyaMode=button.dataset.choghadiya;
     document.querySelectorAll("[data-choghadiya]").forEach(b=>b.classList.toggle("active",b===button));
     renderChoghadiya();
   }));
   render();
-}
+
 
