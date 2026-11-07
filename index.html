@@ -51,7 +51,7 @@
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script defer src="./script.js?v=20261107m"></script>
+  <script defer src="./script.js?v=20261107n"></script>
 
   <style>
     .section-folder-grid {
@@ -767,6 +767,138 @@ body{padding-bottom:78px}.site-header,.header-inner{min-height:65px}.header-inne
 #sections .section-folder-card{border-width:1.5px;border-radius:11px}#sections .section-folder-label{min-height:38px;padding:4px 2px;font-size:.68rem}
 .mobile-bottom-nav{left:6px;right:6px;bottom:5px;min-height:64px;border-radius:15px}.mobile-bottom-nav small{font-size:.65rem}.mobile-bottom-nav a>span{font-size:1.25rem}
 }
+
+    /* Modern category cards + clean Choghadiya layout */
+    #sections .section-folder-grid {
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      margin-top:26px;
+    }
+    #sections .section-folder-card {
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      padding:7px;
+      overflow:hidden;
+      border:1px solid rgba(190,145,54,.48);
+      border-radius:20px;
+      background:linear-gradient(155deg,#fffdf7,#f6ead4);
+      box-shadow:0 7px 22px rgba(65,12,25,.10);
+      text-decoration:none;
+      transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease;
+    }
+    #sections .section-folder-card:hover,
+    #sections .section-folder-card:focus-visible {
+      transform:translateY(-4px);
+      border-color:#c99b42;
+      box-shadow:0 14px 30px rgba(65,12,25,.17);
+    }
+    #sections .section-folder-cover {
+      position:relative;
+      width:100%;
+      aspect-ratio:5/4 !important;
+      height:auto !important;
+      min-height:0 !important;
+      overflow:hidden;
+      border:0;
+      border-radius:14px;
+      background:#741827;
+    }
+    #sections .section-folder-cover img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .35s ease;
+    }
+    #sections .section-folder-card:hover .section-folder-cover img { transform:scale(1.045); }
+    #sections .section-folder-label {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:9px 7px 5px;
+      color:#641827;
+      font-weight:800;
+      font-size:clamp(.9rem,1.6vw,1.05rem);
+      line-height:1.4;
+      text-align:center;
+      overflow-wrap:anywhere;
+    }
+    #sections .section-folder-card::after { content:""; display:none; }
+    #panchang .choghadiya-columns {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      align-items:start;
+      gap:16px;
+      margin:18px 0;
+    }
+    #panchang .choghadiya-columns > section {
+      min-width:0;
+      padding:14px;
+      border:1px solid rgba(190,145,54,.55);
+      border-radius:16px;
+      background:linear-gradient(160deg,#fffdf8,#fbf2e2);
+      box-shadow:0 5px 16px rgba(65,12,25,.06);
+    }
+    #panchang .choghadiya-columns h4 {
+      margin:0 0 10px;
+      padding:10px 8px;
+      border-radius:10px;
+      background:#741827;
+      color:#fff7e7;
+      text-align:center;
+      font-size:1rem;
+    }
+    #panchang .choghadiya-row {
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      align-items:center;
+      gap:4px 10px;
+      margin:7px 0;
+      padding:11px 10px;
+      border:1px solid #eee1c8;
+      border-radius:11px;
+      background:#fff;
+    }
+    #panchang .choghadiya-row > span {
+      grid-column:1;
+      grid-row:1;
+      text-align:left;
+      color:#741827;
+      font-weight:800;
+      white-space:normal;
+    }
+    #panchang .choghadiya-row > strong {
+      grid-column:2;
+      grid-row:1;
+      text-align:right;
+      color:#38251e;
+      font-size:.84rem;
+      white-space:normal;
+      overflow-wrap:anywhere;
+    }
+    #panchang .choghadiya-row > .choghadiya-meaning {
+      grid-column:1/-1;
+      grid-row:2;
+      display:block;
+      margin-top:3px;
+      color:#78634d;
+      font-size:.78rem;
+      line-height:1.45;
+    }
+    @media(max-width:700px) {
+      #sections .section-folder-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+      #sections .section-folder-card { padding:5px; border-radius:15px; }
+      #sections .section-folder-cover { aspect-ratio:4/3 !important; border-radius:11px; }
+      #sections .section-folder-label { min-height:42px; font-size:.88rem; }
+      #panchang .choghadiya-columns { grid-template-columns:minmax(0,1fr); gap:12px; }
+      #panchang .choghadiya-row { grid-template-columns:minmax(0,1fr) auto; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      #sections .section-folder-card,
+      #sections .section-folder-cover img { transition:none !important; }
+    }
 </style>
 </head>
 
