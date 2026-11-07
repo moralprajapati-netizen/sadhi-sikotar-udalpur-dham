@@ -1479,7 +1479,7 @@ function initializeGujaratiCalendar() {
     }
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
     if (!name && rawKey.includes("amavasya")) name = "અમાસ";
-    if (!name) name = raw && /[\\u0900-\\u097f\\u0a80-\\u0aff]/.test(raw) ? raw : "તિથિ";
+    if (!name) name = raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "તિથિ";
     return (/shukla|sukla/.test(paksha) ? "શુ. " : /krishna|krsna/.test(paksha) ? "કૃ. " : "") + name;
   }
 
@@ -1503,7 +1503,7 @@ function initializeGujaratiCalendar() {
     if (key.includes("bhaidooj") || key.includes("bhaibeej") || key.includes("yamadvitiya")) return "ભાઈબીજ";
     if (key.includes("tulsivivah")) return "તુલસી વિવાહ";
     if (key.includes("devutthana") || key.includes("prabodhini")) return "દેવઉઠી એકાદશી";
-    return raw && /[\\u0900-\\u097f\\u0a80-\\u0aff]/.test(raw) ? raw : "ધાર્મિક પર્વ";
+    return raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "ધાર્મિક પર્વ";
   }
 
   async function calendarAPI(path, body) {
