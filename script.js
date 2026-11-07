@@ -1173,6 +1173,26 @@ function initializeGujaratiCalendar() {
         el.appendChild(p);
         return;
       }
+      const weekday = new Date(date + "T12:00:00+05:30").getDay();
+      const dayNames = [
+        ["ઉદ્વેગ","ચલ","લાભ","અમૃત","કાળ","શુભ","રોગ","ઉદ્વેગ"],
+        ["અમૃત","કાળ","શુભ","રોગ","ઉદ્વેગ","ચલ","લાભ","અમૃત"],
+        ["રોગ","ઉદ્વેગ","ચલ","લાભ","અમૃત","કાળ","શુભ","રોગ"],
+        ["લાભ","અમૃત","કાળ","શુભ","રોગ","ઉદ્વેગ","ચલ","લાભ"],
+        ["શુભ","રોગ","ઉદ્વેગ","ચલ","લાભ","અમૃત","કાળ","શુભ"],
+        ["ચલ","લાભ","અમૃત","કાળ","શુભ","રોગ","ઉદ્વેગ","ચલ"],
+        ["કાળ","શુભ","રોગ","ઉદ્વેગ","ચલ","લાભ","અમૃત","કાળ"]
+      ];
+      const nightNames = [
+        ["શુભ","અમૃત","ચલ","રોગ","કાળ","લાભ","ઉદ્વેગ","શુભ"],
+        ["ચલ","રોગ","કાળ","લાભ","ઉદ્વેગ","શુભ","અમૃત","ચલ"],
+        ["કાળ","લાભ","ઉદ્વેગ","શુભ","અમૃત","ચલ","રોગ","કાળ"],
+        ["ઉદ્વેગ","શુભ","અમૃત","ચલ","રોગ","કાળ","લાભ","ઉદ્વેગ"],
+        ["અમૃત","ચલ","રોગ","કાળ","લાભ","ઉદ્વેગ","શુભ","અમૃત"],
+        ["રોગ","કાળ","લાભ","ઉદ્વેગ","શુભ","અમૃત","ચલ","રોગ"],
+        ["લાભ","ઉદ્વેગ","શુભ","અમૃત","ચલ","રોગ","કાળ","લાભ"]
+      ];
+      const fallbackNames = (el.id === "choghadiyaNightList" ? nightNames : dayNames)[weekday];
       items.forEach((item, index) => {
         const row = document.createElement("div");
         row.className = "choghadiya-row";
@@ -1196,7 +1216,7 @@ function initializeGujaratiCalendar() {
           || (choghadiyaKey.includes("kaal") || choghadiyaKey.includes("kal") ? "કાળ" : "")
           || (choghadiyaKey.includes("rog") ? "રોગ" : "")
           || (choghadiyaKey.includes("char") || choghadiyaKey.includes("chal") ? "ચલ" : "")
-          || "સમયખંડ "+(index+1);
+          || fallbackNames[index] || "સમયખંડ "+(index+1);
         const start = pick(item, ["start","start_time","from","startTime","begin","start.time","start.value"]);
         const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
