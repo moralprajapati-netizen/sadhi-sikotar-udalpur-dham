@@ -3132,3 +3132,61 @@ body.section-view-active main > .hero { display: none !important; }
 
 
 /* v20261107b: canonical design layer is finalized in index.html after legacy inline rules. */
+
+
+/* Home screen refinement: six primary cards, inspired by the approved Dham app reference. */
+#sections .section-folder-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(8px,1.5vw,16px);
+}
+#sections .section-folder-card {
+  display:block;
+  border:2px solid #e6bd62;
+  border-radius:15px;
+  background:#fff4dc;
+  box-shadow:0 5px 15px rgba(24,4,9,.26),inset 0 0 0 1px rgba(255,255,255,.65);
+}
+#sections .section-folder-cover {
+  aspect-ratio:1/1 !important;
+  min-height:0 !important;
+  padding:0;
+  background:#fff0ce;
+}
+#sections .section-folder-cover img {
+  width:100%;
+  height:100%;
+  padding:0;
+  object-fit:cover !important;
+  object-position:center !important;
+}
+#sections .section-folder-cover::after,
+#sections .section-folder-card::after {
+  content:none !important;
+  display:none !important;
+}
+#sections .section-folder-card[aria-current="true"] {
+  outline:2px solid #f6df9b;
+  outline-offset:2px;
+}
+.home-contact-cta {
+  color:#fff8e9;
+  border-color:#f2d27c;
+  background:linear-gradient(110deg,#145b36,#08743d);
+}
+.home-contact-cta span { color:#ffe18a; }
+@media(max-width:600px) {
+  #sections .section-folder-grid {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+    margin-top:10px;
+  }
+  #sections .section-folder-card { border-width:1.5px; border-radius:11px; }
+  #sections .section-folder-cover { aspect-ratio:1/1 !important; }
+  .hero-darshan-pair { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .mobile-bottom-nav a.is-active { color:#ffe18a; }
+  .mobile-bottom-nav a.is-active>span { color:#ffe18a; }
+}
+@media(max-width:360px) {
+  #sections .section-folder-grid { gap:5px; }
+  #sections .section-folder-card { border-radius:9px; }
+}
