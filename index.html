@@ -681,10 +681,42 @@
       #sections .section-folder-card,#sections .section-folder-cover img { transition:none!important; }
     }
 
-
-    /* Clear, consistent topic icons on each section cover. */
-    #sections .section-folder-icon { font-family: system-ui, sans-serif; font-size: 2.15rem; line-height: 1; }
-    #sections .panchang-folder-art .section-folder-icon { position:absolute; z-index:3; left:50%; top:50%; transform:translate(-50%,-50%); }
+    /* Readable calendar: date, tithi and festival are stacked vertically. */
+    #panchang .calendar-date {
+      display:flex; flex-direction:column; justify-content:flex-start; align-items:center;
+      gap:3px; min-height:88px; padding:7px 3px; overflow:hidden;
+      white-space:normal; text-align:center;
+    }
+    #panchang .calendar-date-en { display:block; font-size:1rem; font-weight:900; line-height:1.2; }
+    #panchang .calendar-date small {
+      display:block; max-width:100%; font-size:.68rem; font-weight:700;
+      line-height:1.25; overflow-wrap:anywhere; white-space:normal;
+    }
+    #panchang .calendar-date .calendar-tithi { color:#6b1828; }
+    #panchang .calendar-date .calendar-festival { color:#80510b; font-weight:800; }
+    #panchang .calendar-date.selected .calendar-tithi,
+    #panchang .calendar-date.selected .calendar-festival { color:#fff8e9; }
+    #panchang .choghadiya-row {
+      display:grid; grid-template-columns:minmax(70px,.65fr) minmax(0,1.35fr);
+      align-items:center; gap:5px 10px; padding:11px 10px;
+    }
+    #panchang .choghadiya-row > span { grid-column:1; grid-row:1; }
+    #panchang .choghadiya-row > strong {
+      grid-column:2; grid-row:1; font-size:.82rem; text-align:right;
+      line-height:1.45; overflow-wrap:anywhere;
+    }
+    #panchang .choghadiya-row > .choghadiya-meaning {
+      grid-column:1 / -1; grid-row:2; display:block; text-align:left;
+      color:#6d5b48; font-size:.76rem; line-height:1.4; font-weight:600;
+    }
+    @media(max-width:600px) {
+      #panchang .calendar-date { min-height:82px; padding:6px 2px; gap:3px; }
+      #panchang .calendar-date-en { font-size:.9rem; }
+      #panchang .calendar-date small { font-size:.62rem; }
+      #panchang .choghadiya-row { grid-template-columns:66px minmax(0,1fr); gap:5px 8px; }
+      #panchang .choghadiya-row > strong { font-size:.76rem; }
+      #panchang .choghadiya-row > .choghadiya-meaning { font-size:.72rem; }
+    }
   </style>
 </head>
 
@@ -763,15 +795,15 @@
           <p>દરેક વિભાગ તેના કવર ફોટા સાથે — ખોલવા માટે કાર્ડ પર ક્લિક કરો.</p>
         </div>
         <div class="section-folder-grid" aria-label="ધામના મુખ્ય વિભાગો">
-          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261107b" alt="ધામનો પરિચય" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🏛️</span></div></a>
-          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261107b" alt="મંદિર વિશે" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🛕</span></div></a>
-          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261107b" alt="ભજન અને આરતી" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🎵</span></div></a>
-          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261107b" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🎥</span></div></a>
-          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261107b" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🎉</span></div></a>
-          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261107b" alt="ધાર્મિક કથા" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">📖</span></div></a>
-          <a class="section-folder-card folder-gallery" href="#gallery" aria-label="દર્શન ગેલેરી ખોલો"><div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરી" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">🖼️</span></div></a>
-          <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ ખોલો"><div class="section-folder-cover panchang-folder-art"><span class="panchang-calendar-icon" aria-hidden="true">📅</span><strong>ગુજરાતી પંચાંગ</strong><small>તિથિ • વાર • ચોઘડિયા</small><i aria-hidden="true">॥</i></div></a>
-          <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261107b" alt="સંપર્ક કરો" loading="lazy" decoding="async"><span class="section-folder-icon" aria-hidden="true">📍</span></div></a>
+          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261107b" alt="ધામનો પરિચય" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261107b" alt="મંદિર વિશે" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261107b" alt="ભજન અને આરતી" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261107b" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261107b" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261107b" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-gallery" href="#gallery" aria-label="દર્શન ગેલેરી ખોલો"><div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરી" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ ખોલો"><div class="section-folder-cover panchang-folder-art"><span aria-hidden="true">ૐ</span><strong>ગુજરાતી પંચાંગ</strong><small>તિથિ • વાર • ચોઘડિયા</small><i aria-hidden="true">॥</i></div></a>
+          <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261107b" alt="સંપર્ક કરો" loading="lazy" decoding="async"></div></a>
 
                   </div>
         <a class="home-contact-cta" href="#contact"><span aria-hidden="true">☎</span> સંપર્ક કરવું <span aria-hidden="true">›</span></a>
