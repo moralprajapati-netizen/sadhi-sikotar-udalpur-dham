@@ -2953,3 +2953,179 @@ body.section-view-active main > .hero { display: none !important; }
 #panchang .calendar-date.selected .calendar-tithi{color:#fff1cf}
 #panchang .calendar-date.selected .calendar-festival{color:#5a101d;background:#ffe6a0}
 @media(max-width:600px){#panchang .calendar-date{min-height:67px;padding:5px 1px;gap:2px}#panchang .calendar-date-en{font-size:.88rem}#panchang .calendar-tithi{font-size:.56rem}#panchang .calendar-festival{font-size:.52rem;padding:2px 1px}}
+
+
+/* Professional visual refinement — 2026-11-07 */
+:root {
+  --dham-maroon: #641326;
+  --dham-maroon-deep: #390914;
+  --dham-gold: #d8ad55;
+  --dham-gold-light: #f7e6b7;
+  --dham-cream: #fffaf0;
+}
+#sections .section-folder-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(12px,2vw,22px);
+  align-items:stretch;
+  margin-top:24px;
+}
+#sections .section-folder-card {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid rgba(231,194,112,.9);
+  border-radius:18px;
+  background:var(--dham-cream);
+  box-shadow:0 7px 20px rgba(28,5,11,.24), inset 0 0 0 1px rgba(255,255,255,.65);
+  text-decoration:none;
+  transform:translateZ(0);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+#sections .section-folder-card:hover,
+#sections .section-folder-card:focus-visible {
+  transform:translateY(-4px);
+  border-color:#f5d88e;
+  box-shadow:0 14px 28px rgba(28,5,11,.32),0 0 0 3px rgba(247,230,183,.18);
+  outline:none;
+}
+#sections .section-folder-cover {
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:100%;
+  aspect-ratio:1.28/1 !important;
+  min-height:0 !important;
+  height:auto !important;
+  overflow:hidden;
+  border:0;
+  background:radial-gradient(circle at 50% 30%,#fff4d5,#ead7b0 72%,#d4b77c);
+}
+#sections .section-folder-cover img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain !important;
+  object-position:center !important;
+  padding:5px;
+  transition:transform .28s ease;
+}
+#sections .section-folder-card:hover .section-folder-cover img { transform:scale(1.035); }
+#sections .section-folder-cover::before { content:none !important; display:none !important; }
+#sections .section-folder-cover::after {
+  content:"✦" !important;
+  position:absolute;
+  z-index:5;
+  top:11px;
+  left:11px;
+  display:grid !important;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border:1px solid #f7e6b7;
+  border-radius:14px;
+  color:#fff4d5;
+  background:linear-gradient(145deg,#390914,#8b2639);
+  box-shadow:0 4px 12px rgba(30,4,10,.28),inset 0 0 0 2px rgba(216,173,85,.25);
+  font-family:Arial,sans-serif;
+  font-size:1.25rem;
+  line-height:1;
+}
+#sections .folder-history .section-folder-cover::after { content:"⌂" !important; }
+#sections .folder-temple .section-folder-cover::after { content:"♜" !important; }
+#sections .folder-bhajan .section-folder-cover::after { content:"♫" !important; }
+#sections .folder-media .section-folder-cover::after,
+#sections .folder-video .section-folder-cover::after { content:"▶" !important; }
+#sections .folder-festivals .section-folder-cover::after { content:"✺" !important; }
+#sections .folder-stories .section-folder-cover::after { content:"ॐ" !important; }
+#sections .folder-contact .section-folder-cover::after { content:"☎" !important; }
+#sections .section-folder-card::after {
+  content:"વિભાગ ખોલો  ›";
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:7px 10px;
+  border-top:1px solid rgba(216,173,85,.65);
+  color:#fff6df;
+  background:linear-gradient(100deg,#390914,#741827,#390914);
+  font-size:.9rem;
+  font-weight:800;
+  letter-spacing:.01em;
+}
+#sections .section-folder-card[aria-current="true"] {
+  border-color:#f5d88e;
+  box-shadow:0 0 0 3px rgba(216,173,85,.3),0 10px 25px rgba(28,5,11,.25);
+}
+#sections .section-heading { max-width:760px; }
+#sections .section-heading h2 { letter-spacing:.01em; }
+.section:not(#home):not(#sections) .section-heading {
+  border-radius:18px;
+  padding:clamp(16px,2.4vw,24px);
+  box-shadow:0 8px 22px rgba(65,12,25,.15);
+}
+.section:not(#home):not(#sections) .container { width:min(100% - 32px, var(--container,1120px)); }
+.dynamic-content-list,.live-bhajan-list,.gallery-dynamic-grid {
+  gap:clamp(12px,2vw,20px);
+}
+.dynamic-content-card,.live-bhajan-card,.contact .section-content,
+#panchang .panchang-live-card,#panchang .panchang-calendar-card {
+  border:1px solid rgba(216,173,85,.72);
+  border-radius:18px;
+  box-shadow:0 7px 20px rgba(65,12,25,.09);
+}
+.dynamic-content-card,.live-bhajan-card { padding:clamp(15px,2.2vw,22px); }
+.dynamic-content-card img,.live-bhajan-card img {
+  border:1px solid rgba(216,173,85,.55);
+  border-radius:13px;
+}
+.gallery-card {
+  border:1px solid #d8ad55;
+  border-radius:15px;
+  box-shadow:0 6px 18px rgba(65,12,25,.14);
+}
+#panchang .panchang-summary-grid article {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:88px;
+  padding:15px;
+  border:1px solid #e3c77f;
+  border-radius:14px;
+  background:linear-gradient(145deg,#fffdf8,#fff3d9);
+  box-shadow:0 3px 10px rgba(65,12,25,.055);
+}
+#panchang .panchang-summary-grid span { font-size:.82rem; font-weight:700; }
+#panchang .panchang-summary-grid strong { font-size:1.06rem; line-height:1.55; }
+#panchang .calendar-weekdays div {
+  border-radius:9px;
+  background:linear-gradient(100deg,#390914,#741827);
+}
+#panchang .calendar-date {
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(65,12,25,.045);
+}
+#panchang .calendar-date.today { border:2px solid #c49332; }
+#panchang .choghadiya-columns section {
+  padding:14px;
+  border:1px solid #e3c77f;
+  border-radius:15px;
+  background:#fffaf0;
+}
+@media(max-width:760px) {
+  #sections .section-folder-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+  #sections .section-folder-cover { aspect-ratio:1.16/1 !important; }
+}
+@media(max-width:420px) {
+  #sections .section-folder-grid { gap:9px; }
+  #sections .section-folder-card { border-radius:13px; }
+  #sections .section-folder-cover::after { top:7px; left:7px; width:34px; height:34px; border-radius:11px; font-size:1.05rem; }
+  #sections .section-folder-card::after { min-height:38px; font-size:.78rem; }
+  #panchang .panchang-summary-grid article { min-height:78px; padding:11px; }
+  #panchang .panchang-summary-grid strong { font-size:.96rem; }
+}
+@media(prefers-reduced-motion:reduce) {
+  #sections .section-folder-card,#sections .section-folder-cover img { transition:none !important; }
+}
