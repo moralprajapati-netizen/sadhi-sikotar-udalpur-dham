@@ -718,6 +718,56 @@
       #panchang .choghadiya-row > .choghadiya-meaning { font-size:.72rem; }
     }
   </style>
+<style id="dham-reference-home-v1">
+:root{--dham-red:#650d19;--dham-deep:#32050d;--dham-gold:#f2c65c;--dham-cream:#fff1d2;--dham-green:#075b32}
+body{background:#3a0710;color:#32100c}
+.site-header{background:linear-gradient(100deg,#30040b,#7b101f 48%,#30040b);border-bottom:3px solid var(--dham-gold);box-shadow:0 5px 18px #16020799}
+.header-inner{justify-content:center;position:relative;min-height:76px}
+.brand{justify-content:center;text-align:center;gap:0}.brand-symbol{display:none}.brand-text{line-height:1.25}
+.brand-text strong{font-size:clamp(1.15rem,2vw,1.7rem);color:#ffe36d;text-shadow:0 2px 4px #26030a}
+.brand-text>span{font-size:1rem;color:#fff1cf;font-weight:800}
+.menu-toggle{position:absolute;left:0;border:0;background:transparent}.menu-toggle span{background:#ffdb63;height:3px}.main-nav{background:#410914}
+.hero{min-height:0;padding:clamp(18px,3vw,34px) 0 22px;background:linear-gradient(180deg,#36060e,#74101f 70%,#3b0710)}
+.hero::before{inset:7px;border:2px solid #e7b84d;border-radius:22px;box-shadow:inset 0 0 0 2px #fff0c033}.hero::after{display:none}
+.hero-content{width:min(100% - 30px,1080px);text-align:center}
+.hero-eyebrow{margin:0 auto 8px;padding:5px 15px;color:#ffe17b;border-color:#f2c65c;background:#4a0913}
+.hero h1{margin:0 auto;color:#ffe16d;font-size:clamp(1.45rem,4vw,2.8rem);line-height:1.25;text-shadow:0 2px 6px #1b0206}
+.hero-subtitle{margin:4px 0;color:#fff0c9;font-size:1rem}.hero-description{margin:4px auto 12px;font-size:.9rem;color:#fff4df}
+.hero-darshan-pair{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-width:780px;margin:14px auto 0}
+.hero-photo{height:clamp(175px,35vw,340px);overflow:hidden;border:3px solid #efc65c;border-radius:20px;box-shadow:0 6px 18px #17020799}
+.hero-photo img{width:100%;height:100%;object-fit:cover}
+.hero-photo span{left:7px;right:7px;bottom:7px;padding:7px 5px;border:1px solid #f4d47b;border-radius:20px;color:#fff6df;background:#5c0a18ef;font-weight:900}
+.hero-actions{justify-content:center;margin-top:13px}.hero-actions .btn{min-width:220px;border:2px solid #f5d47c;border-radius:30px;color:#281000;background:linear-gradient(100deg,#ffe17b,#e7a900);font-size:1.05rem}
+#sections{padding:18px 0 24px;background:linear-gradient(180deg,#510b16,#30050c)}
+#sections .container{width:min(100% - 24px,900px)}#sections .section-heading{display:block;margin:0 auto 13px;text-align:center}
+#sections .section-heading .section-kicker{color:#f7d47c;font-weight:800}#sections .section-heading h2{margin:4px 0;color:#ffe27d;font-size:1.35rem}
+#sections .section-heading p{margin:0;color:#fff0d4;font-size:.84rem}
+#sections .section-folder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
+#sections .section-folder-card{display:flex;min-width:0;flex-direction:column;overflow:hidden;border:2px solid #e9bd58;border-radius:16px;background:linear-gradient(145deg,#fff8e8,#f3dcae);box-shadow:0 5px 14px #16020788,inset 0 0 0 1px #fff}
+#sections .section-folder-cover{width:100%;aspect-ratio:1/1!important;min-height:0!important;height:auto!important;background:#f4dfb5}
+#sections .section-folder-cover img{width:100%;height:100%;padding:0;object-fit:cover!important}
+#sections .section-folder-cover::before,#sections .section-folder-cover::after{content:none!important;display:none!important}
+#sections .section-folder-label{display:flex;min-height:43px;align-items:center;justify-content:center;padding:5px 3px;color:#39100b;background:linear-gradient(180deg,#fff6df,#f3dba8);font-size:clamp(.68rem,2.1vw,.98rem);font-weight:900;line-height:1.25;text-align:center}
+.home-contact-cta{display:flex;max-width:360px;min-height:52px;align-items:center;justify-content:center;gap:12px;margin:15px auto 0;border:2px solid #f4d16c;border-radius:30px;color:#fff8e9;background:linear-gradient(100deg,#064c2a,#08763e);box-shadow:0 5px 14px #16020788;font-weight:900}
+.mobile-bottom-nav{background:linear-gradient(100deg,#31050d,#7b1020 50%,#31050d);border:2px solid #edc35f;box-shadow:0 4px 20px #120106aa}
+.mobile-bottom-nav a>span{color:#ffdf75}.mobile-bottom-nav a.is-active{color:#ffe078}
+.section:not(#home):not(#sections){background:linear-gradient(180deg,#fff5df,#f4e2c2)}
+.section:not(#home):not(#sections) .section-heading{border:2px solid #e4bd62;background:linear-gradient(110deg,#fff9ec,#f7e6c2)}
+.section:not(#home):not(#sections) .section-heading h2{color:#650d19}
+.site-footer{border-top:3px solid #e8bd58;background:linear-gradient(100deg,#31050d,#74101f,#31050d);color:#fff1d1}
+@media(max-width:600px){
+body{padding-bottom:78px}.site-header,.header-inner{min-height:65px}.header-inner{width:calc(100% - 20px)}
+.brand-text strong{font-size:1.08rem}.brand-text>span{font-size:.82rem}.menu-toggle{left:0;width:38px;height:38px;padding:7px}.main-nav{top:65px}
+.hero{padding:14px 0 16px}.hero-content{width:calc(100% - 22px)}.hero-eyebrow{display:none}.hero h1{font-size:1.28rem}
+.hero-subtitle{font-size:.85rem}.hero-description{display:none}.hero-darshan-pair{gap:6px;margin-top:9px}
+.hero-photo{height:clamp(145px,48vw,220px);border-width:2px;border-radius:13px}.hero-photo span{font-size:.68rem;bottom:4px}
+.hero-actions{margin-top:9px}.hero-actions .btn{min-height:42px;padding:7px 20px;font-size:.92rem}
+#sections{padding:14px 0 18px}#sections .section-heading{margin-bottom:9px}#sections .section-heading h2{font-size:1.12rem}#sections .section-heading p{font-size:.73rem}
+#sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+#sections .section-folder-card{border-width:1.5px;border-radius:11px}#sections .section-folder-label{min-height:38px;padding:4px 2px;font-size:.68rem}
+.mobile-bottom-nav{left:6px;right:6px;bottom:5px;min-height:64px;border-radius:15px}.mobile-bottom-nav small{font-size:.65rem}.mobile-bottom-nav a>span{font-size:1.25rem}
+}
+</style>
 </head>
 
 <body>
@@ -795,12 +845,12 @@
           <p>દરેક વિભાગ તેના કવર ફોટા સાથે — ખોલવા માટે કાર્ડ પર ક્લિક કરો.</p>
         </div>
         <div class="section-folder-grid" aria-label="ધામના મુખ્ય વિભાગો">
-          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261107b" alt="ધામનો પરિચય" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261107b" alt="મંદિર વિશે" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261107b" alt="ભજન અને આરતી" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261107b" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261107b" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261107b" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261107b" alt="ધામનો પરિચય" loading="lazy" decoding="async"></div><span class="section-folder-label">ધામનો પરિચય</span></a>
+          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261107b" alt="મંદિર વિશે" loading="lazy" decoding="async"></div><span class="section-folder-label">મંદિર વિશે</span></a>
+          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261107b" alt="ભજન અને આરતી" loading="lazy" decoding="async"></div><span class="section-folder-label">ભજન આરતી</span></a>
+          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261107b" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div><span class="section-folder-label">લાઇવ વિડિયો ફોટો</span></a>
+          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261107b" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div><span class="section-folder-label">પર્વ ઉત્સવ</span></a>
+          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261107b" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div><span class="section-folder-label">ધાર્મિક કથા</span></a>
 
                   </div>
         <a class="home-contact-cta" href="#contact"><span aria-hidden="true">☎</span> સંપર્ક કરવું <span aria-hidden="true">›</span></a>
