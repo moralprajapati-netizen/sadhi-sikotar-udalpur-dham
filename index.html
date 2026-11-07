@@ -1014,6 +1014,32 @@ body{padding-bottom:78px}.site-header,.header-inner{min-height:65px}.header-inne
   #panchang .choghadiya-row>.choghadiya-meaning{grid-row:3!important}
 }
 
+
+/* Choghadiya row fix: reserve exactly two columns and put meaning on its own line */
+#panchang .choghadiya-row{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)!important;
+  grid-template-rows:auto auto!important;
+  align-items:center!important;
+  column-gap:12px!important;
+  row-gap:5px!important;
+  min-height:0!important;
+  height:auto!important;
+  overflow:visible!important;
+}
+#panchang .choghadiya-row>span{grid-column:1!important;grid-row:1!important;min-width:0!important;text-align:left!important;white-space:normal!important;overflow-wrap:normal!important;word-break:keep-all!important}
+#panchang .choghadiya-row>strong{grid-column:2!important;grid-row:1!important;min-width:0!important;text-align:right!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#panchang .choghadiya-row>.choghadiya-meaning{
+  grid-column:1/-1!important;grid-row:2!important;
+  display:block!important;width:auto!important;height:auto!important;
+  min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;
+  color:#78634d!important;font-size:.78rem!important;line-height:1.45!important;
+  text-align:left!important;white-space:normal!important;overflow-wrap:anywhere!important;
+}
+@media(max-width:760px){
+  #panchang .choghadiya-columns{grid-template-columns:minmax(0,1fr)!important}
+}
 </style>
 </head>
 
