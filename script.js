@@ -1189,7 +1189,12 @@ function initializeGujaratiCalendar() {
         const displayName = choghadiyaGujarati[choghadiyaKey]
           || (choghadiyaKey.includes("shubh") || choghadiyaKey.includes("subh") ? "શુભ" : "")
           || (choghadiyaKey.includes("udveg") || choghadiyaKey.includes("udvegh") ? "ઉદ્વેગ" : "")
-          || name;
+          || (choghadiyaKey.includes("amrit") || choghadiyaKey.includes("amrut") ? "અમૃત" : "")
+          || (choghadiyaKey.includes("labh") ? "લાભ" : "")
+          || (choghadiyaKey.includes("kaal") || choghadiyaKey.includes("kal") ? "કાળ" : "")
+          || (choghadiyaKey.includes("rog") ? "રોગ" : "")
+          || (choghadiyaKey.includes("char") || choghadiyaKey.includes("chal") ? "ચલ" : "")
+          || "સમયખંડ "+(index+1);
         const start = pick(item, ["start","start_time","from","startTime","begin","start.time","start.value"]);
         const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
@@ -1293,6 +1298,21 @@ function initializeGujaratiCalendar() {
       });
       let dayItems = pick(ch, ["day.choghadiya","day.items","day.periods","day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
       let nightItems = pick(ch, ["night.choghadiya","night.items","night.periods","night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
+      // ShubhAI's documented response is a flat periods[] array with part=day/night.
+      const periodItems = pick(ch, ["periods","choghadiya.periods","data.periods"]);
+      if (Array.isArray(periodItems)) {
+        const byPart = part => periodItems.filter(item => {
+          const value = String(pick(item, ["part","period","period_of_day","time_of_day"]) || "").toLowerCase();
+          return value === part || value.includes(part);
+        }).map(item => ({
+          ...item,
+          name: pick(item, ["type","name","label","title"]) || item.name,
+          start: pick(item, ["start","start_time","from"]) || item.start,
+          end: pick(item, ["end","end_time","to"]) || item.end
+        }));
+        if (!Array.isArray(dayItems) || !dayItems.length) dayItems = byPart("day");
+        if (!Array.isArray(nightItems) || !nightItems.length) nightItems = byPart("night");
+      }
       const toMinutes = value => {
         if (value && typeof value === "object") value = readable(value, ["time","local_time","formatted","value","start"]);
         if (typeof value === "number" && Number.isFinite(value)) return value < 24 ? Math.round(value * 60) : Math.round(value);
@@ -1440,8 +1460,10 @@ function initializeGujaratiCalendar() {
   function calendarTithi(record) {
     const t = record.tithi ?? record.tithi_name ?? record.tithiName ?? record.lunar_day;
     const raw = calendarText(t);
-    const key = raw.toLowerCase().replace(/[^a-z]/g,"");
-    const number = Number(record.tithi_number ?? record.tithiNumber ?? t?.number);
+    const paksha = calendarText(record.paksha ?? t?.paksha ?? record.fortnight).toLowerCase();
+    const rawKey = raw.toLowerCase().replace(/[^a-z]/g,"");
+    const key = rawKey.replace(/^(shukla|sukla|krishna|krsna|shuklapaksha|krishnapaksha)/,"");
+    const number = Number(record.tithi_number ?? record.tithiNumber ?? t?.number ?? t?.tithi_number);
     const numberNames = {
       1:"પ્રથમા",2:"બીજ",3:"ત્રીજ",4:"ચોથ",5:"પાંચમ",6:"છઠ્ઠ",7:"સાતમ",
       8:"આઠમ",9:"નોમ",10:"દશમ",11:"અગિયારસ",12:"બારસ",13:"તેરસ",
@@ -1449,8 +1471,15 @@ function initializeGujaratiCalendar() {
       20:"પાંચમ",21:"છઠ્ઠ",22:"સાતમ",23:"આઠમ",24:"નોમ",25:"દશમ",
       26:"અગિયારસ",27:"બારસ",28:"તેરસ",29:"ચૌદસ",30:"અમાસ"
     };
-    const name = guTithiNames[key] || numberNames[number] || raw;
-    const paksha = calendarText(record.paksha ?? t?.paksha).toLowerCase();
+    let name = guTithiNames[key] || numberNames[number] || "";
+    if (!name && Number.isFinite(number) && number >= 1 && number <= 15) {
+      name = number === 15
+        ? (/krishna|krsna/.test(paksha) ? "અમાસ" : "પૂનમ")
+        : numberNames[number];
+    }
+    if (!name && rawKey.includes("purnima")) name = "પૂનમ";
+    if (!name && rawKey.includes("amavasya")) name = "અમાસ";
+    if (!name) name = raw && /[\\u0900-\\u097f\\u0a80-\\u0aff]/.test(raw) ? raw : "તિથિ";
     return (/shukla|sukla/.test(paksha) ? "શુ. " : /krishna|krsna/.test(paksha) ? "કૃ. " : "") + name;
   }
 
@@ -1464,7 +1493,17 @@ function initializeGujaratiCalendar() {
   function calendarFestivalName(record) {
     const raw = calendarText(record);
     const key = raw.toLowerCase().replace(/[^a-z]/g,"");
-    return guFestivalNames[key] || raw;
+    const exact = guFestivalNames[key];
+    if (exact) return exact;
+    if (key.includes("dhanteras") || key.includes("dhantrayodashi")) return "ધનતેરસ";
+    if (key.includes("naraka") || key.includes("kalichaudas") || key.includes("roopchaudas")) return "કાળી ચૌદશ";
+    if (key.includes("diwali") || key.includes("deepavali") || key.includes("lakshmipuja")) return "દિવાળી";
+    if (key.includes("govardhan")) return "ગોવર્ધન પૂજા";
+    if (key.includes("annakut")) return "અન્નકૂટ";
+    if (key.includes("bhaidooj") || key.includes("bhaibeej") || key.includes("yamadvitiya")) return "ભાઈબીજ";
+    if (key.includes("tulsivivah")) return "તુલસી વિવાહ";
+    if (key.includes("devutthana") || key.includes("prabodhini")) return "દેવઉઠી એકાદશી";
+    return raw && /[\\u0900-\\u097f\\u0a80-\\u0aff]/.test(raw) ? raw : "ધાર્મિક પર્વ";
   }
 
   async function calendarAPI(path, body) {
