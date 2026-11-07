@@ -1054,6 +1054,28 @@ body{padding-bottom:78px}.site-header,.header-inner{min-height:65px}.header-inne
  #panchang .choghadiya-row>strong{font-size:.98rem!important}
  #panchang .choghadiya-row>.choghadiya-meaning{font-size:.93rem!important}
 }
+
+/* Panchang: larger month, tithi and calendar text */
+#panchang .panchang-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+#panchang .panchang-summary-grid article{padding:15px 13px!important;min-height:88px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:7px!important}
+#panchang .panchang-summary-grid article span{font-size:1rem!important;line-height:1.4!important;font-weight:800!important}
+#panchang .panchang-summary-grid article strong{font-size:1.2rem!important;line-height:1.5!important;overflow-wrap:normal!important;word-break:normal!important}
+#panchang #panchangGujaratiMonth,#panchang #panchangTithi{font-size:1.32rem!important;font-weight:900!important;color:#741827!important}
+#panchang .calendar-weekdays div{font-size:.9rem!important;padding:10px 2px!important}
+#panchang .calendar-date{min-height:105px!important;padding:8px 4px!important;gap:5px!important}
+#panchang .calendar-date-en{font-size:1.08rem!important}
+#panchang .calendar-date small{font-size:.8rem!important;line-height:1.45!important;overflow-wrap:normal!important;word-break:normal!important}
+#panchang .calendar-date .calendar-tithi{font-weight:800!important}
+#panchang .calendar-date .calendar-festival{font-size:.82rem!important}
+@media(max-width:600px){
+ #panchang .panchang-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #panchang .panchang-summary-grid article{padding:13px 10px!important;min-height:84px!important}
+ #panchang .panchang-summary-grid article span{font-size:.96rem!important}
+ #panchang .panchang-summary-grid article strong{font-size:1.12rem!important}
+ #panchang #panchangGujaratiMonth,#panchang #panchangTithi{font-size:1.25rem!important}
+ #panchang .calendar-date{min-height:98px!important}
+ #panchang .calendar-date small{font-size:.74rem!important}
+}
 </style>
 </head>
 
