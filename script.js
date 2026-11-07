@@ -1157,7 +1157,8 @@ function initializeGujaratiCalendar() {
 
       if (typeof value === "number" && value < 1440) {
         const h = Math.floor(value / 60), m = Math.round(value % 60);
-        return String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h < 12 ? "AM" : "PM");
+        const period = h >= 5 && h < 12 ? "સવારે" : h >= 12 && h < 16 ? "બપોરે" : h >= 16 && h < 19 ? "સાંજે" : "રાત્રે";
+        return String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+period;
       }
       return String(value);
     };
@@ -1201,8 +1202,20 @@ function initializeGujaratiCalendar() {
         span.textContent = String(displayName);
         const time = document.createElement("strong");
         const rawTime = pick(item,["time","timing","duration"]);
-        time.textContent = start != null || end != null ? clock(readable(start) || start)+" – "+clock(readable(end) || end) : (readable(rawTime) || "");
-        row.append(span,time);
+        time.textContent = start != null || end != null ? clock(readable(start) || start)+" થી "+clock(readable(end) || end) : (readable(rawTime) || "સમય ઉપલબ્ધ નથી");
+        const meanings = {
+          "અમૃત":"બધાં શુભ કાર્યો માટે ઉત્તમ",
+          "શુભ":"શુભ કાર્ય અને પૂજા માટે અનુકૂળ",
+          "લાભ":"વેપાર અને આર્થિક કાર્ય માટે અનુકૂળ",
+          "ચલ":"પ્રવાસ અને મુસાફરી માટે અનુકૂળ",
+          "ઉદ્વેગ":"મહત્વના નવા કાર્ય ટાળવા",
+          "કાળ":"નવું શુભ કાર્ય શરૂ ન કરવું",
+          "રોગ":"શુભ શરૂઆત ટાળવી"
+        };
+        const meaning = document.createElement("small");
+        meaning.className = "choghadiya-meaning";
+        meaning.textContent = meanings[displayName] || "";
+        row.append(span,time,meaning);
         el.appendChild(row);
       });
     };
@@ -1463,7 +1476,8 @@ function initializeGujaratiCalendar() {
     const paksha = calendarText(record.paksha ?? t?.paksha ?? record.fortnight).toLowerCase();
     const rawKey = raw.toLowerCase().replace(/[^a-z]/g,"");
     const key = rawKey.replace(/^(shukla|sukla|krishna|krsna|shuklapaksha|krishnapaksha)/,"");
-    const number = Number(record.tithi_number ?? record.tithiNumber ?? t?.number ?? t?.tithi_number);
+    const numberRaw = record.tithi_number ?? record.tithiNumber ?? t?.number ?? t?.tithi_number;
+    const number = numberRaw == null || numberRaw === "" ? NaN : Number(numberRaw);
     const numberNames = {
       1:"પ્રથમા",2:"બીજ",3:"ત્રીજ",4:"ચોથ",5:"પાંચમ",6:"છઠ્ઠ",7:"સાતમ",
       8:"આઠમ",9:"નોમ",10:"દશમ",11:"અગિયારસ",12:"બારસ",13:"તેરસ",
@@ -1471,16 +1485,15 @@ function initializeGujaratiCalendar() {
       20:"પાંચમ",21:"છઠ્ઠ",22:"સાતમ",23:"આઠમ",24:"નોમ",25:"દશમ",
       26:"અગિયારસ",27:"બારસ",28:"તેરસ",29:"ચૌદસ",30:"અમાસ"
     };
-    let name = guTithiNames[key] || numberNames[number] || "";
-    if (!name && Number.isFinite(number) && number >= 1 && number <= 15) {
-      name = number === 15
-        ? (/krishna|krsna/.test(paksha) ? "અમાસ" : "પૂનમ")
-        : numberNames[number];
+    let name = guTithiNames[key] || "";
+    if (!name && Number.isFinite(number)) {
+      if (number === 15) name = /krishna|krsna/.test(paksha) ? "અમાસ" : "પૂનમ";
+      else name = numberNames[number] || "";
     }
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
     if (!name && rawKey.includes("amavasya")) name = "અમાસ";
     if (!name) name = raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "તિથિ";
-    return (/shukla|sukla/.test(paksha) ? "શુ. " : /krishna|krsna/.test(paksha) ? "કૃ. " : "") + name;
+    return (/shukla|sukla/.test(paksha) ? "શુક્લ પક્ષ • " : /krishna|krsna/.test(paksha) ? "કૃષ્ણ પક્ષ • " : "") + name;
   }
 
   function calendarMonthName(record) {
