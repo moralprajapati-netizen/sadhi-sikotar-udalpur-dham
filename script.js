@@ -1514,7 +1514,9 @@ function initializeGujaratiCalendar() {
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
     if (!name && rawKey.includes("amavasya")) name = "અમાસ";
     if (!name) name = raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "તિથિ";
-    return (/shukla|sukla/.test(paksha) ? "શુક્લ પક્ષ • " : /krishna|krsna/.test(paksha) ? "કૃષ્ણ પક્ષ • " : "") + name;
+    const isSud = /shukla|sukla|શુક્લ|શુકલ/.test(paksha);
+    const isVad = /krishna|krsna|કૃષ્ણ/.test(paksha);
+    return (isSud ? "સુદ " : isVad ? "વદ " : "") + name;
   }
 
   function calendarMonthName(record) {
@@ -1639,6 +1641,7 @@ function initializeGujaratiCalendar() {
       number.textContent = guNumber(day);
       button.appendChild(number);
 
+      if(info.month){const m=document.createElement("small");m.className="calendar-month-name";m.textContent=info.month;button.appendChild(m);}
       if(info.tithi){const t=document.createElement("small");t.className="calendar-tithi";t.textContent=info.tithi;button.appendChild(t);}
       (info.festivals||[]).slice(0,2).forEach(name=>{const f=document.createElement("small");f.className="calendar-festival";f.textContent=name;button.appendChild(f);});
 
