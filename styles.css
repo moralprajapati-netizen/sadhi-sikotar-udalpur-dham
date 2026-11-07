@@ -3129,3 +3129,6 @@ body.section-view-active main > .hero { display: none !important; }
 @media(prefers-reduced-motion:reduce) {
   #sections .section-folder-card,#sections .section-folder-cover img { transition:none !important; }
 }
+
+
+/* v20261107b: canonical design layer is finalized in index.html after legacy inline rules. */
