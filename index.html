@@ -47,7 +47,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Gujarati:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261107a">
+  <link rel="stylesheet" href="./styles.css?v=20261107b">
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -573,6 +573,114 @@
       #panchang .calendar-controls strong { font-size:.95rem; }
     }
 
+  
+    /* Unified home and section-card layout — single final source of truth */
+    #sections { padding-block: clamp(42px,6vw,76px); }
+    #sections .section-heading { margin-bottom: clamp(22px,3vw,34px); }
+    #sections .section-folder-grid {
+      display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:clamp(14px,2vw,24px); align-items:stretch; margin-top:0;
+    }
+    #sections .section-folder-card {
+      display:block; min-width:0; overflow:hidden; padding:0;
+      border:1px solid #d9ad55; border-radius:18px;
+      background:#fffaf0; box-shadow:0 8px 24px rgba(65,12,25,.12);
+      text-decoration:none; transition:transform .2s ease,box-shadow .2s ease;
+    }
+    #sections .section-folder-card:hover,
+    #sections .section-folder-card:focus-visible {
+      transform:translateY(-4px); box-shadow:0 14px 30px rgba(65,12,25,.2);
+      outline:3px solid rgba(217,173,85,.45); outline-offset:2px;
+    }
+    #sections .section-folder-cover {
+      position:relative; display:grid; place-items:center;
+      width:100%; height:auto!important; min-height:0!important;
+      aspect-ratio: 1.48 / 1; overflow:hidden; isolation:isolate;
+      border:0; border-radius:0; background:#f3e4c4;
+    }
+    #sections .section-folder-cover img {
+      position:absolute; inset:0; display:block; width:100%; height:100%;
+      object-fit:cover!important; object-position:center!important;
+      padding:0!important; opacity:1; filter:none;
+      transition:transform .3s ease;
+    }
+    #sections .section-folder-card:hover .section-folder-cover img { transform:scale(1.045); }
+    /* Cover artwork already contains its title; no extra icon/text is stamped over it. */
+    body #sections .section-folder-grid .section-folder-card .section-folder-cover::before,
+    body #sections .section-folder-grid .section-folder-card .section-folder-cover::after {
+      content:none!important; display:none!important;
+    }
+    #sections .section-folder-card::after {
+      content:"વિભાગ ખોલો  ›"; display:flex; min-height:42px;
+      align-items:center; justify-content:center; padding:8px 12px;
+      border-top:1px solid #ead6a6; color:#6b1828;
+      background:linear-gradient(180deg,#fffdf8,#fff2d6);
+      font-size:.9rem; font-weight:800;
+    }
+    #sections .panchang-folder-art {
+      position:relative; display:flex; flex-direction:column; justify-content:center;
+      gap:7px; padding:16px; color:#fff3d3; text-align:center;
+      background:radial-gradient(circle at 50% 18%,#9d5a35 0,#681a2b 50%,#320a16 100%);
+    }
+    #sections .panchang-folder-art::before {
+      content:""; position:absolute; inset:10px; border:1px solid rgba(244,223,171,.55);
+      border-radius:12px; pointer-events:none;
+    }
+    #sections .panchang-folder-art span { color:#f5d88e; font-size:clamp(2.2rem,5vw,3.8rem); line-height:1.1; }
+    #sections .panchang-folder-art strong { color:#fff0c7; font-size:clamp(1.1rem,2.4vw,1.65rem); }
+    #sections .panchang-folder-art small { color:#fff8e9; font-size:clamp(.7rem,1.5vw,.9rem); font-weight:700; }
+    #sections .panchang-folder-art i { color:#e7c77c; font-size:1.2rem; font-style:normal; }
+    /* Consistent section rhythm and readable content surfaces */
+    .section { padding-block:clamp(48px,6.5vw,82px); }
+    .section-heading { margin-bottom:clamp(24px,3.5vw,40px); }
+    .section-heading h2 { text-wrap:balance; }
+    .section:not(#home):not(#sections) .section-heading {
+      padding:0; border-radius:0; box-shadow:none;
+    }
+    .dynamic-content-list,.live-bhajan-list,.gallery-dynamic-grid {
+      display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:clamp(14px,2vw,22px);
+    }
+    .dynamic-content-card,.live-bhajan-card {
+      min-width:0; height:100%; border:1px solid #ead6a6;
+      border-radius:16px; background:#fffdf8;
+      box-shadow:0 6px 20px rgba(65,12,25,.08);
+    }
+    .dynamic-content-card img,.live-bhajan-card img,
+    .gallery-dynamic-card img { width:100%; max-height:320px; object-fit:cover; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+    .gallery-card { min-width:0; overflow:hidden; border:1px solid #d9ad55; border-radius:16px; background:#fffaf0; }
+    .gallery-card img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; }
+    .gallery-card span { display:block; padding:10px; font-weight:800; }
+    .panchang-live-card,.panchang-calendar-card {
+      max-width:100%; border:1px solid #e5cf9d; border-radius:18px;
+      background:#fffdf8; box-shadow:0 8px 24px rgba(65,12,25,.07);
+    }
+    .panchang-summary-grid { grid-template-columns:repeat(5,minmax(0,1fr)); }
+    .panchang-calendar-card { margin-top:20px; }
+    .map-screen-card { overflow:hidden; border:1px solid #d9ad55; border-radius:18px; background:#fffdf8; box-shadow:0 8px 24px rgba(65,12,25,.1); }
+    .map-screen-card iframe { display:block; width:100%; border:0; }
+    .contact .section-content { padding:clamp(18px,3vw,28px); border:1px solid #ead6a6; border-radius:18px; background:#fffdf8; }
+    .site-footer { margin-top:20px; }
+    @media(max-width:900px) {
+      #sections .section-folder-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .panchang-summary-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    }
+    @media(max-width:600px) {
+      #sections .section-folder-grid { gap:10px; }
+      #sections .section-folder-card { border-radius:13px; }
+      #sections .section-folder-cover { aspect-ratio:1.12/1; }
+      #sections .section-folder-card::after { min-height:38px; padding:6px; font-size:.78rem; }
+      .section { padding-block:44px; }
+      .dynamic-content-list,.live-bhajan-list,.gallery-dynamic-grid { grid-template-columns:1fr; }
+      .gallery-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .panchang-summary-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .map-screen-card iframe { height:330px; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      #sections .section-folder-card,#sections .section-folder-cover img { transition:none!important; }
+    }
+
   </style>
 </head>
 
@@ -651,12 +759,15 @@
           <p>દરેક વિભાગ તેના કવર ફોટા સાથે — ખોલવા માટે કાર્ડ પર ક્લિક કરો.</p>
         </div>
         <div class="section-folder-grid" aria-label="ધામના મુખ્ય વિભાગો">
-          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261028j" alt="ધામનો પરિચય" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261028k" alt="મંદિર વિશે" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261028j" alt="ભજન અને આરતી" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261028k" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261028j" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
-          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261028j" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-history" href="#history" aria-label="ધામનો પરિચય ખોલો"><div class="section-folder-cover"><img src="./covers/history-cover.jpg?v=20261107b" alt="ધામનો પરિચય" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-temple" href="#temple" aria-label="મંદિર વિશે ખોલો"><div class="section-folder-cover"><img src="./covers/gallery-cover.jpg?v=20261107b" alt="મંદિર વિશે" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-bhajan" href="#bhajan" aria-label="ભજન અને આરતી ખોલો"><div class="section-folder-cover"><img src="./covers/bhajan-cover.jpg?v=20261107b" alt="ભજન અને આરતી" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-media" href="#video" aria-label="લાઇવ વિડિયો અને ફોટો ખોલો"><div class="section-folder-cover"><img src="./covers/video-cover.jpg?v=20261107b" alt="લાઇવ વિડિયો અને ફોટો" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-festivals" href="#festivals" aria-label="પર્વ અને ઉત્સવ ખોલો"><div class="section-folder-cover"><img src="./covers/festivals-cover.jpg?v=20261107b" alt="પર્વ અને ઉત્સવ" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-stories" href="#stories" aria-label="ધાર્મિક કથા ખોલો"><div class="section-folder-cover"><img src="./covers/stories-cover.jpg?v=20261107b" alt="ધાર્મિક કથા" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-gallery" href="#gallery" aria-label="દર્શન ગેલેરી ખોલો"><div class="section-folder-cover"><img src="./copilot_20250729_095554.png" alt="દર્શન ગેલેરી" loading="lazy" decoding="async"></div></a>
+          <a class="section-folder-card folder-panchang" href="#panchang" aria-label="ગુજરાતી પંચાંગ ખોલો"><div class="section-folder-cover panchang-folder-art"><span aria-hidden="true">ૐ</span><strong>ગુજરાતી પંચાંગ</strong><small>તિથિ • વાર • ચોઘડિયા</small><i aria-hidden="true">॥</i></div></a>
+          <a class="section-folder-card folder-contact" href="#contact" aria-label="સંપર્ક કરો ખોલો"><div class="section-folder-cover"><img src="./covers/contact-cover.jpg?v=20261107b" alt="સંપર્ક કરો" loading="lazy" decoding="async"></div></a>
 
                   </div>
         <a class="home-contact-cta" href="#contact"><span aria-hidden="true">☎</span> સંપર્ક કરવું <span aria-hidden="true">›</span></a>
