@@ -241,3 +241,14 @@ body{font-size:1rem;line-height:1.85}
   #panchang .calendar-date .calendar-tithi{font-size:.54rem!important}
   #panchang .calendar-weekdays>div{font-size:.62rem!important}
 }
+
+
+/* v20261107e — show the full Gujarati lunar date in every calendar cell */
+#panchang .calendar-date{min-height:104px;gap:2px;padding:6px 3px}
+#panchang .calendar-date .calendar-date-en{font-size:.95rem;line-height:1.2}
+#panchang .calendar-date .calendar-month-name,#panchang .calendar-date .calendar-tithi{display:block;width:100%;max-width:100%;font-size:.66rem;font-weight:800;line-height:1.3;text-align:center;white-space:normal;word-break:normal;overflow-wrap:normal}
+#panchang .calendar-date .calendar-month-name{color:#80510b}
+#panchang .calendar-date .calendar-tithi{color:#6b1828}
+#panchang .calendar-date.selected .calendar-month-name,#panchang .calendar-date.selected .calendar-tithi{color:#fff8e9}
+@media(max-width:600px){#panchang .calendar-date{min-height:88px!important;height:88px!important;padding:4px 1px!important;gap:2px!important}#panchang .calendar-date .calendar-date-en{font-size:.86rem!important}#panchang .calendar-date .calendar-month-name,#panchang .calendar-date .calendar-tithi{font-size:.57rem!important;line-height:1.25!important;white-space:normal!important;text-overflow:clip!important;overflow:visible!important}}
+@media(max-width:380px){#panchang .calendar-date{min-height:82px!important;height:82px!important}#panchang .calendar-date .calendar-month-name,#panchang .calendar-date .calendar-tithi{font-size:.52rem!important}}
