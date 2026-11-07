@@ -1130,6 +1130,7 @@ function initializeGujaratiCalendar() {
     };
     const clock = value => {
       if (value == null || value === "") return "ઉપલબ્ધ નથી";
+      const guDigits = text => String(text).replace(/[0-9]/g, digit => "૦૧૨૩૪૫૬૭૮૯"[Number(digit)]);
 
       // API timestamps are UTC ISO strings; display them in Udalpur local time.
       if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
@@ -1151,14 +1152,14 @@ function initializeGujaratiCalendar() {
                 ? "સાંજે"
                 : "રાત્રે";
           const displayHour = hour % 12 || 12;
-          return String(displayHour).padStart(2, "0") + ":" + minute + " " + period;
+          return guDigits(String(displayHour).padStart(2, "0") + ":" + minute) + " " + period;
         }
       }
 
       if (typeof value === "number" && value < 1440) {
         const h = Math.floor(value / 60), m = Math.round(value % 60);
         const period = h >= 5 && h < 12 ? "સવારે" : h >= 12 && h < 16 ? "બપોરે" : h >= 16 && h < 19 ? "સાંજે" : "રાત્રે";
-        return String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+period;
+        return guDigits(String(h % 12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0"))+" "+period;
       }
       return String(value);
     };
