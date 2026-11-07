@@ -1213,7 +1213,7 @@ function initializeGujaratiCalendar() {
           "કાળ":"નવું શુભ કાર્ય શરૂ ન કરવું",
           "રોગ":"શુભ શરૂઆત ટાળવી"
         };
-        const meaning = document.createElement("small");
+        const meaning = document.createElement("div");
         meaning.className = "choghadiya-meaning";
         meaning.textContent = meanings[displayName] || "";
         row.append(span,time,meaning);
