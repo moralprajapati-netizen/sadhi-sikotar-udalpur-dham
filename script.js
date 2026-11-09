@@ -1413,7 +1413,7 @@ function initializeGujaratiCalendar() {
     magha:"મહા", phalguna:"ફાગણ"
   };
   const guTithiNames = {
-    pratipada:"પ્રથમા", dwitiya:"બીજ", dvitiya:"બીજ", tritiya:"ત્રીજ",
+    pratipada:"એકમ", pratipadam:"એકમ", prathamai:"એકમ", dwitiya:"બીજ", dvitiya:"બીજ", tritiya:"ત્રીજ",
     chaturthi:"ચોથ", panchami:"પાંચમ", shashthi:"છઠ્ઠ", shashti:"છઠ્ઠ",
     saptami:"સાતમ", ashtami:"આઠમ", navami:"નોમ", dashami:"દશમ",
     ekadashi:"અગિયારસ", ekadasi:"અગિયારસ", dwadashi:"બારસ",
@@ -1496,7 +1496,7 @@ function initializeGujaratiCalendar() {
     const raw = calendarText(t);
     const paksha = calendarText(record.paksha ?? t?.paksha ?? record.fortnight).toLowerCase();
     const rawKey = raw.toLowerCase().replace(/[^a-z]/g,"");
-    const key = rawKey.replace(/^(shukla|sukla|krishna|krsna|shuklapaksha|krishnapaksha)/,"");
+    const key = rawKey.replace(/^(shukla|sukla|krishna|krsna)(paksha)?/,"");
     const numberRaw = record.tithi_number ?? record.tithiNumber ?? t?.number ?? t?.tithi_number;
     const number = numberRaw == null || numberRaw === "" ? NaN : Number(numberRaw);
     const numberNames = {
@@ -1514,9 +1514,12 @@ function initializeGujaratiCalendar() {
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
     if (!name && rawKey.includes("amavasya")) name = "અમાસ";
     if (!name) name = raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "તિથિ";
-    const isSud = /shukla|sukla|શુક્લ|શુકલ/.test(paksha);
-    const isVad = /krishna|krsna|કૃષ્ણ/.test(paksha);
-    return (isSud ? "સુદ " : isVad ? "વદ " : "") + name;
+    const isSud = /shukla|sukla|શુક્લ|શુકલ/.test(paksha + " " + raw.toLowerCase());
+    const isVad = /krishna|krsna|કૃષ્ણ/.test(paksha + " " + raw.toLowerCase());
+    const inferredPaksha = Number.isFinite(number) && number >= 1 && number <= 30
+      ? (number <= 15 ? "સુદ " : "વદ ")
+      : "";
+    return (isSud ? "સુદ " : isVad ? "વદ " : inferredPaksha) + name;
   }
 
   function calendarMonthName(record) {
