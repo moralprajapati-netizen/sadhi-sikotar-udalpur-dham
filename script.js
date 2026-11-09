@@ -1264,7 +1264,7 @@ function initializeGujaratiCalendar() {
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
       const tithiTextRaw = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
       const tithiGujaratiMap = {
-        pratipada:"એકમ", pratipadam:"પ્રથમા", prathamai:"પ્રથમા", pratipāda:"પ્રથમા",
+        pratipada:"એકમ", pratipadam:"એકમ", prathamai:"એકમ", pratipadaa:"એકમ",
         dwitiya:"બીજ", dvitiya:"બીજ", dvitiyai:"બીજ", tritiya:"ત્રીજ", tritiyai:"ત્રીજ",
         chaturthi:"ચોથ", chaturthī:"ચોથ", panchami:"પાંચમ", panchami:"પાંચમ",
         shashthi:"છઠ્ઠ", sashti:"છઠ્ઠ", shashti:"છઠ્ઠ", shashthi:"છઠ્ઠ", saptami:"સાતમ",
@@ -1275,19 +1275,19 @@ function initializeGujaratiCalendar() {
       };
       const tithiKey = String(tithiTextRaw || "").toLowerCase().replace(/[^a-zā]/g, "");
       const tithiByNumber = {
-        1:"પ્રથમા", 2:"બીજ", 3:"ત્રીજ", 4:"ચોથ", 5:"પાંચમ", 6:"છઠ્ઠ", 7:"સાતમ",
+        1:"એકમ", 2:"બીજ", 3:"ત્રીજ", 4:"ચોથ", 5:"પાંચમ", 6:"છઠ્ઠ", 7:"સાતમ",
         8:"આઠમ", 9:"નોમ", 10:"દશમ", 11:"અગિયારસ", 12:"બારસ", 13:"તેરસ", 14:"ચૌદસ",
-        15:"પૂનમ", 16:"પ્રથમા", 17:"બીજ", 18:"ત્રીજ", 19:"ચોથ", 20:"પાંચમ",
+        15:"પૂનમ", 16:"એકમ", 17:"બીજ", 18:"ત્રીજ", 19:"ચોથ", 20:"પાંચમ",
         21:"છઠ્ઠ", 22:"સાતમ", 23:"આઠમ", 24:"નોમ", 25:"દશમ", 26:"અગિયારસ",
         27:"બારસ", 28:"તેરસ", 29:"ચૌદસ", 30:"અમાસ"
       };
       const tithiText = tithiGujaratiMap[tithiKey] || (Number.isFinite(tithiNumber) ? tithiByNumber[tithiNumber] : undefined) || tithiTextRaw;
       const pakshaRaw = readable(paksha, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
       const pakshaKey = String(pakshaRaw || "").toLowerCase().replace(/[^a-z]/g, "");
-      const pakshaText = /^(shukla|shuklapaksha|sukla|suklapaksha)$/.test(pakshaKey)
-        ? "શુક્લ પક્ષ"
-        : /^(krishna|krishnapaksha|krsna|krsnapaksha)$/.test(pakshaKey)
-          ? "કૃષ્ણ પક્ષ"
+      const pakshaText = /^(shukla|shuklapaksha|sukla|suklapaksha)$/.test(pakshaKey) || /શુક્લ|શુકલ/.test(pakshaRaw || "")
+        ? "સુદ"
+        : /^(krishna|krishnapaksha|krsna|krsnapaksha)$/.test(pakshaKey) || /કૃષ્ણ|કૃષ્ણ પક્ષ/.test(pakshaRaw || "")
+          ? "વદ"
           : pakshaRaw || (Number.isFinite(tithiNumber) && tithiNumber >= 1 && tithiNumber <= 30
             ? (tithiNumber <= 15 ? "શુક્લ પક્ષ" : "કૃષ્ણ પક્ષ")
             : undefined);
