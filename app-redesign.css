@@ -252,3 +252,112 @@ body{font-size:1rem;line-height:1.85}
 #panchang .calendar-date.selected .calendar-month-name,#panchang .calendar-date.selected .calendar-tithi{color:#fff8e9}
 @media(max-width:600px){#panchang .calendar-date{min-height:88px!important;height:88px!important;padding:4px 1px!important;gap:2px!important}#panchang .calendar-date .calendar-date-en{font-size:.86rem!important}#panchang .calendar-date .calendar-month-name,#panchang .calendar-date .calendar-tithi{font-size:.57rem!important;line-height:1.25!important;white-space:normal!important;text-overflow:clip!important;overflow:visible!important}}
 @media(max-width:380px){#panchang .calendar-date{min-height:82px!important;height:82px!important}#panchang .calendar-date .calendar-month-name,#panchang .calendar-date .calendar-tithi{font-size:.52rem!important}}
+
+
+/* Choghadiya: readable, responsive cards for desktop and narrow phones */
+#panchang .choghadiya-columns {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  align-items:start;
+  width:100%;
+  min-width:0;
+  margin:12px 0;
+}
+#panchang .choghadiya-columns>section {
+  min-width:0;
+  padding:14px;
+  border:1px solid #e4c77f;
+  border-radius:14px;
+  background:linear-gradient(160deg,#fffdf8,#fff5df);
+  box-shadow:0 4px 12px rgba(65,12,25,.06);
+}
+#panchang .choghadiya-columns h4 {
+  margin:0 0 11px;
+  padding:0 0 9px;
+  border-bottom:1px solid #ead9b7;
+  color:#741827;
+  font-size:1.05rem;
+  line-height:1.4;
+}
+#panchang #choghadiyaDayList,
+#panchang #choghadiyaNightList {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:8px;
+  min-width:0;
+}
+#panchang .choghadiya-row {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:5px 10px;
+  min-width:0;
+  padding:10px 11px;
+  border:1px solid #eee1cc;
+  border-radius:10px;
+  background:#fff;
+}
+#panchang .choghadiya-row>span {
+  min-width:0;
+  color:#741827;
+  font-size:1rem;
+  font-weight:800;
+  line-height:1.35;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-align:left;
+}
+#panchang .choghadiya-row>strong {
+  max-width:100%;
+  color:#4d3b32;
+  font-size:.88rem;
+  font-weight:750;
+  line-height:1.35;
+  text-align:right;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+#panchang .choghadiya-meaning {
+  grid-column:1/-1;
+  color:#776653;
+  font-size:.82rem;
+  line-height:1.45;
+  overflow-wrap:anywhere;
+}
+#panchang .choghadiya-empty {
+  margin:0;
+  padding:12px;
+  border:1px dashed #d8bd79;
+  border-radius:10px;
+  background:#fff;
+  color:#6f5b50;
+  line-height:1.5;
+}
+#panchang #choghadiyaDateLabel {
+  margin:8px 0 12px;
+  padding:9px 12px;
+  border-radius:9px;
+  background:#fff5df;
+  color:#741827;
+  font-size:.92rem;
+  font-weight:750;
+  line-height:1.5;
+}
+@media(max-width:680px) {
+  #panchang .choghadiya-columns {
+    grid-template-columns:minmax(0,1fr);
+    gap:11px;
+  }
+  #panchang .choghadiya-columns>section { padding:12px; }
+  #panchang .choghadiya-columns h4 { font-size:1rem; }
+  #panchang .choghadiya-row { padding:10px; }
+  #panchang .choghadiya-row>span { font-size:.98rem; }
+  #panchang .choghadiya-row>strong { font-size:.86rem; }
+  #panchang .choghadiya-meaning { font-size:.8rem; }
+}
+@media(max-width:360px) {
+  #panchang .choghadiya-row { grid-template-columns:minmax(0,1fr); gap:4px; }
+  #panchang .choghadiya-row>strong { text-align:left; }
+  #panchang .choghadiya-meaning { grid-column:1; }
+}
