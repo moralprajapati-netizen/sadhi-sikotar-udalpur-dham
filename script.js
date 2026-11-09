@@ -1523,10 +1523,24 @@ function initializeGujaratiCalendar() {
   }
 
   function calendarMonthName(record) {
-    const raw = calendarText(record.lunarMonth ?? record.lunar_month ??
-      record.gujaratiMonth ?? record.gujarati_month ?? record.month_name ??
-      record.monthName ?? record.masa ?? record.month);
-    return guMonthNames[raw.toLowerCase().replace(/[^a-z]/g,"")] || raw;
+    const candidates = [
+      record.lunarMonth, record.lunar_month, record.lunarMonthName, record.lunar_month_name,
+      record.gujaratiMonth, record.gujarati_month, record.gujaratiMonthName, record.gujarati_month_name,
+      record.monthGujarati, record.month_gu, record.month_name, record.monthName,
+      record.masaName, record.masa_name, record.masa, record.amanta,
+      record.panchang?.lunarMonth, record.panchang?.lunar_month,
+      record.panchang?.month_name, record.panchang?.masa
+    ];
+    for (const candidate of candidates) {
+      const raw = calendarText(candidate).trim();
+      if (!raw) continue;
+      const key = raw.toLowerCase().replace(/[^a-z]/g,"");
+      const mapped = guMonthNames[key] ||
+        Object.entries(guMonthNames).find(([name]) => key.startsWith(name))?.[1];
+      if (mapped) return mapped;
+      if (/[\\u0a80-\\u0aff]/.test(raw)) return raw;
+    }
+    return "";
   }
 
   function calendarFestivalName(record) {
