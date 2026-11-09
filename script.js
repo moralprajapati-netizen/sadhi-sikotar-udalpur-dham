@@ -1319,7 +1319,7 @@ function initializeGujaratiCalendar() {
       set("panchangYoga", readable(yoga, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "યોગ ઉપલબ્ધ નથી");
       set("panchangKarana", readable(karana, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "કરણ ઉપલબ્ધ નથી");
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
-      set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત • "+date);
+      set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત");
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
       const sunset = pick(nested, ["sunset.time","sunset","sun_set","sunset_time","sun_times.sunset","sunTimes.sunset"]);
       const moonrise = pick(nested, ["moonrise.time","moonrise","moon_rise","moonrise_time","moon_times.moonrise","moonTimes.moonrise"]);
@@ -1508,7 +1508,7 @@ function initializeGujaratiCalendar() {
     };
     let name = guTithiNames[key] || "";
     if (!name && Number.isFinite(number)) {
-      if (number === 15) name = /krishna|krsna/.test(paksha) ? "અમાસ" : "પૂનમ";
+      if (number === 15) name = /krishna|krsna|કૃષ્ણ|વદ/.test(paksha) ? "અમાસ" : "પૂનમ";
       else name = numberNames[number] || "";
     }
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
@@ -1644,8 +1644,8 @@ function initializeGujaratiCalendar() {
       number.textContent = guNumber(day);
       button.appendChild(number);
 
-      if(info.month){const m=document.createElement("small");m.className="calendar-month-name";m.textContent=info.month;button.appendChild(m);}
-      if(info.tithi){const t=document.createElement("small");t.className="calendar-tithi";t.textContent=info.tithi;button.appendChild(t);}
+      const lunarDateText = [info.month, info.tithi].filter(Boolean).join(" ");
+      if(lunarDateText){const lunar=document.createElement("small");lunar.className="calendar-lunar-date";lunar.textContent=lunarDateText;button.appendChild(lunar);}
       (info.festivals||[]).slice(0,2).forEach(name=>{const f=document.createElement("small");f.className="calendar-festival";f.textContent=name;button.appendChild(f);});
 
       if(date.toDateString()===dateOnly(now).toDateString())button.classList.add("today");
