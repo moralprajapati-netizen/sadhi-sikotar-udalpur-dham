@@ -1289,7 +1289,7 @@ function initializeGujaratiCalendar() {
         : /^(krishna|krishnapaksha|krsna|krsnapaksha)$/.test(pakshaKey) || /કૃષ્ણ|કૃષ્ણ પક્ષ/.test(pakshaRaw || "")
           ? "વદ"
           : pakshaRaw || (Number.isFinite(tithiNumber) && tithiNumber >= 1 && tithiNumber <= 30
-            ? (tithiNumber <= 15 ? "શુક્લ પક્ષ" : "કૃષ્ણ પક્ષ")
+            ? (tithiNumber <= 15 ? "સુદ" : "વદ")
             : undefined);
       const monthText = readable(gujaratiMonth, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "amanta", "amanta_month", "name"]);
       const monthEnglishKey = String(monthText || "").toLowerCase().replace(/[^a-z]/g, "");
@@ -1514,8 +1514,8 @@ function initializeGujaratiCalendar() {
     if (!name && rawKey.includes("purnima")) name = "પૂનમ";
     if (!name && rawKey.includes("amavasya")) name = "અમાસ";
     if (!name) name = raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "તિથિ";
-    const isSud = /shukla|sukla|શુક્લ|શુકલ/.test(paksha + " " + raw.toLowerCase());
-    const isVad = /krishna|krsna|કૃષ્ણ/.test(paksha + " " + raw.toLowerCase());
+    const isSud = /shukla|sukla|શુક્લ|શુકલ|સુદ/.test(paksha + " " + raw.toLowerCase());
+    const isVad = /krishna|krsna|કૃષ્ણ|વદ/.test(paksha + " " + raw.toLowerCase());
     const inferredPaksha = Number.isFinite(number) && number >= 1 && number <= 30
       ? (number <= 15 ? "સુદ " : "વદ ")
       : "";
