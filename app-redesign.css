@@ -415,3 +415,59 @@ body{font-size:1rem;line-height:1.85}
   #panchang .panchang-summary-grid{grid-template-columns:minmax(0,1fr)!important}
   #panchang .panchang-summary-grid article{min-height:88px!important}
 }
+
+
+/* Calendar cells: keep date and Gujarati lunar date readable on phones */
+#panchang .calendar-date{
+  min-width:0!important;
+  min-height:108px!important;
+  height:auto!important;
+  padding:6px 2px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:4px!important;
+  overflow:visible!important;
+}
+#panchang .calendar-date .calendar-date-en{
+  flex:0 0 auto!important;
+  width:100%!important;
+  font-size:.94rem!important;
+  line-height:1.25!important;
+  font-weight:900!important;
+  text-align:center!important;
+}
+#panchang .calendar-date .calendar-month-name,
+#panchang .calendar-date .calendar-tithi{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  padding:0!important;
+  font-size:.62rem!important;
+  line-height:1.35!important;
+  font-weight:850!important;
+  text-align:center!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+#panchang .calendar-date .calendar-month-name{color:#80510b!important}
+#panchang .calendar-date .calendar-tithi{color:#6b1828!important}
+#panchang .calendar-date.selected .calendar-month-name,
+#panchang .calendar-date.selected .calendar-tithi{color:#fff8e9!important}
+@media(max-width:600px){
+  #panchang .calendar-date{min-height:96px!important;height:auto!important;padding:5px 1px!important;gap:4px!important}
+  #panchang .calendar-date .calendar-date-en{font-size:.88rem!important}
+  #panchang .calendar-date .calendar-month-name,
+  #panchang .calendar-date .calendar-tithi{font-size:.59rem!important;line-height:1.35!important}
+  #panchang .calendar-weekdays>div{font-size:.68rem!important;line-height:1.35!important}
+}
+@media(max-width:380px){
+  #panchang .calendar-date{min-height:92px!important;padding:4px 0!important}
+  #panchang .calendar-date .calendar-month-name,
+  #panchang .calendar-date .calendar-tithi{font-size:.55rem!important}
+}
