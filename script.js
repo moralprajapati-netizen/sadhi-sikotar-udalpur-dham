@@ -1538,7 +1538,7 @@ function initializeGujaratiCalendar() {
       const mapped = guMonthNames[key] ||
         Object.entries(guMonthNames).find(([name]) => key.startsWith(name))?.[1];
       if (mapped) return mapped;
-      if (/[\\u0a80-\\u0aff]/.test(raw)) return raw;
+      if (/[\u0a80-\u0aff]/.test(raw)) return raw;
     }
     return "";
   }
