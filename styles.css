@@ -3190,3 +3190,23 @@ body.section-view-active main > .hero { display: none !important; }
   #sections .section-folder-grid { gap:5px; }
   #sections .section-folder-card { border-radius:9px; }
 }
+
+
+/* Current running Choghadiya slot */
+#panchang .choghadiya-row.choghadiya-current {
+  background: linear-gradient(110deg, #fff0bd, #fff9e8);
+  border: 2px solid #d49a16;
+  box-shadow: 0 0 0 2px rgba(212,154,22,.16), 0 5px 16px rgba(91,48,5,.12);
+}
+#panchang .choghadiya-current-badge {
+  display: inline-block;
+  margin-inline-start: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #8a5a00;
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  white-space: nowrap;
+  vertical-align: middle;
+}
