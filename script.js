@@ -1438,6 +1438,13 @@ function initializeGujaratiCalendar() {
     } catch (error) {
       if (requestId !== panchangRequestId) return;
       console.error("Udalpur Panchang load failed:", error);
+      // Keep date and weekday useful even when the live API is unavailable.
+      const failedDate = new Date(date + "T12:00:00Z");
+      const failedWeekday = ["રવિવાર","સોમવાર","મંગળવાર","બુધવાર","ગુરુવાર","શુક્રવાર","શનિવાર"][failedDate.getUTCDay()];
+      set("panchangDate", new Intl.DateTimeFormat("gu-IN", { day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" }).format(failedDate));
+      set("panchangWeekday", failedWeekday);
+      set("panchangGujaratiMonth", "લાઇવ API ઉપલબ્ધ નથી");
+      set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત");
       set("panchangTithi", "લાઇવ પંચાંગ લોડ થઈ શક્યું નથી");
       set("panchangNakshatra", "Worker/API કનેક્શન તપાસવું પડશે");
       set("panchangYoga", "ઉપલબ્ધ નથી");
