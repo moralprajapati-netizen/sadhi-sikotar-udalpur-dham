@@ -1255,11 +1255,19 @@ function initializeGujaratiCalendar() {
       });
     };
     try {
-      const response = await fetch(workerURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ date })
-      });
+      const controller = new AbortController();
+      const requestTimer = setTimeout(() => controller.abort(), 12000);
+      let response;
+      try {
+        response = await fetch(workerURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ date }),
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(requestTimer);
+      }
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.error || "પંચાંગ API જવાબ આપતું નથી");
       if (requestId !== panchangRequestId) return;
@@ -1547,11 +1555,19 @@ function initializeGujaratiCalendar() {
   }
 
   async function calendarAPI(path, body) {
-    const response = await fetch("https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev"+path, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(body)
-    });
+    const controller = new AbortController();
+    const requestTimer = setTimeout(() => controller.abort(), 12000);
+    let response;
+    try {
+      response = await fetch("https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev"+path, {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(body),
+        signal:controller.signal
+      });
+    } finally {
+      clearTimeout(requestTimer);
+    }
     const data = await response.json();
     if (!response.ok || !data.success) throw new Error(data.error || "માહિતી ઉપલબ્ધ નથી");
     return data;
@@ -1606,6 +1622,11 @@ function initializeGujaratiCalendar() {
       renderCalendarGrid();
     } catch (error) {
       console.error("Gujarati daily Panchang calendar load failed:",error);
+      if (requestId === calendarLoadId) {
+        calendarData = next;
+        renderCalendarGrid();
+        if (selectedLabel) selectedLabel.textContent = "ગુજરાતી તિથિ માટે લાઇવ પંચાંગ API નો જવાબ મળ્યો નથી. તારીખો પસંદ કરી શકાય છે.";
+      }
     }
   }
 
