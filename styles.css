@@ -3210,3 +3210,52 @@ body.section-view-active main > .hero { display: none !important; }
   white-space: nowrap;
   vertical-align: middle;
 }
+
+
+/* Udalpur Dham mobile app home — reference-inspired red/gold devotional tiles */
+@media(max-width:820px){
+  body{background:linear-gradient(180deg,#3c0711 0,#741827 34%,#f8e8c6 34%,#fff8e9 100%);padding-bottom:100px}
+  .site-header{background:linear-gradient(110deg,#390711,#8c1d2d 55%,#430812);border-bottom:2px solid #f1c96c}
+  .brand-symbol{background:linear-gradient(145deg,#f8d77f,#a96b12);color:#741827;border:2px solid #fff0bb}
+  .brand-text strong{color:#ffe28b;text-shadow:0 2px 5px #26040a}
+  .hero{min-height:0;padding:22px 0 18px;background:linear-gradient(180deg,rgba(48,4,13,.38),rgba(48,4,13,.68)),url("./1.png") center 34%/cover no-repeat}
+  .hero::before{inset:7px;border:2px solid #edc66a;border-radius:20px}
+  .hero-content{width:calc(100% - 30px);text-align:center}
+  .hero-eyebrow{margin:0 auto 8px;background:#5b0b19d9;border-color:#f4d27c;color:#ffe7a3}
+  .hero h1{font-size:clamp(1.45rem,6vw,2rem);line-height:1.4;color:#ffe17c;text-shadow:0 2px 8px #26040a}
+  .hero-subtitle{font-size:.95rem;margin-top:5px}
+  .hero-description{font-size:.82rem;line-height:1.5;margin:7px auto 0}
+  .hero-darshan-pair{gap:8px;margin:14px auto 0}
+  .hero-photo{height:clamp(112px,34vw,165px);border:2px solid #f4cf70;border-radius:14px;box-shadow:0 5px 16px #22040a88}
+  .hero-photo span{font-size:.78rem;padding:18px 5px 6px}
+  .hero-actions{margin-top:12px}
+  .hero-actions .btn{min-height:42px;padding:8px 22px}
+  #sections{padding:22px 0 28px;background:linear-gradient(180deg,#5a0c1b,#8c1c2d 22%,#f8e8c6 22%,#fff8e9 100%)}
+  #sections .section-heading{margin-bottom:12px;padding:0 5px}
+  #sections .section-kicker{color:#ffe3a0}
+  #sections .section-heading h2{color:#fff0c6;font-size:1.35rem;text-shadow:0 2px 5px #26040a}
+  #sections .section-heading>p{color:#fff1d8;font-size:.82rem}
+  #sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;margin-top:12px}
+  #sections .section-folder-card{overflow:hidden;border:1.5px solid #dba83d;border-radius:15px;background:linear-gradient(145deg,#fffdf1,#f6dfaa);box-shadow:0 5px 12px #4b0b1c35}
+  #sections .section-folder-cover{position:relative;display:grid;place-items:center;aspect-ratio:1/1!important;min-height:0!important;background:radial-gradient(circle at 50% 35%,#fff9dc,#f2d48a 75%,#dba83d)!important;border:0!important}
+  #sections .section-folder-cover img{display:none!important}
+  #sections .section-folder-cover::before{inset:6px;border:1px solid #c88b24;border-radius:11px;background:linear-gradient(145deg,#fff8dc,#f1d28a);opacity:1}
+  #sections .section-folder-cover::after{inset:0;display:grid;place-items:center;background:none!important;color:#a51f20;font-size:clamp(2rem,9vw,3.1rem);font-weight:900;text-shadow:0 2px 0 #fff0bb;content:"🛕"}
+  #sections .section-folder-card:nth-child(2) .section-folder-cover::after{content:"🏛️"}
+  #sections .section-folder-card:nth-child(3) .section-folder-cover::after{content:"🎵"}
+  #sections .section-folder-card:nth-child(4) .section-folder-cover::after{content:"▶️"}
+  #sections .section-folder-card:nth-child(5) .section-folder-cover::after{content:"🗓️"}
+  #sections .section-folder-card:nth-child(6) .section-folder-cover::after{content:"📖"}
+  #sections .section-folder-label{min-height:48px;padding:5px 3px;background:linear-gradient(180deg,#fff8df,#f0d18a);color:#54101b;font-size:clamp(.68rem,2.7vw,.9rem);font-weight:900;line-height:1.35}
+  .home-contact-cta{display:flex;align-items:center;justify-content:center;gap:9px;max-width:280px;margin:16px auto 0;padding:10px 18px;border:2px solid #f1cb69;border-radius:999px;background:linear-gradient(120deg,#a51c29,#e0a52c);color:#fff7dc;font-weight:900;box-shadow:0 5px 14px #4a0b1d55}
+  .mobile-bottom-nav{left:7px;right:7px;bottom:max(6px,env(safe-area-inset-bottom));min-height:69px;padding:5px 4px;border:2px solid #e6bc5e;border-radius:18px;background:linear-gradient(110deg,#390711,#81182a 55%,#3d0712);box-shadow:0 5px 18px #25040b88}
+  .mobile-bottom-nav a{color:#fff0d0}
+  .mobile-bottom-nav a>span{color:#ffd66e;font-size:1.45rem}
+  .mobile-bottom-nav a.is-active{background:linear-gradient(145deg,#f7dc91,#d99b2c);color:#5a101b}
+  .mobile-bottom-nav a.is-active>span{color:#741827}
+  .mobile-bottom-nav small{font-size:.7rem;font-weight:900}
+}
+@media(max-width:390px){
+  #sections .section-folder-grid{gap:7px!important}
+  #sections .section-folder-label{font-size:.66rem;min-height:45px}
+}
