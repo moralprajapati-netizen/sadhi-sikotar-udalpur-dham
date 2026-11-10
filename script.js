@@ -1315,9 +1315,37 @@ function initializeGujaratiCalendar() {
       const weekdayFallback = ["રવિવાર","સોમવાર","મંગળવાર","બુધવાર","ગુરુવાર","શુક્રવાર","શનિવાર"][selectedDateValue.getDay()];
       set("panchangWeekday", weekdayGujarati[weekdayKey] || weekdayRaw || weekdayFallback);
       set("panchangDate", new Intl.DateTimeFormat("gu-IN", { day:"numeric", month:"long", year:"numeric", timeZone:"Asia/Kolkata" }).format(selectedDateValue));
-      set("panchangNakshatra", readable(nakshatra, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "નક્ષત્ર ઉપલબ્ધ નથી");
-      set("panchangYoga", readable(yoga, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "યોગ ઉપલબ્ધ નથી");
-      set("panchangKarana", readable(karana, ["name_gu", "gujarati_name", "nameGujarati", "name"]) || "કરણ ઉપલબ્ધ નથી");
+      const gujaratiName = (value, dictionary) => {
+        const raw = readable(value, ["name_gu", "gujarati_name", "nameGujarati", "gujarati", "name"]) || "";
+        if (/[\u0a80-\u0aff]/.test(raw)) return raw;
+        const key = raw.toLowerCase().replace(/[^a-z]/g, "");
+        return dictionary[key] || raw || "ઉપલબ્ધ નથી";
+      };
+      const nakshatraGujarati = {
+        ashvini:"અશ્વિની",ashwini:"અશ્વિની",bharani:"ભરણી",krittika:"કૃતિકા",rohini:"રોહિણી",
+        mrigashira:"મૃગશીર્ષ",ardra:"આર્દ્રા",punarvasu:"પુનર્વસુ",pushya:"પુષ્ય",ashlesha:"આશ્લેષા",
+        magha:"મઘા",purvaphalguni:"પૂર્વા ફાલ્ગુની",uttaraphalguni:"ઉત્તરા ફાલ્ગુની",hasta:"હસ્ત",
+        chitra:"ચિત્રા",swati:"સ્વાતિ",vishakha:"વિશાખા",anuradha:"અનુરાધા",jyeshtha:"જ્યેષ્ઠા",
+        mula:"મૂળ",purvashada:"પૂર્વાષાઢા",uttarashada:"ઉત્તરાષાઢા",shravana:"શ્રવણ",
+        dhanishta:"ધનિષ્ઠા",shatabhisha:"શતભિષા",purvabhadrapada:"પૂર્વાભાદ્રપદ",
+        uttarabhadrapada:"ઉત્તરાભાદ્રપદ",revati:"રેવતી"
+      };
+      const yogaGujarati = {
+        vishkambha:"વિષ્કંભ",priti:"પ્રીતિ",ayushman:"આયુષ્માન",saubhagya:"સૌભાગ્ય",
+        shobhana:"શોભન",atiganda:"અતિગંડ",sukarma:"સુકર્મા",dhriti:"ધૃતિ",shula:"શૂલ",
+        ganda:"ગંડ",vriddhi:"વૃદ્ધિ",dhruva:"ધ્રુવ",vyaghata:"વ્યાઘાત",harshana:"હર્ષણ",
+        vajra:"વજ્ર",siddhi:"સિદ્ધિ",vyatipata:"વ્યતિપાત",variyana:"વરીયાન",parigha:"પરિઘ",
+        shiva:"શિવ",siddha:"સિદ્ધ",sadhya:"સાધ્ય",shubha:"શુભ",shukla:"શુક્લ",
+        brahma:"બ્રહ્મ",indra:"ઇન્દ્ર",vaidhriti:"વૈધૃતિ"
+      };
+      const karanaGujarati = {
+        bava:"બવ",balava:"બાલવ",kaulava:"કૌલવ",taitila:"તૈતિલ",gara:"ગર",
+        vanija:"વણિજ",vishti:"વિષ્ટિ",bhadra:"ભદ્ર",shakuni:"શકુનિ",
+        chatushpada:"ચતુષ્પદ",naga:"નાગ",kimstughna:"કિંસ્તુઘ્ન"
+      };
+      set("panchangNakshatra", gujaratiName(nakshatra, nakshatraGujarati));
+      set("panchangYoga", gujaratiName(yoga, yogaGujarati));
+      set("panchangKarana", gujaratiName(karana, karanaGujarati));
       set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત");
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
