@@ -1262,6 +1262,16 @@ function initializeGujaratiCalendar() {
       const yoga = pick(nested, ["yoga.name","yoga_name","yogaName","yoga"]);
       const karana = pick(nested, ["karana.name","karana_name","karanaName","karana"]);
       const samvat = pick(nested, ["vikram_samvat","vikramSamvat","samvat.vikram","samvat.vikram_samvat","samvat"]);
+      // Gujarati Vikram Samvat changes at Kartak Sud Ekam (Gujarati New Year).
+      // The provider's samvat field can follow a different year boundary.
+      const selectedYear = Number(String(date).slice(0, 4));
+      const selectedMonth = Number(String(date).slice(5, 7));
+      const lunarMonthText = String(readable(gujaratiMonth, ["amanta","name","name_gu","gujarati_name"]) || "").toLowerCase();
+      const isBeforeGujaratiNewYearInNovember = selectedMonth === 11 &&
+        /(ashwin|asvina|aaso|આસો)/i.test(lunarMonthText);
+      const gujaratiSamvat = Number.isFinite(selectedYear)
+        ? selectedYear + 56 + ((selectedMonth === 12 || (selectedMonth === 11 && !isBeforeGujaratiNewYearInNovember)) ? 1 : 0)
+        : Number(readable(samvat));
       const tithiTextRaw = readable(tithi, ["name_gu", "gujarati_name", "nameGujarati", "name"]);
       const tithiGujaratiMap = {
         pratipada:"એકમ", pratipadam:"એકમ", prathamai:"એકમ", pratipadaa:"એકમ",
@@ -1346,7 +1356,7 @@ function initializeGujaratiCalendar() {
       set("panchangNakshatra", gujaratiName(nakshatra, nakshatraGujarati));
       set("panchangYoga", gujaratiName(yoga, yogaGujarati));
       set("panchangKarana", gujaratiName(karana, karanaGujarati));
-      set("panchangSamvat", samvat == null ? "સંવત ઉપલબ્ધ નથી" : gu(samvat));
+      set("panchangSamvat", Number.isFinite(gujaratiSamvat) ? gu(gujaratiSamvat) : "સંવત ઉપલબ્ધ નથી");
       set("panchangLocation", "ઉદલપુર ધામ, ગુજરાત");
       const sunrise = pick(nested, ["sunrise.time","sunrise","sun_rise","sunrise_time","sun_times.sunrise","sunTimes.sunrise"]);
       const sunset = pick(nested, ["sunset.time","sunset","sun_set","sunset_time","sun_times.sunset","sunTimes.sunset"]);
