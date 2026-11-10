@@ -1433,7 +1433,6 @@ function initializeGujaratiCalendar() {
   }
 
   const monthCache = new Map();
-  const yearFestivalCache = new Map();
   let calendarData = new Map();
   let calendarLoadId = 0;
 
@@ -1452,21 +1451,6 @@ function initializeGujaratiCalendar() {
     dvadashi:"બારસ", trayodashi:"તેરસ", chaturdashi:"ચૌદસ",
     purnima:"પૂનમ", paurnima:"પૂનમ", amavasya:"અમાસ"
   };
-  const guFestivalNames = {
-    dhanteras:"ધનતેરસ", dhantrayodashi:"ધનતેરસ",
-    narakachaturdashi:"કાળી ચૌદશ", kalichaudas:"કાળી ચૌદશ",
-    roopchaudas:"કાળી ચૌદશ", deepavali:"દિવાળી", diwali:"દિવાળી",
-    lakshmipuja:"દિવાળી", gujaratinewyear:"ગુજરાતી નવું વર્ષ",
-    bestuvaras:"બેસતું વર્ષ", govardhanpuja:"ગોવર્ધન પૂજા",
-    annakut:"અન્નકૂટ", bhaidooj:"ભાઈબીજ", bhaibeej:"ભાઈબીજ",
-    yamadvitiya:"ભાઈબીજ", devutthanaekadashi:"દેવઉઠી એકાદશી",
-    tulsivivah:"તુલસી વિવાહ",
-    kartikpurnima:"કારતક પૂનમ", sharadpurnima:"શરદ પૂનમ",
-    navratri:"નવરાત્રી", vijayadashami:"દશેરા", dussehra:"દશેરા",
-    janmashtami:"જન્માષ્ટમી", ganeshchaturthi:"ગણેશ ચતુર્થી",
-    rakshabandhan:"રક્ષાબંધન", holi:"હોળી", dhulandi:"ધૂળેટી"
-  };
-
   function calendarText(value) {
     if (value == null || value === "") return "";
     if (typeof value === "string" || typeof value === "number") return String(value);
@@ -1475,50 +1459,6 @@ function initializeGujaratiCalendar() {
       for (const key of ["name_gu","gujarati_name","nameGujarati","gujarati","label_gu","name","label","title","text","value","amanta"]) {
         if (value[key] != null && typeof value[key] !== "object") return String(value[key]);
       }
-    }
-    return "";
-  }
-
-  function unwrapCalendar(value) {
-    let data = value;
-    for (let i=0; i<4 && data && !Array.isArray(data); i++) {
-      const next = data.calendar ?? data.output ?? data.data ?? data.result;
-      if (!next || next === data) break;
-      data = next;
-    }
-    return data;
-  }
-
-  function findCalendarRecords(root, monthMode) {
-    const arrays = [];
-    const seen = new Set();
-    function walk(node, depth) {
-      if (!node || typeof node !== "object" || depth > 7 || seen.has(node)) return;
-      seen.add(node);
-      if (Array.isArray(node)) {
-        const records = node.filter(item => item && typeof item === "object" &&
-          (item.date != null || item.gregorian_date != null || item.gregorianDate != null ||
-           item.iso_date != null || item.festival_date != null || (monthMode && item.day != null)));
-        if (records.length) arrays.push(records);
-        node.forEach(item => walk(item, depth+1));
-      } else Object.values(node).forEach(value => walk(value, depth+1));
-    }
-    walk(root,0);
-    arrays.sort((a,b)=>b.length-a.length);
-    return arrays[0] || [];
-  }
-
-  function calendarISO(record, year, month) {
-    const raw = record.date ?? record.gregorian_date ?? record.gregorianDate ??
-      record.iso_date ?? record.isoDate ?? record.festival_date ??
-      record.observance_date ?? record.datetime;
-    if (typeof raw === "string") {
-      const m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-      if (m) return m[1]+"-"+String(Number(m[2])).padStart(2,"0")+"-"+String(Number(m[3])).padStart(2,"0");
-    }
-    const day = Number(raw ?? record.day ?? record.dayOfMonth ?? record.day_of_month);
-    if (Number.isInteger(day) && day >= 1 && day <= 31 && month) {
-      return year+"-"+String(month).padStart(2,"0")+"-"+String(day).padStart(2,"0");
     }
     return "";
   }
@@ -1575,22 +1515,6 @@ function initializeGujaratiCalendar() {
     return "";
   }
 
-  function calendarFestivalName(record) {
-    const raw = calendarText(record);
-    const key = raw.toLowerCase().replace(/[^a-z]/g,"");
-    const exact = guFestivalNames[key];
-    if (exact) return exact;
-    if (key.includes("dhanteras") || key.includes("dhantrayodashi")) return "ધનતેરસ";
-    if (key.includes("naraka") || key.includes("kalichaudas") || key.includes("roopchaudas")) return "કાળી ચૌદશ";
-    if (key.includes("diwali") || key.includes("deepavali") || key.includes("lakshmipuja")) return "દિવાળી";
-    if (key.includes("govardhan")) return "ગોવર્ધન પૂજા";
-    if (key.includes("annakut")) return "અન્નકૂટ";
-    if (key.includes("bhaidooj") || key.includes("bhaibeej") || key.includes("yamadvitiya")) return "ભાઈબીજ";
-    if (key.includes("tulsivivah")) return "તુલસી વિવાહ";
-    if (key.includes("devutthana") || key.includes("prabodhini")) return "દેવઉઠી એકાદશી";
-    return raw && /[\u0900-\u097f\u0a80-\u0aff]/.test(raw) ? raw : "ધાર્મિક પર્વ";
-  }
-
   async function calendarAPI(path, body) {
     const response = await fetch("https://sadhi-sikotar-udalpur-dham.moral-prem24.workers.dev"+path, {
       method:"POST",
@@ -1605,7 +1529,6 @@ function initializeGujaratiCalendar() {
   async function loadCalendarData() {
     const year = shownMonth.getFullYear();
     const month = shownMonth.getMonth();
-    const key = year+"-"+String(month+1).padStart(2,"0");
     const requestId = ++calendarLoadId;
     const totalDays = new Date(year,month+1,0).getDate();
     const dates = Array.from({length:totalDays},(_,index)=>isoDate(new Date(year,month,index+1)));
