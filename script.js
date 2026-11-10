@@ -1221,6 +1221,20 @@ function initializeGujaratiCalendar() {
         const end = pick(item, ["end","end_time","to","endTime","finish","end.time","end.value"]);
         const span = document.createElement("span");
         span.textContent = String(displayName);
+        // Highlight only the slot that contains the current India local time,
+        // and only when the user is viewing today's Panchang.
+        const todayInIndia = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+        const startMs = start == null ? NaN : Date.parse(readable(start) || start);
+        let endMs = end == null ? NaN : Date.parse(readable(end) || end);
+        if (Number.isFinite(startMs) && Number.isFinite(endMs) && endMs <= startMs) endMs += 24 * 60 * 60 * 1000;
+        const nowMs = Date.now();
+        if (date === todayInIndia && Number.isFinite(startMs) && Number.isFinite(endMs) && nowMs >= startMs && nowMs < endMs) {
+          row.classList.add("choghadiya-current");
+          const currentBadge = document.createElement("small");
+          currentBadge.className = "choghadiya-current-badge";
+          currentBadge.textContent = "હાલ ચાલુ";
+          span.appendChild(currentBadge);
+        }
         const time = document.createElement("strong");
         const rawTime = pick(item,["time","timing","duration"]);
         time.textContent = start != null || end != null ? clock(readable(start) || start)+" થી "+clock(readable(end) || end) : (readable(rawTime) || "સમય ઉપલબ્ધ નથી");
