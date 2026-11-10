@@ -3427,3 +3427,41 @@ body.section-view-active main > .hero { display: none !important; }
  body #sections .section-folder-grid .section-folder-card.folder-festivals .section-folder-cover::after{content:"🗓️"!important}
  body #sections .section-folder-grid .section-folder-card.folder-stories .section-folder-cover::after{content:"📖"!important}
 }
+
+
+/* FIX: restore real section cover photos and visible category icons */
+body #sections .section-folder-grid .section-folder-card .section-folder-cover{
+  position:relative!important;display:block!important;overflow:hidden!important;
+  aspect-ratio:4/3!important;height:auto!important;min-height:0!important;
+  background:#5a1019!important;isolation:isolate!important;
+}
+body #sections .section-folder-grid .section-folder-card .section-folder-cover img{
+  position:absolute!important;inset:0!important;display:block!important;
+  width:100%!important;height:100%!important;max-width:none!important;
+  object-fit:cover!important;object-position:center!important;
+  opacity:1!important;visibility:visible!important;z-index:0!important;
+  filter:saturate(1.08) contrast(1.04)!important;
+}
+body #sections .section-folder-grid .section-folder-card .section-folder-cover::before{
+  content:""!important;display:block!important;position:absolute!important;inset:0!important;
+  z-index:1!important;pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(35,4,10,.04) 35%,rgba(35,4,10,.38) 100%)!important;
+}
+body #sections .section-folder-grid .section-folder-card .section-folder-cover::after{
+  content:""!important;display:grid!important;place-items:center!important;
+  position:absolute!important;z-index:3!important;top:9px!important;right:9px!important;
+  left:auto!important;bottom:auto!important;width:38px!important;height:38px!important;
+  transform:none!important;border:1px solid #ffe8a6!important;border-radius:12px!important;
+  background:rgba(80,8,18,.82)!important;color:#fff0c2!important;
+  font-family:Arial,sans-serif!important;font-size:20px!important;line-height:1!important;
+  box-shadow:0 2px 9px rgba(0,0,0,.35)!important;
+}
+body #sections .section-folder-grid .folder-history .section-folder-cover::after{content:"⌂"!important}
+body #sections .section-folder-grid .folder-temple .section-folder-cover::after{content:"♜"!important}
+body #sections .section-folder-grid .folder-bhajan .section-folder-cover::after{content:"♫"!important}
+body #sections .section-folder-grid .folder-media .section-folder-cover::after{content:"▶"!important}
+body #sections .section-folder-grid .folder-festivals .section-folder-cover::after{content:"✺"!important}
+body #sections .section-folder-grid .folder-stories .section-folder-cover::after{content:"ॐ"!important}
+@media(max-width:600px){
+ body #sections .section-folder-grid .section-folder-card .section-folder-cover{aspect-ratio:4/3!important}
+}
