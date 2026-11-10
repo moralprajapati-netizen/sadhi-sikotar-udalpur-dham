@@ -1070,7 +1070,7 @@ function initializeGujaratiCalendar() {
   ];
 
   function timeText(totalMinutes) {
-    const mins = ((totalMinutes % 1440) + 1440) % 1440;
+    const mins = ((Math.round(totalMinutes) % 1440) + 1440) % 1440;
     const h = Math.floor(mins/60), m = mins%60;
     return String(h%12 || 12).padStart(2,"0")+":"+String(m).padStart(2,"0")+" "+(h<12?"AM":"PM");
   }
@@ -1361,7 +1361,11 @@ function initializeGujaratiCalendar() {
       let dayItems = pick(ch, ["day.choghadiya","day.items","day.periods","day","day_choghadiya","dayChoghadiya","daytime","day_list","dayList","day_slots","daySlots","day_windows"]);
       let nightItems = pick(ch, ["night.choghadiya","night.items","night.periods","night","night_choghadiya","nightChoghadiya","nighttime","night_list","nightList","night_slots","nightSlots","night_windows"]);
       // ShubhAI's documented response is a flat periods[] array with part=day/night.
-      const periodItems = pick(ch, ["periods","choghadiya.periods","data.periods"]);
+      // ShubhAI returns choghadiya as a flat array; split it by its period field.
+      // Older wrapped API shapes are still supported below.
+      const periodItems = Array.isArray(ch)
+        ? ch
+        : pick(ch, ["periods","choghadiya.periods","data.periods"]);
       if (Array.isArray(periodItems)) {
         const byPart = part => periodItems.filter(item => {
           const value = String(pick(item, ["part","period","period_of_day","time_of_day"]) || "").toLowerCase();
