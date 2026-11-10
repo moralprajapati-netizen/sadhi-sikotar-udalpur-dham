@@ -1604,55 +1604,54 @@ function initializeGujaratiCalendar() {
 
   async function loadCalendarData() {
     const year = shownMonth.getFullYear();
-    const month = shownMonth.getMonth()+1;
-    const key = year+"-"+String(month).padStart(2,"0");
+    const month = shownMonth.getMonth();
+    const key = year+"-"+String(month+1).padStart(2,"0");
     const requestId = ++calendarLoadId;
-    if (!monthCache.has(key)) monthCache.set(key, calendarAPI("/panchang/month",{year,month}));
-    if (!yearFestivalCache.has(year)) yearFestivalCache.set(year,calendarAPI("/panchang/festivals",{year}));
+    const totalDays = new Date(year,month+1,0).getDate();
+    const dates = Array.from({length:totalDays},(_,index)=>isoDate(new Date(year,month,index+1)));
+    const next = new Map();
+
+    // Use only the verified daily Panchang endpoint for every calendar date.
+    // Do not merge monthly-calendar or festival feeds until their date mapping is verified.
+    const getDailyPanchang = date => {
+      if (!monthCache.has(date)) {
+        monthCache.set(date, calendarAPI("/panchang",{date}).then(result => {
+          let record = result.panchang ?? result.output?.panchang ?? result.output ?? result;
+          for (let depth=0; depth<3 && record && typeof record==="object"; depth++) {
+            const nested = record.output ?? record.data ?? record.result;
+            if (!nested || nested===record) break;
+            record = nested;
+          }
+          return record;
+        }).catch(error => {
+          monthCache.delete(date);
+          throw error;
+        }));
+      }
+      return monthCache.get(date);
+    };
+
     try {
-      const [monthResult, festivalResult] = await Promise.all([monthCache.get(key),yearFestivalCache.get(year)]);
+      // Small batches stay comfortably below the provider's request-rate limit.
+      for (let offset=0; offset<dates.length; offset+=4) {
+        const batch = await Promise.all(dates.slice(offset,offset+4).map(async date => {
+          try { return {date,record:await getDailyPanchang(date)}; }
+          catch (error) { console.warn("Daily Panchang unavailable for",date,error); return {date,record:null}; }
+        }));
+        if (requestId !== calendarLoadId) return;
+        batch.forEach(({date,record}) => {
+          if (!record) return;
+          const tithi = calendarTithi(record);
+          const lunarMonth = calendarMonthName(record);
+          if (!tithi && !lunarMonth) return;
+          next.set(date,{tithi,month:lunarMonth,festivals:[]});
+        });
+      }
       if (requestId !== calendarLoadId) return;
-      const monthRecords = findCalendarRecords(unwrapCalendar(monthResult.calendar),"month");
-      const festivalRecords = findCalendarRecords(unwrapCalendar(festivalResult.festivals),"festival");
-      const next = new Map();
-
-      monthRecords.forEach(record => {
-        const dateKey = calendarISO(record,year,month);
-        if (!dateKey) return;
-        next.set(dateKey,{
-          tithi:calendarTithi(record),
-          month:calendarMonthName(record),
-          festivals:[]
-        });
-      });
-
-      festivalRecords.forEach(record => {
-        const dateKey = calendarISO(record,year,month);
-        const name = calendarFestivalName(record);
-        if (!dateKey || !name) return;
-        if (!next.has(dateKey)) next.set(dateKey,{tithi:"",month:"",festivals:[]});
-        next.get(dateKey).festivals.push(name);
-      });
-
-      monthRecords.forEach(record => {
-        const dateKey = calendarISO(record,year,month);
-        if (!dateKey) return;
-        const marks = record.parva ?? record.parvas ?? record.festival ?? record.festivals ?? record.events ?? record.marker;
-        (Array.isArray(marks) ? marks : marks ? [marks] : []).forEach(mark => {
-          const name = calendarFestivalName(typeof mark === "object" ? mark : {name:mark});
-          if (!name) return;
-          if (!next.has(dateKey)) next.set(dateKey,{tithi:"",month:"",festivals:[]});
-          next.get(dateKey).festivals.push(name);
-        });
-      });
-
-      next.forEach(info => info.festivals = [...new Set(info.festivals)]);
       calendarData = next;
       renderCalendarGrid();
     } catch (error) {
-      monthCache.delete(key);
-      yearFestivalCache.delete(year);
-      console.error("Gujarati monthly calendar load failed:",error);
+      console.error("Gujarati daily Panchang calendar load failed:",error);
     }
   }
 
