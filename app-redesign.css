@@ -753,7 +753,7 @@ body{background:#4b1007!important;background-image:radial-gradient(ellipse at to
 .brand-text span{font-size:clamp(.88rem,3.4vw,1.15rem)!important;font-weight:950!important;color:#ffed4b!important}
 .menu-toggle{position:absolute!important;left:10px!important;top:50%!important;transform:translateY(-50%)!important;display:flex!important;flex-direction:column!important;gap:5px!important;width:34px!important;height:38px!important;padding:6px 2px!important;border:0!important;background:transparent!important}
 .menu-toggle span{height:4px!important;width:29px!important;border-radius:4px!important;background:#ffdf36!important;box-shadow:0 1px 2px #420000}
-.header-inner::after{content:"♟";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:0}
+.header-inner::after{content:"🔔";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:22px;filter:drop-shadow(0 1px 1px #4b0000)}
 .header-inner::before{content:"♟";position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:0}
 .site-header .main-nav{background:#65000b!important;border:1px solid #ffc928!important}
 .hero{position:relative!important;padding:12px 0 13px!important;background:linear-gradient(180deg,#a50012 0%,#70000b 65%,#390007 100%)!important}
