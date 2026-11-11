@@ -10,10 +10,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebSettings;
 
 public class MainActivity extends Activity {
     private static final String HOME_URL =
-        "https://moralprajapati-netizen.github.io/sadhi-sikotar-udalpur-dham/";
+        "https://moralprajapati-netizen.github.io/sadhi-sikotar-udalpur-dham/?app_refresh=20261111f";
     private static final int FILE_CHOOSER_REQUEST = 1001;
 
     private WebView webView;
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
         setContentView(webView);
 
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.clearCache(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setAllowFileAccess(false);
