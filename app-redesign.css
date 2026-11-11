@@ -887,13 +887,3 @@ body{padding-bottom:86px!important}
 #sections .section-folder-cover::before,#sections .section-folder-cover::after{content:none!important;display:none!important}
 @media(max-width:600px){#sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}#sections .section-folder-card{border-radius:11px!important}}
 @media(min-width:601px){#sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;max-width:960px!important;margin-inline:auto!important}}
-
-
-/* Reference screenshot layout: remove the extra section title and keep the 3x2 cover grid centered. */
-#sections{padding-top:8px!important;padding-bottom:92px!important;background:#76000b!important;border-top:3px solid #d8a52d!important;position:relative!important}
-#sections>.container{width:min(960px,calc(100% - 24px))!important;max-width:960px!important;margin:0 auto!important;padding:0!important}
-#sections>.container>.section-heading{display:none!important}
-#sections .section-folder-grid{width:100%!important;max-width:960px!important;margin:0 auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
-#sections .section-folder-card{aspect-ratio:4/3!important;min-height:0!important;border:2px solid #e8b52f!important;border-radius:15px!important;background:#79000d!important;box-shadow:0 0 0 2px #3d0008,0 3px 9px #21000099!important}
-#sections .section-folder-cover{aspect-ratio:4/3!important}
-@media(max-width:600px){#sections{padding-top:8px!important;padding-bottom:88px!important}#sections .section-folder-grid{gap:6px!important}#sections .section-folder-card{border-radius:11px!important}}
