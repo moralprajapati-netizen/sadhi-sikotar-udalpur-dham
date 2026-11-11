@@ -846,9 +846,10 @@ body{padding-bottom:86px!important}
 #sections .section-heading{display:none!important}
 #sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
 #sections .section-folder-card{min-height:100px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;padding:7px 2px 5px!important;border:2px solid #e7a928!important;border-radius:17px!important;background:linear-gradient(145deg,#fff9e9,#ffdf9b)!important;box-shadow:inset 0 0 0 2px #fff,0 3px 7px #26000099!important}
-#sections .section-folder-cover{display:none!important}
-#sections .ref-home-icon{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:42px!important;color:#bd1115!important;font-family:Arial,sans-serif!important;font-size:2.25rem!important;line-height:1!important;font-weight:1000!important;text-shadow:0 1px #fff!important}
-#sections .ref-home-icon.ref-youtube{width:42px!important;height:30px!important;margin:6px auto!important;border-radius:9px!important;background:#c90012!important;color:#fff!important;font-size:1.3rem!important}
+ #sections .section-folder-cover{display:block!important;position:relative!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:4/3!important;overflow:hidden!important;border:0!important;border-bottom:2px solid #e7a928!important;border-radius:12px 12px 0 0!important;background:#5b0b18!important}
+ #sections .section-folder-cover img{display:block!important;width:100%!important;height:100%!important;min-height:0!important;object-fit:cover!important;object-position:center!important}
+ #sections .section-folder-cover::before,#sections .section-folder-cover::after{display:none!important;content:none!important}
+ #sections .ref-home-icon{display:none!important}
 #sections .section-folder-label{min-height:34px!important;padding:2px!important;color:#1d110a!important;font-size:clamp(.72rem,2.7vw,.9rem)!important;line-height:1.15!important;font-weight:1000!important;text-align:center!important}
 #sections .home-contact-cta{width:min(78%,350px)!important;min-height:50px!important;margin:8px auto 0!important;border:2px solid #ffda4c!important;border-radius:40px!important;background:linear-gradient(100deg,#ffca22,#e99000)!important;color:#251000!important;font-size:1.1rem!important;font-weight:1000!important;box-shadow:0 3px 12px #24000099!important}
 .mobile-bottom-nav{background:linear-gradient(180deg,#a90012,#580009)!important;border:3px solid #f9c52b!important;border-radius:18px!important;box-shadow:0 0 0 2px #5b1000,0 4px 16px #1a0000aa!important}
