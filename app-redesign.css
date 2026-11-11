@@ -825,3 +825,53 @@ body{padding-bottom:86px!important}
  #sections .section-folder-label{font-size:.63rem!important}
  .mobile-bottom-nav small{font-size:.6rem!important}
 }
+
+
+/* Exact layout corrections based on user's 7-screen reference */
+.site-header{background:linear-gradient(180deg,#a90010 0%,#600009 100%)!important;border:3px solid #ffc72d!important;border-top:0!important;border-radius:0 0 18px 18px!important}
+.header-inner{min-height:72px!important;padding-left:48px!important;padding-right:46px!important}
+.brand-text strong,.brand-text span{color:#ffed3d!important}
+.header-inner::after{content:"🔔"!important;position:absolute!important;right:11px!important;top:50%!important;transform:translateY(-50%)!important;font-size:22px!important;filter:drop-shadow(0 1px 1px #420000)}
+.hero{padding:8px 0 12px!important;background:linear-gradient(180deg,#a90012,#71000b 68%,#390006)!important}
+.hero::before{content:""!important;position:absolute!important;inset:4px!important;border:3px double #ffd54d!important;border-radius:22px!important;pointer-events:none!important}
+.hero-content{position:relative!important;z-index:1!important}
+.hero h1{margin:3px 0!important;color:#ffe735!important;font-size:clamp(1.15rem,4.2vw,1.7rem)!important;line-height:1.1!important}
+.hero-subtitle{margin:0!important;color:#ffe735!important;font-size:1.05rem!important;font-weight:1000!important}
+.hero-darshan-pair{max-width:100%!important;gap:5px!important;margin:9px auto 0!important;padding:0 3px!important}
+.hero-photo{height:clamp(190px,56vw,330px)!important;border:4px double #ffcf35!important;border-radius:14px!important;box-shadow:0 0 0 2px #7d090b,0 4px 12px #250000aa!important}
+.hero-photo img{object-fit:cover!important}
+.hero-photo span{background:linear-gradient(90deg,#a90010,#5e0008)!important;border:1px solid #ffe16b!important;border-radius:22px!important;color:#fff4d2!important;font-weight:1000!important}
+.hero-actions{display:none!important}
+#sections{padding:8px 0 12px!important;background:linear-gradient(180deg,#78000a,#400007)!important}
+#sections .section-heading{display:none!important}
+#sections .section-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important}
+#sections .section-folder-card{min-height:100px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;padding:7px 2px 5px!important;border:2px solid #e7a928!important;border-radius:17px!important;background:linear-gradient(145deg,#fff9e9,#ffdf9b)!important;box-shadow:inset 0 0 0 2px #fff,0 3px 7px #26000099!important}
+#sections .section-folder-cover{display:none!important}
+#sections .ref-home-icon{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:42px!important;color:#bd1115!important;font-family:Arial,sans-serif!important;font-size:2.25rem!important;line-height:1!important;font-weight:1000!important;text-shadow:0 1px #fff!important}
+#sections .ref-home-icon.ref-youtube{width:42px!important;height:30px!important;margin:6px auto!important;border-radius:9px!important;background:#c90012!important;color:#fff!important;font-size:1.3rem!important}
+#sections .section-folder-label{min-height:34px!important;padding:2px!important;color:#1d110a!important;font-size:clamp(.72rem,2.7vw,.9rem)!important;line-height:1.15!important;font-weight:1000!important;text-align:center!important}
+#sections .home-contact-cta{width:min(78%,350px)!important;min-height:50px!important;margin:8px auto 0!important;border:2px solid #ffda4c!important;border-radius:40px!important;background:linear-gradient(100deg,#ffca22,#e99000)!important;color:#251000!important;font-size:1.1rem!important;font-weight:1000!important;box-shadow:0 3px 12px #24000099!important}
+.mobile-bottom-nav{background:linear-gradient(180deg,#a90012,#580009)!important;border:3px solid #f9c52b!important;border-radius:18px!important;box-shadow:0 0 0 2px #5b1000,0 4px 16px #1a0000aa!important}
+.mobile-bottom-nav a>span{color:#ffe13a!important;font-size:1.45rem!important}
+.mobile-bottom-nav a small{color:#fff1d5!important;font-weight:950!important}
+.mobile-bottom-nav a.is-active{background:linear-gradient(180deg,#ffdf4b,#e99a00)!important;border-radius:12px!important}
+.mobile-bottom-nav a.is-active>span,.mobile-bottom-nav a.is-active small{color:#6d0009!important}
+.section{background:linear-gradient(180deg,#7b000b,#410007)!important}
+.section-heading{border:2px solid #f2bd35!important;border-radius:15px!important;background:linear-gradient(90deg,#a90012,#650009)!important}
+.section-heading h2{color:#ffe5a0!important}
+.gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;padding:7px!important;border:2px solid #eeb72b!important;border-radius:17px!important;background:linear-gradient(145deg,#fff5dc,#f6d99c)!important}
+.gallery-card{padding:3px!important;border:2px solid #d99c20!important;border-radius:10px!important;background:#fff3d5!important}
+.gallery-card img{aspect-ratio:1/1!important;object-fit:cover!important;border-radius:7px!important}
+.gallery-card span{padding:3px 1px!important;color:#74000b!important;font-size:.68rem!important;font-weight:950!important}
+#bhajanList .live-bhajan-card,#bhajanList .dynamic-content-card,#videosList .dynamic-content-card,#contactContent .dynamic-content-card{border:2px solid #e9b12a!important;border-radius:16px!important;background:linear-gradient(145deg,#fff8e9,#f7dfae)!important;color:#291008!important;overflow:hidden!important}
+#bhajanList iframe,#videosList iframe{width:100%!important;border-radius:10px!important}
+.panchang-live-card,.panchang-calendar-card{border:2px solid #eeb52a!important;border-radius:18px!important;background:linear-gradient(145deg,#fff8e7,#f7dfb1)!important;color:#25100a!important}
+.panchang-summary-grid article{border:1.5px solid #e9a923!important;border-radius:14px!important;background:#fff1ce!important;color:#2b1009!important;box-shadow:0 2px 5px #6a290022!important}
+@media(max-width:600px){
+ .header-inner{min-height:68px!important}
+ .hero-photo{height:clamp(175px,52vw,245px)!important}
+ #sections .section-folder-card{min-height:96px!important}
+ #sections .ref-home-icon{height:38px!important;font-size:2rem!important}
+ #sections .section-folder-label{font-size:clamp(.68rem,2.7vw,.82rem)!important}
+ .mobile-bottom-nav{left:6px!important;right:6px!important;bottom:5px!important;min-height:65px!important}
+}
