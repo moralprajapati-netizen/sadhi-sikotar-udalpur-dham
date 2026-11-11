@@ -1,5 +1,5 @@
-const CACHE_NAME = "sadhi-sikotar-app-v93";
-const APP_FILES = ["./", "./index.html", "./styles.css?v=20261110k", "./app-redesign.css?v=20261111d", "./script.js?v=20261110j", "./manifest.json", "./icon.svg", "./1.png", "./covers/new-history.svg?v=20261111a", "./covers/new-temple.svg?v=20261111a", "./covers/new-bhajan.svg?v=20261111a", "./covers/new-video.svg?v=20261111a", "./covers/new-festivals.svg?v=20261111a", "./covers/new-stories.svg?v=20261111a", "./covers/contact-cover.jpg?v=20261107b", "./2.png", "./copilot_20250729_095554.png"];
+const CACHE_NAME = "sadhi-sikotar-app-v94";
+const APP_FILES = ["./", "./index.html", "./styles.css?v=20261110k", "./app-redesign.css?v=20261111e", "./script.js?v=20261110j", "./manifest.json", "./icon.svg", "./1.png", "./covers/new-history.svg?v=20261111c", "./covers/new-temple.svg?v=20261111c", "./covers/new-bhajan.svg?v=20261111c", "./covers/new-video.svg?v=20261111c", "./covers/new-festivals.svg?v=20261111c", "./covers/new-stories.svg?v=20261111c", "./covers/contact-cover.jpg?v=20261107b", "./2.png", "./copilot_20250729_095554.png"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
