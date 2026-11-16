@@ -1602,20 +1602,25 @@ function initializeGujaratiCalendar() {
     };
 
     try {
-      // Small batches stay comfortably below the provider's request-rate limit.
-      for (let offset=0; offset<dates.length; offset+=4) {
-        const batch = await Promise.all(dates.slice(offset,offset+4).map(async date => {
-          try { return {date,record:await getDailyPanchang(date)}; }
-          catch (error) { console.warn("Daily Panchang unavailable for",date,error); return {date,record:null}; }
-        }));
+      // Load the selected day's live Panchang first. Fetch the remaining
+      // calendar dates one at a time so the worker/provider is not flooded
+      // by a burst of 4 simultaneous requests on every page visit.
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      for (const date of dates) {
         if (requestId !== calendarLoadId) return;
-        batch.forEach(({date,record}) => {
-          if (!record) return;
-          const tithi = calendarTithi(record);
-          const lunarMonth = calendarMonthName(record);
-          if (!tithi && !lunarMonth) return;
-          next.set(date,{tithi,month:lunarMonth,festivals:[]});
-        });
+        try {
+          const record = await getDailyPanchang(date);
+          if (record) {
+            const tithi = calendarTithi(record);
+            const lunarMonth = calendarMonthName(record);
+            if (tithi || lunarMonth) next.set(date,{tithi,month:lunarMonth,festivals:[]});
+          }
+        } catch (error) {
+          console.warn("Daily Panchang unavailable for",date,error);
+        }
+        if (requestId !== calendarLoadId) return;
+        renderCalendarGrid();
+        await new Promise(resolve => setTimeout(resolve, 350));
       }
       if (requestId !== calendarLoadId) return;
       calendarData = next;
