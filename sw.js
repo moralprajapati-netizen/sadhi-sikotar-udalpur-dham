@@ -1,8 +1,8 @@
-const CACHE_NAME = "sadhi-sikotar-app-v103";
-const APP_FILES = ["./", "./index.html", "./styles.css?v=20261110k", "./app-redesign.css?v=20261116b", "./script.js?v=20261110j", "./manifest.json", "./icon.svg", "./1.png", "./covers/contact-cover.jpg?v=20261107b", "./2.png", "./copilot_20250729_095554.png", "./covers/history-cover.jpg", "./covers/temple-cover.svg", "./covers/bhajan-cover.jpg", "./covers/video-cover.jpg", "./covers/festivals-cover.jpg", "./covers/stories-cover.jpg"];
+const CACHE_NAME = "sadhi-sikotar-app-v104";
+const APP_FILES = ["./", "./index.html", "./styles.css?v=20261110k", "./app-redesign.css?v=20261116c", "./script.js?v=20261110j", "./manifest.json", "./icon.svg", "./1.png", "./covers/contact-cover.jpg?v=20261107b", "./2.png", "./copilot_20250729_095554.png", "./covers/history-cover.jpg", "./covers/temple-cover.svg", "./covers/bhajan-cover.jpg", "./covers/video-cover.jpg", "./covers/festivals-cover.jpg", "./covers/stories-cover.jpg"];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
+  event.waitUntil(caches.open(CACHE_NAME).then(async cache => { await Promise.allSettled(APP_FILES.map(async file => { try { const response = await fetch(file, { cache: "reload" }); if (response.ok) await cache.put(file, response); } catch (_) {} })); }));
   self.skipWaiting();
 });
 
